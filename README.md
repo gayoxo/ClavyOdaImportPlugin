@@ -1,4 +1,4 @@
 Clavile-oOdaImportPlugin
 ========================
 
-Plugin de importacion de Clavileño para Oda 1.0 y 2.0
+Plugin de conexión de OdA 1.0 y 2.0  en Clavileño
