@@ -98,7 +98,7 @@ public class ElementType_Datos implements InterfaceOdaparser{
 							Extensible=true;
 						
 						
-						if (!nombre.equals(NameConstantsOda.DESCRIPTIONNAME))
+						if (!id.equals(NameConstantsOda.IDDESCRIPTIONNAME))
 						{
 						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec);
 						Nodo.ProcessAttributes();
