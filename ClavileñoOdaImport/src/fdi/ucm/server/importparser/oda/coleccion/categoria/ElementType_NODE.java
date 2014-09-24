@@ -113,6 +113,14 @@ CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRE
 		VistaOV.getValues().add(Valor3);
 
 		
+CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.ODA); 
+		
+		CompleteOperationalValueType ValorO=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Id,VistaOda);
+
+		
+		VistaOV.getValues().add(ValorO);
+
+		
 		AtributoMeta.getShows().add(VistaOV);
 		
 	}
