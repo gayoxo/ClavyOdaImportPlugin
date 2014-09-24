@@ -42,6 +42,7 @@ public class NameConstantsOda {
 	public static final String PUBLIC = "Public";
 	public static final String PRIVATE = "Private";
 	public static final String EXTENSIBLE = "Extensible";
+	public static final String OdaID = "OdaId";
 	
 
 	//	PRESENTACION
@@ -63,6 +64,7 @@ public class NameConstantsOda {
 		public static final String TERM = "Term";
 		public static final String VOCNUMBER = "Vocabulary N#";
 		public static final Integer IDDESCRIPTIONNAME = 111;
+
 
 
 
