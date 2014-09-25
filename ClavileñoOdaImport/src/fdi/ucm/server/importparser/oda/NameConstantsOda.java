@@ -15,11 +15,12 @@ public class NameConstantsOda {
 	public static final String DATOSNAME = "Datos";
 	public static final String IDOVNAME = "IDOV";
 	public static final String VIRTUAL_OBJECTNAME="Virtual Object";
-	public static final String DESCRIPTIONNAME = "Descripción";
+//	public static final String DESCRIPTIONNAME = "Descripción";
 	public static final String RESOURCENAME = "Recursos";
 	public static final String FILENAME = "File";
 	public static final String IDOV_OWNERNAME = "Idov Owner";
 	public static final String IDNAME = "ID";
+	public static final String IDDESCRIPTIONNAME = "111";
 	
 
 	//META
@@ -31,7 +32,7 @@ public class NameConstantsOda {
 	public static final String RESOURCEDATOS = "Recursos";
 	public static final String IDOV = "IDOV";
 	public static final String VIRTUAL_OBJECT="Virtual Object";
-	public static final String DESCRIPTION = "Description";
+//	public static final String DESCRIPTION = "Description";
 	public static final String RESOURCE = "Resource";
 	public static final String FILE = "File";
 	public static final String IDOV_OWNER = "Idov Owner";
@@ -63,7 +64,7 @@ public class NameConstantsOda {
 		public static final String VOCABULARY = "Vocabulary";
 		public static final String TERM = "Term";
 		public static final String VOCNUMBER = "Vocabulary N#";
-		public static final Integer IDDESCRIPTIONNAME = 111;
+
 
 
 
