@@ -13,7 +13,6 @@ import fdi.ucm.server.importparser.oda.NameConstantsOda;
 import fdi.ucm.server.importparser.oda.coleccion.CollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Datos;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Metadatos;
-import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Recurso;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.Grammar_File;
 import fdi.ucm.server.importparser.oda.oda1.LoadCollectionOda1;
 import fdi.ucm.server.importparser.oda.oda1.coleccion.categoria.Grammar_ObjetoVirtual;
@@ -68,7 +67,7 @@ public class CollectionOda1 extends CollectionOda {
 		procesOV();
 		processDatos();
 		processMetadatos();
-		processResourcesDate();
+//		processResourcesDate();
 		processVocabularios();
 
 	}
@@ -233,17 +232,17 @@ public class CollectionOda1 extends CollectionOda {
 	}
 
 
-	/**
-	 * Procesa los Datos de recurso de Oda1
-	 */
-	private void processResourcesDate() {
-		ElementType_Recurso ResourcveData2=new ElementType_Recurso(ResourcveData.getAtributoMeta(),LoadCollectionPadre);
-		ResourcveData2.ProcessAttributes();
-		ResourcveData2.ProcessInstances();
-		ResourcveData.getAtributoMeta().getSons().add(ResourcveData2.getAtributoMeta());
-		
-		
-	}
+//	/**
+//	 * Procesa los Datos de recurso de Oda1
+//	 */
+//	private void processResourcesDate() {
+//		ElementType_Recurso ResourcveData2=new ElementType_Recurso(ResourcveData.getAtributoMeta(),LoadCollectionPadre);
+//		ResourcveData2.ProcessAttributes();
+//		ResourcveData2.ProcessInstances();
+//		ResourcveData.getAtributoMeta().getSons().add(ResourcveData2.getAtributoMeta());
+//		
+//		
+//	}
 
 
 	/**

@@ -5,6 +5,7 @@ package fdi.ucm.server.importparser.oda.coleccion.categoria;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import fdi.ucm.server.importparser.oda.InterfaceOdaparser;
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
@@ -34,6 +35,8 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 	private CompleteOperationalValueType Valor;
 	private CompleteOperationalValueType Valor2;
 	private LoadCollectionOda LColec;
+	private HashMap<Integer, Integer> Ambitos;
+	private static HashMap<Integer, Integer> AmbitosResource;
 	
 	
 	public ElementType_ObjetoVirtual_Resource(CompleteIterator I,LoadCollectionOda L) {
@@ -87,6 +90,8 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 		 ID.getShows().add(VistaOV2);
 		}
 
+		
+		
 	}
 
 	/* (non-Javadoc)
@@ -102,14 +107,77 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 	 * Procesa las instancias propias
 	 */
 	private void OwnInstances() {
+		Ambitos=new HashMap<Integer, Integer>();
+		AmbitosResource=new HashMap<Integer, Integer>();
 		OwnInstancesPropias();
 		InstancesAjenas();
 		OVInstances();
 		
+		atributes_Recursos();
 		
 		
 		
 	}
+	private void atributes_Recursos() {
+		try {
+			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM section_data where idpadre=3 order by orden;");
+			if (rs!=null) 
+			{
+				while (rs.next()) {
+					String id=rs.getObject("id").toString();
+					
+					String nombre=rs.getObject("nombre").toString();
+					
+					String navegable="N";
+					if(rs.getObject("browseable")!=null)
+						navegable=rs.getObject("browseable").toString();
+					
+					String visible="N";
+					if(rs.getObject("visible")!=null)
+						visible=rs.getObject("visible").toString();
+					
+					String tipo_valores=null;
+					if(rs.getObject("tipo_valores")!=null)
+						tipo_valores=rs.getObject("tipo_valores").toString();
+					
+					String vocabulario=null;
+					if(rs.getObject("vocabulario")!=null)
+						vocabulario=rs.getObject("vocabulario").toString();
+					
+					if (nombre!=null&&!nombre.isEmpty()&&tipo_valores!=null&&!tipo_valores.isEmpty()&&((tipo_valores.equals("C")&&vocabulario!=null)||(!(tipo_valores.equals("C")))))
+						{
+						
+						nombre=nombre.trim();
+						nombre = StaticFunctionsOda.CleanStringFromDatabase(nombre,LColec);
+						
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec);
+						Nodo.ProcessAttributes();
+						Nodo.ProcessInstances();
+						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
+						}
+					else
+						{
+						if (tipo_valores==null||tipo_valores.isEmpty())
+							LColec.getLog().add("Warning: Tipo de valores vacio o nulo, id estructura: '"+id+"', estuctura padre : '3' (ignorado)");
+						if (nombre==null||nombre.isEmpty())
+							LColec.getLog().add("Warning: Nombre de la estructura del recurso vacia, id estructura: '"+id+"', padre : '3' (ignorado)");
+						if ((tipo_valores.equals("C")&&vocabulario==null))
+							LColec.getLog().add("Warning: Tipo de estructura controlado pero valor de vocabulario vacio, id estructura: '"+id+"', padre : '3' (ignorado)");
+							
+						}
+					
+				}
+			rs.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+//		catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
+		
+	}
+
 	private void OVInstances() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM resources where type='OV' order by idov;");
@@ -117,7 +185,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 			{
 				Integer preIdov=null;
 				int MaxCount=0;
-				int count=1;
+				int count=0;
 				while (rs.next()) {
 					
 					String id=rs.getObject("id").toString();
@@ -140,6 +208,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						Integer idovrefered2=Integer.parseInt(idovrefered);
 						
 						
+						
 						CompleteDocuments OVirtual=LColec.getCollection().getObjetoVirtual().get(Idov);
 						CompleteDocuments OVirtualRef=LColec.getCollection().getObjetoVirtual().get(idovrefered2);
 						
@@ -152,18 +221,33 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							{
 							if (count>MaxCount)
 								MaxCount=count;
+							Integer Base=Ambitos.get(Idov);
+							
+							if (Base==null)
+							{
+								Ambitos.put(Idov, 0);
+								Base=0;
+								}
+							Ambitos.put(preIdov, count+Base);
 							preIdov=Idov;
-							count=1;
+							count=0;
 							}
 						
 						
 						boolean Visiblebool=false;
 						if (Visible.equals("S"))
 							Visiblebool=true;
-						
+						Integer Base=Ambitos.get(Idov);
+							
+							if (Base==null)
+							{
+								Ambitos.put(Idov, 0);
+								Base=0;
+								}	
 						{
+
 						CompleteTextElement E=new CompleteTextElement(ID, id);
-						E.getAmbitos().add(count);
+						E.getAmbitos().add(count+Base);
 						OVirtual.getDescription().add(E);
 
 						CompleteOperationalValue Valor=new CompleteOperationalValue(this.Valor,Boolean.toString(Visiblebool));
@@ -172,10 +256,11 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						
 						{
 							CompleteLinkElement E3=new CompleteLinkElement(AtributoMeta,OVirtualRef);
-						E3.getAmbitos().add(count);
+						E3.getAmbitos().add(count+Base);
 						OVirtual.getDescription().add(E3);
 						
-
+						Integer Id=Integer.parseInt(id);
+						AmbitosResource.put(Id, count+Base);
 
 						CompleteOperationalValue Valor=new CompleteOperationalValue(Valor2,Boolean.toString(Visiblebool));
 
@@ -218,7 +303,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 			{
 				Integer preIdov=null;
 				int MaxCount=0;
-				int count=1;
+				int count=0;
 				while (rs.next()) {
 					
 					String id=rs.getObject("id").toString();
@@ -257,8 +342,16 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							{
 							if (count>MaxCount)
 								MaxCount=count;
+							Integer Base=Ambitos.get(Idov);
+							
+							if (Base==null)
+							{
+								Ambitos.put(Idov, 0);
+								Base=0;
+								}
+							Ambitos.put(preIdov, count+Base);
 							preIdov=Idov;
-							count=1;
+							count=0;
 							}
 						
 						
@@ -266,18 +359,32 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						if (Visible.equals("N"))
 							Visiblebool=false;
 						
+						Integer Base=Ambitos.get(Idov);
+						
+						if (Base==null)
+							{
+							Ambitos.put(Idov, 0);
+							Base=0;
+							}
 						
 						CompleteTextElement E=new CompleteTextElement(ID, id);
-						E.getAmbitos().add(count);
+						E.getAmbitos().add(count+Base);
 						OVirtual.getDescription().add(E);
 						
 						LColec.getCollection().getFilesId().put(id,FileC);
 						
 						
 						CompleteLinkElement E3=new CompleteLinkElement(AtributoMeta,FileC);
-						E3.getAmbitos().add(count);
+						
+						
+			
+						
+						E3.getAmbitos().add(count+Base);
 						OVirtual.getDescription().add(E3);
 //						
+						Integer Id=Integer.parseInt(id);
+						AmbitosResource.put(Id, count+Base);
+						
 //						MetaBooleanValue E2=new MetaBooleanValue(VISIBLE, Visiblebool);
 //						E2.getAmbitos().add(count);
 //						OVirtual.getDescription().add(E2);
@@ -325,7 +432,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 				{
 					Integer preIdov=null;
 					int MaxCount=0;
-					int count=1;
+					int count=0;
 					while (rs.next()) {
 						
 						String id=rs.getObject("id").toString();
@@ -362,8 +469,16 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 								{
 								if (count>MaxCount)
 									MaxCount=count;
+								Integer Base=Ambitos.get(Idov);
+								
+								if (Base==null)
+								{
+									Ambitos.put(Idov, 0);
+									Base=0;
+									}
+								Ambitos.put(preIdov, count+Base);
 								preIdov=Idov;
-								count=1;
+								count=0;
 								}
 							
 							
@@ -371,18 +486,24 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							if (Visible.equals("N"))
 								Visiblebool=false;
 							
+							Integer Base=Ambitos.get(Idov);
+							
+							if (Base==null)
+							{
+								Ambitos.put(Idov, 0);
+								Base=0;
+								}	
 							
 							CompleteTextElement E=new CompleteTextElement(ID, id);
 							
 							LColec.getCollection().getFilesId().put(id,FileC);
-							
-							E.getAmbitos().add(count);
+							E.getAmbitos().add(count+Base);
 							OVirtual.getDescription().add(E);
 							
 							
 							
 							CompleteLinkElement E3=new CompleteLinkElement(AtributoMeta,FileC);
-							E3.getAmbitos().add(count);
+							E3.getAmbitos().add(count+Base);
 							OVirtual.getDescription().add(E3);			
 						
 							
@@ -397,6 +518,9 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							CompleteLinkElement FileValue=new CompleteLinkElement(Grammar_File.getOWNER(),OVirtual);
 							
 							FileC.getDescription().add(FileValue);
+							
+							Integer Id=Integer.parseInt(id);
+							AmbitosResource.put(Id, count+Base);
 							
 							if (iconoOV.equals("S"))
 								OVirtual.setIcon(FileActual.getPath());
@@ -441,6 +565,8 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 		AtributoMeta = atributoMeta;
 	}
 	
-	
+	public static HashMap<Integer, Integer> getAmbitosResource() {
+		return AmbitosResource;
+	}
 
 }

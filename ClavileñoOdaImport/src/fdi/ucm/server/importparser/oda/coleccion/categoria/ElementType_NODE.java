@@ -285,12 +285,26 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 							}
 						else 
 							{
-							 CompleteDocuments FileC = LColec.getCollection().getFilesId().get(IdRecurso);
-							 if (FileC!=null) 
-								 {
-								 FileC.getDescription().add(MTV);
-								 MTV.setDocumentsFather(FileC);
-								 }
+							int Idov=Integer.parseInt(idov);
+							CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
+							C.getDescription().add(MTV);
+							
+							try {
+								int RecursoIntId = Integer.parseInt(IdRecurso);
+								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
+								MTV.getAmbitos().add(AmbitoAsociado);
+							} catch (Exception e) {
+								// TODO: handle exception
+							}
+							
+							
+							MTV.setDocumentsFather(C);
+//							 CompleteDocuments FileC = LColec.getCollection().getFilesId().get(IdRecurso);
+//							 if (FileC!=null) 
+//								 {
+//								 FileC.getDescription().add(MTV);
+//								 MTV.setDocumentsFather(FileC);
+//								 }
 							}
 						}
 					else 
