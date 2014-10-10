@@ -292,9 +292,13 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 							try {
 								int RecursoIntId = Integer.parseInt(IdRecurso);
 								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
-								MTV.getAmbitos().add(AmbitoAsociado);
+								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
+								if (AmbitoAsociado!=null)
+									Ambitos.add(AmbitoAsociado);
+								else Ambitos.add(0);
+								
+								MTV.setAmbitos(Ambitos);
 							} catch (Exception e) {
-								// TODO: handle exception
 							}
 							
 							
