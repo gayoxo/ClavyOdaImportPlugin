@@ -110,6 +110,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 		Ambitos=new HashMap<Integer, Integer>();
 		AmbitosResource=new HashMap<Integer, Integer>();
 		OwnInstancesPropias();
+		OwnInstancesURL();
 		InstancesAjenas();
 		OVInstances();
 		
@@ -118,6 +119,11 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 		
 		
 	}
+	private void OwnInstancesURL() {
+		// TODO FALTA pero hay que ver como lo planteo porque necesitas las URLS
+		
+	}
+
 	private void atributes_Recursos() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM section_data where idpadre=3 order by orden;");
@@ -215,12 +221,6 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						if (OVirtual!=null&&OVirtualRef!=null)
 						{
 							
-						if (preIdov!=null&&preIdov.intValue()==Idov.intValue())
-							count++;
-						else
-							{
-							if (count>MaxCount)
-								MaxCount=count;
 							Integer Base=Ambitos.get(Idov);
 							
 							if (Base==null)
@@ -228,7 +228,15 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 								Ambitos.put(Idov, 0);
 								Base=0;
 								}
-							Ambitos.put(preIdov, count+Base);
+							
+						if (preIdov!=null&&preIdov.intValue()==Idov.intValue())
+							count++;
+						else
+							{
+							if (count>MaxCount)
+								MaxCount=count;
+							
+							Ambitos.put(preIdov, count+Base+1);
 							preIdov=Idov;
 							count=0;
 							}
@@ -237,13 +245,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						boolean Visiblebool=false;
 						if (Visible.equals("S"))
 							Visiblebool=true;
-						Integer Base=Ambitos.get(Idov);
-							
-							if (Base==null)
-							{
-								Ambitos.put(Idov, 0);
-								Base=0;
-								}	
+
 						{
 
 						CompleteTextElement E=new CompleteTextElement(ID, id);
@@ -336,20 +338,24 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						{
 							
 						
-						if (preIdov!=null&&preIdov.intValue()==Idov.intValue())
-							count++;
-						else
-							{
-							if (count>MaxCount)
-								MaxCount=count;
 							Integer Base=Ambitos.get(Idov);
 							
 							if (Base==null)
 							{
 								Ambitos.put(Idov, 0);
 								Base=0;
-								}
-							Ambitos.put(preIdov, count+Base);
+								}	
+							
+							
+						if (preIdov!=null&&preIdov.intValue()==Idov.intValue())
+							count++;
+						else
+							{
+							if (count>MaxCount)
+								MaxCount=count;
+							
+							if (preIdov!=null)
+								Ambitos.put(preIdov, count+Base+1);
 							preIdov=Idov;
 							count=0;
 							}
@@ -359,13 +365,6 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						if (Visible.equals("N"))
 							Visiblebool=false;
 						
-						Integer Base=Ambitos.get(Idov);
-						
-						if (Base==null)
-							{
-							Ambitos.put(Idov, 0);
-							Base=0;
-							}
 						
 						CompleteTextElement E=new CompleteTextElement(ID, id);
 						E.getAmbitos().add(count+Base);
@@ -463,12 +462,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							
 							if (OVirtual!=null&&FileC!=null)
 							{
-							if (preIdov!=null&&preIdov.intValue()==Idov.intValue())
-								count++;
-							else
-								{
-								if (count>MaxCount)
-									MaxCount=count;
+								
 								Integer Base=Ambitos.get(Idov);
 								
 								if (Base==null)
@@ -476,7 +470,17 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 									Ambitos.put(Idov, 0);
 									Base=0;
 									}
-								Ambitos.put(preIdov, count+Base);
+								
+								
+							if (preIdov!=null&&preIdov.intValue()==Idov.intValue())
+								count++;
+							else
+								{
+								if (count>MaxCount)
+									MaxCount=count;
+								
+								if (preIdov!=null)
+									Ambitos.put(preIdov, count+Base+1);
 								preIdov=Idov;
 								count=0;
 								}
@@ -486,13 +490,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							if (Visible.equals("N"))
 								Visiblebool=false;
 							
-							Integer Base=Ambitos.get(Idov);
-							
-							if (Base==null)
-							{
-								Ambitos.put(Idov, 0);
-								Base=0;
-								}	
+
 							
 							CompleteTextElement E=new CompleteTextElement(ID, id);
 							
