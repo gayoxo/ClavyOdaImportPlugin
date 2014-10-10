@@ -236,7 +236,6 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							if (count>MaxCount)
 								MaxCount=count;
 							
-							Ambitos.put(preIdov, count+Base+1);
 							preIdov=Idov;
 							count=0;
 							}
@@ -249,7 +248,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						{
 
 						CompleteTextElement E=new CompleteTextElement(ID, id);
-						E.getAmbitos().add(count+Base);
+						E.getAmbitos().add(Base);
 						OVirtual.getDescription().add(E);
 
 						CompleteOperationalValue Valor=new CompleteOperationalValue(this.Valor,Boolean.toString(Visiblebool));
@@ -258,11 +257,11 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						
 						{
 							CompleteLinkElement E3=new CompleteLinkElement(AtributoMeta,OVirtualRef);
-						E3.getAmbitos().add(count+Base);
+						E3.getAmbitos().add(Base);
 						OVirtual.getDescription().add(E3);
 						
 						Integer Id=Integer.parseInt(id);
-						AmbitosResource.put(Id, count+Base);
+						AmbitosResource.put(Id, Base);
 
 						CompleteOperationalValue Valor=new CompleteOperationalValue(Valor2,Boolean.toString(Visiblebool));
 
@@ -271,7 +270,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						
 						}
 
-							
+						Ambitos.put(Idov, Base+1);	
 						
 						}
 					else 
@@ -354,8 +353,6 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							if (count>MaxCount)
 								MaxCount=count;
 							
-							if (preIdov!=null)
-								Ambitos.put(preIdov, count+Base+1);
 							preIdov=Idov;
 							count=0;
 							}
@@ -367,7 +364,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						
 						
 						CompleteTextElement E=new CompleteTextElement(ID, id);
-						E.getAmbitos().add(count+Base);
+						E.getAmbitos().add(Base);
 						OVirtual.getDescription().add(E);
 						
 						LColec.getCollection().getFilesId().put(id,FileC);
@@ -378,12 +375,13 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						
 			
 						
-						E3.getAmbitos().add(count+Base);
+						E3.getAmbitos().add(Base);
 						OVirtual.getDescription().add(E3);
 //						
 						Integer Id=Integer.parseInt(id);
-						AmbitosResource.put(Id, count+Base);
+						AmbitosResource.put(Id, Base);
 						
+						Ambitos.put(Idov, Base+1);
 //						MetaBooleanValue E2=new MetaBooleanValue(VISIBLE, Visiblebool);
 //						E2.getAmbitos().add(count);
 //						OVirtual.getDescription().add(E2);
@@ -479,8 +477,6 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 								if (count>MaxCount)
 									MaxCount=count;
 								
-								if (preIdov!=null)
-									Ambitos.put(preIdov, count+Base+1);
 								preIdov=Idov;
 								count=0;
 								}
@@ -495,13 +491,13 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							CompleteTextElement E=new CompleteTextElement(ID, id);
 							
 							LColec.getCollection().getFilesId().put(id,FileC);
-							E.getAmbitos().add(count+Base);
+							E.getAmbitos().add(Base);
 							OVirtual.getDescription().add(E);
 							
 							
 							
 							CompleteLinkElement E3=new CompleteLinkElement(AtributoMeta,FileC);
-							E3.getAmbitos().add(count+Base);
+							E3.getAmbitos().add(Base);
 							OVirtual.getDescription().add(E3);			
 						
 							
@@ -518,12 +514,12 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							FileC.getDescription().add(FileValue);
 							
 							Integer Id=Integer.parseInt(id);
-							AmbitosResource.put(Id, count+Base);
+							AmbitosResource.put(Id, Base);
 							
 							if (iconoOV.equals("S"))
 								OVirtual.setIcon(FileActual.getPath());
 
-							
+							Ambitos.put(Idov, Base+1);
 							}
 							else {
 								if (OVirtual==null)

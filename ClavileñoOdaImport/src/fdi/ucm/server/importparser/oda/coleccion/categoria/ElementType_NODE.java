@@ -275,20 +275,13 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						
 						
 						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
+						int Idov=Integer.parseInt(idov);
+						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
+						C.getDescription().add(MTV);
+						MTV.setDocumentsFather(C);
 						
 						if (IdRecurso==null)
 							{
-							int Idov=Integer.parseInt(idov);
-							CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-							C.getDescription().add(MTV);
-							MTV.setDocumentsFather(C);
-							}
-						else 
-							{
-							int Idov=Integer.parseInt(idov);
-							CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-							C.getDescription().add(MTV);
-							
 							try {
 								int RecursoIntId = Integer.parseInt(IdRecurso);
 								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
@@ -332,7 +325,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 
 	private void ProcessInstancesNumericas() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM numeric_data where idseccion="+Id+";");
+			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM numeric_data where idseccion="+Id+";");
 			if (rs!=null) 
 			{
 				while (rs.next()) {
@@ -345,17 +338,38 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 					if(rs.getObject("value")!=null)
 						value=rs.getObject("value").toString();
 					
+					String IdRecurso=null;
+					if(rs.getObject("idrecurso")!=null)
+						IdRecurso=rs.getObject("idrecurso").toString();
 					
 					
 					if (idov!=null&&!idov.isEmpty()&&!value.isEmpty())
 						{
 		
+
+						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, value);
 						int Idov=Integer.parseInt(idov);
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, value);
 						C.getDescription().add(MTV);
 						MTV.setDocumentsFather(C);
+						
+						if (IdRecurso!=null)
+						{
+						try {
+							int RecursoIntId = Integer.parseInt(IdRecurso);
+							Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
+							ArrayList<Integer> Ambitos=new ArrayList<Integer>();
+							if (AmbitoAsociado!=null)
+								Ambitos.add(AmbitoAsociado);
+							else Ambitos.add(0);
+							
+							MTV.setAmbitos(Ambitos);
+						} catch (Exception e) {
 						}
+					
+						}
+						}
+						
 					else 
 					{
 					if (idov==null||idov.isEmpty())
@@ -376,7 +390,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 
 	private void ProcessInstancesTexto() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM text_data where idseccion="+Id+";");
+			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM text_data where idseccion="+Id+";");
 			if (rs!=null) 
 			{
 				while (rs.next()) {
@@ -389,7 +403,9 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 					if(rs.getObject("value")!=null)
 						value=rs.getObject("value").toString();
 					
-					
+					String IdRecurso=null;
+					if(rs.getObject("idrecurso")!=null)
+						IdRecurso=rs.getObject("idrecurso").toString();
 					
 					if (idov!=null&&!idov.isEmpty()&&!value.isEmpty())
 						{
@@ -399,11 +415,26 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						String valueclean = StaticFunctionsOda.CleanStringFromDatabase(value,LColec);
 						
 						
+						
+						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
 						int Idov=Integer.parseInt(idov);
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
 						C.getDescription().add(MTV);
 						MTV.setDocumentsFather(C);
+						if (IdRecurso!=null)
+						{
+						try {
+							int RecursoIntId = Integer.parseInt(IdRecurso);
+							Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
+							ArrayList<Integer> Ambitos=new ArrayList<Integer>();
+							if (AmbitoAsociado!=null)
+								Ambitos.add(AmbitoAsociado);
+							else Ambitos.add(0);
+							
+							MTV.setAmbitos(Ambitos);
+						} catch (Exception e) {
+						}
+						}
 						}
 					else 
 					{
