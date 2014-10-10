@@ -14,6 +14,7 @@ import fdi.ucm.server.importparser.oda.coleccion.CollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Datos;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Metadatos;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.Grammar_File;
+import fdi.ucm.server.importparser.oda.coleccion.categoria.Grammar_URL;
 import fdi.ucm.server.importparser.oda.oda1.LoadCollectionOda1;
 import fdi.ucm.server.importparser.oda.oda1.coleccion.categoria.Grammar_ObjetoVirtual;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
@@ -36,6 +37,7 @@ public class CollectionOda1 extends CollectionOda {
 
 	private static final String COLECCION_OBTENIDA_A_PARTIR_DE_ODA = "Coleccion obtenida a partir de ODA en : ";
 	private static final String COLECCION_ODA = "Coleccion ODA";
+	private HashMap<String, CompleteDocuments> URlC;
 	private CompleteCollection oda1;
 	private HashMap<Integer, CompleteDocuments> ObjetoVirtual;
 	private HashMap<String, CompleteFile> CompleteFiles;
@@ -52,6 +54,7 @@ public class CollectionOda1 extends CollectionOda {
 		Vocabularies=new HashMap<Integer, ArrayList<String>>();
 		CompleteFiles=new HashMap<String, CompleteFile>();
 		FilesC=new HashMap<String, CompleteDocuments>();
+		URlC=new HashMap<String, CompleteDocuments>();
 		FilesId=new HashMap<String, CompleteDocuments>();
 		Vocabularios=new HashMap<CompleteElementType, ArrayList<String>>();
 		LoadCollectionPadre=L;
@@ -64,12 +67,22 @@ public class CollectionOda1 extends CollectionOda {
 	@Override
 	public void ProcessAttributes() {
 		procesFiles();
+		procesURLs();
 		procesOV();
 		processDatos();
 		processMetadatos();
 //		processResourcesDate();
 		processVocabularios();
 
+	}
+
+
+	private void procesURLs() {
+		Grammar_URL AFM=new Grammar_URL(oda1,LoadCollectionPadre);
+		AFM.ProcessAttributes();
+		AFM.ProcessInstances();
+		oda1.getMetamodelGrammar().add(AFM.getAtributoMeta());
+		
 	}
 
 
@@ -386,6 +399,12 @@ public class CollectionOda1 extends CollectionOda {
 	@Override
 	public CompleteCollection getCollection() {
 		return oda1;
+	}
+
+
+	@Override
+	public HashMap<String, CompleteDocuments> getURLC() {
+		return URlC;
 	}
 
 

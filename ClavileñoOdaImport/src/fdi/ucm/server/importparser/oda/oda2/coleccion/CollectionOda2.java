@@ -40,6 +40,7 @@ public class CollectionOda2 extends CollectionOda {
 	private HashMap<Integer, CompleteDocuments> ObjetoVirtual;
 	private HashMap<String, CompleteFile> CompleteFiles;
 	private HashMap<String, CompleteDocuments> FilesC;
+	private HashMap<String, CompleteDocuments> URlC;
 	private HashMap<String, CompleteDocuments> FilesId;
 	private HashMap<Integer, ArrayList<String>> Vocabularies;
 	private Grammar_ObjetoVirtual ResourcveData;
@@ -51,6 +52,7 @@ public class CollectionOda2 extends CollectionOda {
 		Vocabularies=new HashMap<Integer, ArrayList<String>>();
 		CompleteFiles=new HashMap<String, CompleteFile>();
 		FilesC=new HashMap<String, CompleteDocuments>();
+		URlC=new HashMap<String, CompleteDocuments>();
 		FilesId=new HashMap<String, CompleteDocuments>();
 		Vocabularios=new HashMap<CompleteElementType, ArrayList<String>>();
 		LocalPadre=localPadre;
@@ -376,5 +378,10 @@ public class CollectionOda2 extends CollectionOda {
 		return oda2;
 	}
 
-	
+
+	@Override
+	public HashMap<String, CompleteDocuments> getURLC() {
+		return URlC;
+	}
+
 }

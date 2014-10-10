@@ -64,6 +64,8 @@ public class NameConstantsOda {
 		public static final String VOCABULARY = "Vocabulary";
 		public static final String TERM = "Term";
 		public static final String VOCNUMBER = "Vocabulary N#";
+		public static final String URL = "URL";
+		public static final String URLPATH = "URL Path";
 
 
 

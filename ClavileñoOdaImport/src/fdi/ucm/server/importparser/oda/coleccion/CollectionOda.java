@@ -31,6 +31,8 @@ public abstract class CollectionOda implements InterfaceOdaparser {
 
 	public abstract HashMap<String, CompleteDocuments> getFilesC();
 
+	public abstract HashMap<String, CompleteDocuments> getURLC();
+	
 	public abstract HashMap<String, CompleteFile> getFiles();
 
 	public abstract void setObjetoVirtual(HashMap<Integer, CompleteDocuments> objetoVirtual);
