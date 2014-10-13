@@ -197,13 +197,9 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						E3.getAmbitos().add(Base);
 						OVirtual.getDescription().add(E3);			
 					
-						
-						if (Visiblebool)
-						{
 							CompleteOperationalValue Valor=new CompleteOperationalValue(Valor2,Boolean.toString(Visiblebool));
 
 							E3.getShows().add(Valor);
-						}
 						
 						
 						Integer Id=Integer.parseInt(id);
@@ -497,12 +493,9 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 //						E2.getAmbitos().add(count);
 //						OVirtual.getDescription().add(E2);
 
-						if (Visiblebool)
-						{
 							CompleteOperationalValue Valor=new CompleteOperationalValue(Valor2,Boolean.toString(Visiblebool));
 
 							E3.getShows().add(Valor);
-						}
 					
 						}
 						else{
@@ -611,13 +604,10 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							E3.getAmbitos().add(Base);
 							OVirtual.getDescription().add(E3);			
 						
-							
-							if (Visiblebool)
-							{
+
 								CompleteOperationalValue Valor=new CompleteOperationalValue(Valor2,Boolean.toString(Visiblebool));
 
 								E3.getShows().add(Valor);
-							}
 							
 
 							CompleteLinkElement FileValue=new CompleteLinkElement(Grammar_File.getOWNER(),OVirtual);

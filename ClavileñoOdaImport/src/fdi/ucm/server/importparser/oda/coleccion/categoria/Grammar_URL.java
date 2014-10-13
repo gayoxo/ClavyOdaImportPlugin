@@ -68,7 +68,7 @@ public class Grammar_URL implements InterfaceOdaparser {
 
 				
 		{
-			PathF=new CompleteResourceElementType(NameConstantsOda.URLPATH, AtributoMeta);
+			PathF=new CompleteResourceElementType(NameConstantsOda.URI, AtributoMeta);
 			AtributoMeta.getSons().add(PathF);
 			
 			CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
@@ -82,7 +82,7 @@ public class Grammar_URL implements InterfaceOdaparser {
 			VistaOV.getValues().add(Valor3);
 			
 			CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
-			CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.FILERESOURCE,VistaOV);
+			CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.URI,VistaOV);
 			VistaOVMeta.getValues().add(ValorMeta);
 			
 			PathF.getShows().add(VistaOVMeta);
