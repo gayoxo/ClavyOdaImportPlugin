@@ -49,7 +49,7 @@ public class Grammar_URL implements InterfaceOdaparser {
 		
 		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
 		
-		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.FILE,VistaOVMeta);
+		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.URL,VistaOVMeta);
 		
 		VistaOVMeta.getValues().add(ValorMeta);
 		
