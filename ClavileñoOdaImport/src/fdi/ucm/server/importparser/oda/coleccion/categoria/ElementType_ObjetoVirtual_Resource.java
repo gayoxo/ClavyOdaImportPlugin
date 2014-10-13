@@ -119,8 +119,119 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 		
 		
 	}
+	
+	
+	/**
+	 * 
+	 */
 	private void OwnInstancesURL() {
-		// TODO FALTA pero hay que ver como lo planteo porque necesitas las URLS
+		try {
+			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM resources where type='U' order by idov;");
+			if (rs!=null) 
+			{
+				Integer preIdov=null;
+				int MaxCount=0;
+				int count=0;
+				while (rs.next()) {
+					
+					String id=rs.getObject("id").toString();
+					String idov=rs.getObject("idov").toString();
+					
+					String Visible="N";
+					if(rs.getObject("visible")!=null)
+						Visible=rs.getObject("visible").toString();
+					
+					String name="";
+					if(rs.getObject("name")!=null)
+						name=rs.getObject("name").toString();
+					
+					
+					if (idov!=null&&!idov.isEmpty()&&!name.isEmpty())
+						{
+						Integer Idov=Integer.parseInt(idov);
+						
+						name=name.trim();
+						name=StaticFunctionsOda.CleanStringFromDatabase(name,LColec);
+						CompleteDocuments OVirtual=LColec.getCollection().getObjetoVirtual().get(Idov);
+						CompleteDocuments FileC=LColec.getCollection().getURLC().get(name);
+						
+						if (OVirtual!=null&&FileC!=null)
+						{
+							
+							Integer Base=Ambitos.get(Idov);
+							
+							if (Base==null)
+							{
+								Ambitos.put(Idov, 0);
+								Base=0;
+								}
+							
+							
+						if (preIdov!=null&&preIdov.intValue()==Idov.intValue())
+							count++;
+						else
+							{
+							if (count>MaxCount)
+								MaxCount=count;
+							
+							preIdov=Idov;
+							count=0;
+							}
+						
+						
+						boolean Visiblebool=true;
+						if (Visible.equals("N"))
+							Visiblebool=false;
+						
+
+						
+						CompleteTextElement E=new CompleteTextElement(ID, id);
+						
+						LColec.getCollection().getFilesId().put(id,FileC);
+						E.getAmbitos().add(Base);
+						OVirtual.getDescription().add(E);
+						
+						
+						
+						CompleteLinkElement E3=new CompleteLinkElement(AtributoMeta,FileC);
+						E3.getAmbitos().add(Base);
+						OVirtual.getDescription().add(E3);			
+					
+						
+						if (Visiblebool)
+						{
+							CompleteOperationalValue Valor=new CompleteOperationalValue(Valor2,Boolean.toString(Visiblebool));
+
+							E3.getShows().add(Valor);
+						}
+						
+						
+						Integer Id=Integer.parseInt(id);
+						AmbitosResource.put(Id, Base);
+
+						Ambitos.put(Idov, Base+1);
+						}
+						else {
+							if (OVirtual==null)
+								LColec.getLog().add("Warning: Objeto Virtual al que se asocia este recurso no existe, Id de objeto virtual : '" +Idov + "', Idrecurso: '"+id+ "'(ignorado)");
+							if (FileC==null)
+								LColec.getLog().add("Warning: El recurso propio URL al que apunta con referencia objeto : '" + name +"', no existe, Idrecurso: '"+id+ "'(ignorado)");	
+						}
+						}
+					else {
+						if (idov==null||idov.isEmpty())
+							LColec.getLog().add("Warning: Objeto Virtual asociado al que se asocia el recurso es vacio, Idrecurso: '"+id+"' es vacio o el file referencia asociado es vacio (ignorado)");
+						if (name==null||name.isEmpty())
+							LColec.getLog().add("Warning: Nombre recurso URL propio asociado vacio, Idrecurso: '"+id+"' (ignorado)");
+
+					}
+				}
+			IteradorPadre.setAmbitoSTotales(MaxCount);
+			rs.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

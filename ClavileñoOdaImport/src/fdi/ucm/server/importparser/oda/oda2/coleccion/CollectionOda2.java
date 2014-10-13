@@ -15,6 +15,7 @@ import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Datos;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Metadatos;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.Grammar_File;
+import fdi.ucm.server.importparser.oda.coleccion.categoria.Grammar_URL;
 import fdi.ucm.server.importparser.oda.oda2.coleccion.categoria.Grammar_ObjetoVirtual;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
@@ -65,6 +66,7 @@ public class CollectionOda2 extends CollectionOda {
 	@Override
 	public void ProcessAttributes() {
 		procesFiles();
+		procesURLs();
 		procesOV();
 		processDatos();
 		processMetadatos();
@@ -73,6 +75,15 @@ public class CollectionOda2 extends CollectionOda {
 	}
 
 
+	private void procesURLs() {
+		Grammar_URL AFM=new Grammar_URL(oda2,LocalPadre);
+		AFM.ProcessAttributes();
+		AFM.ProcessInstances();
+		oda2.getMetamodelGrammar().add(AFM.getAtributoMeta());
+		
+	}
+
+	
 	/**
 	 * Procesa los vocabularios compartidos
 	 */
