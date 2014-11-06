@@ -128,6 +128,29 @@ public class StaticFunctionsOda {
 		return false;
 	}
 
+	
+	/**
+	 * Retorna si el atributo es controlado.
+	 * @param atributoMeta
+	 * @return
+	 */
+	public static boolean isDate(CompleteElementType attribute) {
+		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
+		for (CompleteOperationalView show : Shows) {	
+			if (show.getName().equals(NameConstantsOda.METATYPE))
+			{
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType showValues : ShowValue) {
+					if (showValues.getName().equals(NameConstantsOda.METATYPETYPE))
+							if (showValues.getDefault().equals(NameConstantsOda.DATE)) 
+										return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	
 	public static boolean isNumeric(CompleteElementType attribute) {
 		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
 		for (CompleteOperationalView show : Shows) {	

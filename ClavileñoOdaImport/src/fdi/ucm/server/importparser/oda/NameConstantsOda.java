@@ -59,6 +59,7 @@ public class NameConstantsOda {
 		public static final String TEXT = "Text";
 		public static final String CONTROLED = "Controled";
 		public static final String DECIMALES = "Decimales";
+		public static final String DATE = "Date";
 		
 	//VOCABULARIO
 		public static final String VOCABULARY = "Vocabulary";
@@ -66,6 +67,7 @@ public class NameConstantsOda {
 		public static final String VOCNUMBER = "Vocabulary N#";
 		public static final String URL = "URL";
 		public static final String URI = "URI";
+		
 
 
 

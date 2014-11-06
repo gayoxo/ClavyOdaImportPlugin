@@ -5,7 +5,9 @@ package fdi.ucm.server.importparser.oda.coleccion.categoria;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import fdi.ucm.server.importparser.oda.InterfaceOdaparser;
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
@@ -79,6 +81,16 @@ public class ElementType_NODE implements InterfaceOdaparser {
 				}
 
 			}
+			
+			}
+		else if (tipo_valores.equals("F"))
+			{
+			AtributoMeta = new CompleteTextElementType(nombre, tpadre);
+			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
+			CompleteOperationalView VistaMetaType=new CompleteOperationalView(NameConstantsOda.METATYPE);
+			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.DATE,VistaMetaType);
+			VistaMetaType.getValues().add(MetaType);
+			AtributoMeta.getShows().add(VistaMetaType);
 			
 			}
 		else if (tipo_valores.equals("X"))
@@ -232,12 +244,91 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 			ProcessInstancesNumericas();
 		else if (StaticFunctionsOda.isControled(AtributoMeta))
 			ProcessInstancesControladas();
+		else if (StaticFunctionsOda.isDate(AtributoMeta))
+			ProcessInstancesFecha();
 		else ProcessInstancesTexto();
 		
 
 	}
 
 	
+
+	private void ProcessInstancesFecha() {
+		try {
+			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM date_data where idseccion="+Id+";");
+			if (rs!=null) 
+			{
+				while (rs.next()) {
+					
+					String id1=rs.getObject("id").toString();
+					
+					String idov=rs.getObject("idov").toString();
+					
+					String value="";
+					if(rs.getObject("value")!=null)
+						value=rs.getObject("value").toString();
+					
+					String IdRecurso=null;
+					if(rs.getObject("idrecurso")!=null)
+						IdRecurso=rs.getObject("idrecurso").toString();
+					
+					if (idov!=null&&!idov.isEmpty()&&!value.isEmpty())
+						{
+						
+						
+						value=value.trim();
+						String valueclean = StaticFunctionsOda.CleanStringFromDatabase(value,LColec);
+						
+						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+						if (!valueclean.isEmpty())
+							{
+							try {
+							Date D= formatter.parse(valueclean);
+							CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, D.toString());
+							int Idov=Integer.parseInt(idov);
+							CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
+							C.getDescription().add(MTV);
+							MTV.setDocumentsFather(C);
+							if (IdRecurso!=null)
+							{
+							
+								int RecursoIntId = Integer.parseInt(IdRecurso);
+								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
+								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
+								if (AmbitoAsociado!=null)
+									Ambitos.add(AmbitoAsociado);
+								else Ambitos.add(0);
+								
+								MTV.setAmbitos(Ambitos);
+							}
+							} catch (Exception e) {
+							}
+						}
+						
+						
+						
+						
+						
+						}
+					else 
+					{
+					if (idov==null||idov.isEmpty())
+						LColec.getLog().add("Warning: Texto asociado a un objeto virtual vacio o nulo, id en text_data: '"+id1+"', campo padre: '"+Id+"' (ignorado)");
+					if (value==null||value.isEmpty())
+						LColec.getLog().add("Warning: Texto asociado al campo padre: '"+Id+"' vacio o nulo: id en text_data: '"+id1+"' (ignorado)");
+					}
+					
+				}
+			rs.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+//		catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+//		}
+		
+	}
 
 	private void ProcessInstancesControladas() {
 		try {
