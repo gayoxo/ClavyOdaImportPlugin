@@ -60,13 +60,13 @@ public class ElementType_NODE implements InterfaceOdaparser {
 			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.CONTROLED,VistaMetaType);
 			VistaMetaType.getValues().add(MetaType);
 			AtributoMeta.getShows().add(VistaMetaType);
-			if (vocabulario != null && Integer.parseInt(vocabulario) != 0) {
+			if (vocabulario != null) {
 				Integer Voc = Integer.parseInt(vocabulario);
-				if (Voc == 1) {
-					ArrayList<String> A = LColec.getCollection().getVocabularies().get(Integer.getInteger(Id));
+				if (Voc == 1 || Voc == 0) {
+					ArrayList<String> A = LColec.getCollection().getVocabularies().get(Integer.parseInt(Id));
 					if (A==null)
 					{
-						LColec.getCollection().getVocabularies().put(Integer.getInteger(Id), Vocabulary);
+						LColec.getCollection().getVocabularies().put(Integer.parseInt(Id), Vocabulary);
 						A=Vocabulary;
 					}
 					LColec.getCollection().getVocabularios().put((CompleteTextElementType)AtributoMeta,A);
@@ -80,6 +80,16 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					LColec.getCollection().getVocabularios().put((CompleteTextElementType)AtributoMeta,A);
 				}
 
+			}
+			else
+			{
+				ArrayList<String> A = LColec.getCollection().getVocabularies().get(Integer.parseInt(Id));
+				if (A==null)
+				{
+					LColec.getCollection().getVocabularies().put(Integer.parseInt(Id), Vocabulary);
+					A=Vocabulary;
+				}
+				LColec.getCollection().getVocabularios().put((CompleteTextElementType)AtributoMeta,A);
 			}
 			
 			}
@@ -279,7 +289,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						value=value.trim();
 						String valueclean = StaticFunctionsOda.CleanStringFromDatabase(value,LColec);
 						
-						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+						SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 						if (!valueclean.isEmpty())
 							{
 							try {
