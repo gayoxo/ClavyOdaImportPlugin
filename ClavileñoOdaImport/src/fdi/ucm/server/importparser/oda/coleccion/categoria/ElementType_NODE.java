@@ -5,6 +5,7 @@ package fdi.ucm.server.importparser.oda.coleccion.categoria;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -294,7 +295,10 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 							{
 							try {
 							Date D= formatter.parse(valueclean);
-							CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, D.toString());
+							DateFormat df = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+							String valueE=df.format(D.toString());
+							
+							CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueE);
 							int Idov=Integer.parseInt(idov);
 							CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
 							C.getDescription().add(MTV);
