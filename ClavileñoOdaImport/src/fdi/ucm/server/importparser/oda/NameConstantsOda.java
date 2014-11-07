@@ -67,6 +67,7 @@ public class NameConstantsOda {
 		public static final String VOCNUMBER = "Vocabulary N#";
 		public static final String URL = "URL";
 		public static final String URI = "URI";
+		public static final String COMPARTIDO = "Compartido";
 		
 
 

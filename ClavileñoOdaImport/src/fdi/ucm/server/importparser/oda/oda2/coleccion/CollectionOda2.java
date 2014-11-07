@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
@@ -47,6 +48,7 @@ public class CollectionOda2 extends CollectionOda {
 	private Grammar_ObjetoVirtual ResourcveData;
 	private LoadCollectionOda LocalPadre;
 	private HashMap<CompleteElementType, ArrayList<String>> Vocabularios;
+	private HashSet<CompleteElementType> NoCompartidos;
 	
 	public CollectionOda2(LoadCollectionOda localPadre) {
 		oda2=new CompleteCollection(COLECCION_ODA, COLECCION_OBTENIDA_A_PARTIR_DE_ODA+ new Timestamp(new Date().getTime()));
@@ -56,6 +58,7 @@ public class CollectionOda2 extends CollectionOda {
 		URlC=new HashMap<String, CompleteDocuments>();
 		FilesId=new HashMap<String, CompleteDocuments>();
 		Vocabularios=new HashMap<CompleteElementType, ArrayList<String>>();
+		NoCompartidos=new HashSet<CompleteElementType>();
 		LocalPadre=localPadre;
 	}
 	
@@ -211,7 +214,16 @@ public class CollectionOda2 extends CollectionOda {
 				CompleteOperationalValueType ValorComp=new CompleteOperationalValueType(NameConstantsOda.VOCNUMBER,Integer.toString(I.intValue()),VistaVOC);
 				VistaVOC.getValues().add(ValorComp);
 				
-				
+				if (NoCompartidos.contains(element))
+				{
+				CompleteOperationalValueType ValorComp2=new CompleteOperationalValueType(NameConstantsOda.COMPARTIDO,Boolean.toString(false),VistaVOC);
+				VistaVOC.getValues().add(ValorComp2);
+				}
+			else
+			{
+				CompleteOperationalValueType ValorComp2=new CompleteOperationalValueType(NameConstantsOda.COMPARTIDO,Boolean.toString(true),VistaVOC);
+				VistaVOC.getValues().add(ValorComp2);
+				}
 				
 				element.getShows().add(VistaVOC);
 			}
@@ -393,6 +405,11 @@ public class CollectionOda2 extends CollectionOda {
 	@Override
 	public HashMap<String, CompleteDocuments> getURLC() {
 		return URlC;
+	}
+	
+	@Override
+	public HashSet<CompleteElementType> getNOCompartidos() {
+		return NoCompartidos;
 	}
 
 }

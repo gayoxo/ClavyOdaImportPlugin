@@ -5,6 +5,7 @@ package fdi.ucm.server.importparser.oda.coleccion;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import fdi.ucm.server.importparser.oda.InterfaceOdaparser;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
@@ -26,6 +27,8 @@ public abstract class CollectionOda implements InterfaceOdaparser {
 	public abstract HashMap<Integer, ArrayList<String>> getVocabularies();
 
 	public abstract HashMap<CompleteElementType, ArrayList<String>> getVocabularios();
+	
+	public abstract HashSet<CompleteElementType> getNOCompartidos();
 
 	public abstract HashMap<String, CompleteDocuments> getFilesId();
 

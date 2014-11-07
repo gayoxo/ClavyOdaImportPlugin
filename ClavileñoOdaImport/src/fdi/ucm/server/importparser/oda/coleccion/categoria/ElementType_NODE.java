@@ -71,6 +71,9 @@ public class ElementType_NODE implements InterfaceOdaparser {
 						A=Vocabulary;
 					}
 					LColec.getCollection().getVocabularios().put((CompleteTextElementType)AtributoMeta,A);
+					
+					if (Voc==0)
+						LColec.getCollection().getNOCompartidos().add(AtributoMeta);
 				} else {
 					ArrayList<String> A = LColec.getCollection().getVocabularies().get(Voc);
 					if (A==null)
@@ -79,6 +82,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 						A=Vocabulary;
 						}
 					LColec.getCollection().getVocabularios().put((CompleteTextElementType)AtributoMeta,A);
+
 				}
 
 			}
@@ -91,6 +95,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					A=Vocabulary;
 				}
 				LColec.getCollection().getVocabularios().put((CompleteTextElementType)AtributoMeta,A);
+
 			}
 			
 			}
