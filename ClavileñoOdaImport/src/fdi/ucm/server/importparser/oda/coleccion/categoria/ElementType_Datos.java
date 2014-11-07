@@ -97,8 +97,11 @@ public class ElementType_Datos implements InterfaceOdaparser{
 						if (extensible.equals("S"))
 							Extensible=true;
 						
-						
-						if (!id.equals(NameConstantsOda.IDDESCRIPTIONNAME))
+						if (id.equals(NameConstantsOda.IDDESCRIPTIONNAME))
+						{
+							ProcessDescripcion(id);	
+						}
+						else
 						{
 						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec);
 						Nodo.ProcessAttributes();
@@ -113,10 +116,7 @@ public class ElementType_Datos implements InterfaceOdaparser{
 						
 						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
 						}
-						else 
-						{
-						ProcessDescripcion(id);	
-						}
+
 						}
 					else
 					{

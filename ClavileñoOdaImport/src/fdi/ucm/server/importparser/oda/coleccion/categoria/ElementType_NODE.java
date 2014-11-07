@@ -95,7 +95,10 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					A=Vocabulary;
 				}
 				LColec.getCollection().getVocabularios().put((CompleteTextElementType)AtributoMeta,A);
-
+				
+				//Caso controlado raro
+				if (id.equals(NameConstantsOda.IDFIJOCONTROLADO))
+					LColec.getCollection().getNOCompartidos().add(AtributoMeta);
 			}
 			
 			}

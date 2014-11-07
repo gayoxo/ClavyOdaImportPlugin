@@ -21,7 +21,7 @@ public class NameConstantsOda {
 	public static final String IDOV_OWNERNAME = "Idov Owner";
 	public static final String IDNAME = "ID";
 	public static final String IDDESCRIPTIONNAME = "111";
-	
+	public static final Object IDFIJOCONTROLADO = "112";
 
 	//META
 	public static final String META = "Meta";
@@ -68,6 +68,7 @@ public class NameConstantsOda {
 		public static final String URL = "URL";
 		public static final String URI = "URI";
 		public static final String COMPARTIDO = "Compartido";
+		
 		
 
 
