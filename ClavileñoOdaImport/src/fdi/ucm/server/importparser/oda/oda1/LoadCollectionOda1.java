@@ -4,13 +4,11 @@
 package fdi.ucm.server.importparser.oda.oda1;
 
 import java.util.ArrayList;
-
 import fdi.ucm.server.importparser.oda.MySQLConnectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.CollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
 import fdi.ucm.server.importparser.oda.oda1.coleccion.CollectionOda1;
-import fdi.ucm.server.modelComplete.ImportExportDataEnum;
-import fdi.ucm.server.modelComplete.ImportExportPair;
+import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
 import fdi.ucm.server.modelComplete.collection.CompleteCollectionAndLog;
 
 /**
@@ -20,7 +18,7 @@ import fdi.ucm.server.modelComplete.collection.CompleteCollectionAndLog;
  */
 public class LoadCollectionOda1 extends LoadCollectionOda{
 
-	private static ArrayList<ImportExportPair> Parametros;
+
 	private boolean convert;
 	private String BaseURLOda;
 	private boolean CloneFiles = false;
@@ -42,6 +40,17 @@ public class LoadCollectionOda1 extends LoadCollectionOda{
 			SQL = new MySQLConnectionOda(DateEntrada.get(0),Database,Integer.parseInt(DateEntrada.get(2)),DateEntrada.get(3),DateEntrada.get(4));
 			convert=Boolean.parseBoolean(DateEntrada.get(5));
 			BaseURLOda=DateEntrada.get(6);
+			
+			if (!testURL(BaseURLOda))
+				{
+					throw new CompleteImportRuntimeException("Database is note empty and note look like a normal URL http://<Server Name>/Oda");
+				}
+			
+			if (!BaseURLOda.endsWith("/"))
+				BaseURLOda=BaseURLOda+"/";
+			
+			BaseURLOda=BaseURLOda+"/download/bo/";
+				
 			CloneFiles=Boolean.parseBoolean(DateEntrada.get(7));
 			Odacollection.ProcessAttributes();
 			Odacollection.ProcessInstances();
@@ -53,45 +62,15 @@ public class LoadCollectionOda1 extends LoadCollectionOda{
 		return new CompleteCollectionAndLog(Odacollection.getCollection(),Log);
 	}
 
-	@Override
-	public ArrayList<ImportExportPair> getConfiguracion() {
-		if (Parametros==null)
-		{
-			ArrayList<ImportExportPair> ListaCampos=new ArrayList<ImportExportPair>();
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Server"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Database"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Number, "Port"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "User"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.EncriptedText, "Password"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Convert to UTF-8"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Base url for files (if need it)",true));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Clone local files",true));
-			Parametros=ListaCampos;
-			return ListaCampos;
-		}
-		else return Parametros;
-	}
+	
+
+
 
 	@Override
 	public String getName() {
 		return "Oda 1.0";
 	}
 	
-	/**
-	 * QUitar caracteres especiales.
-	 * @param str texto de entrada.
-	 * @return texto sin caracteres especiales.
-	 */
-	public String RemoveSpecialCharacters(String str) {
-		   StringBuilder sb = new StringBuilder();
-		   for (int i = 0; i < str.length(); i++) {
-			   char c = str.charAt(i);
-			   if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_') {
-			         sb.append(c);
-			      }
-		}
-		   return sb.toString();
-		}
 
 	/**
 	 * @return the convert
@@ -142,5 +121,8 @@ public class LoadCollectionOda1 extends LoadCollectionOda{
 	public CollectionOda getCollection() {
 		return Odacollection;
 	}
+	
+	
+
 	
 }
