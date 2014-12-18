@@ -49,7 +49,7 @@ public class LoadCollectionOda1 extends LoadCollectionOda{
 			if (!BaseURLOda.endsWith("/"))
 				BaseURLOda=BaseURLOda+"/";
 			
-			BaseURLOda=BaseURLOda+"/download/bo/";
+			BaseURLOda=BaseURLOda+"bo/download";
 				
 			CloneFiles=Boolean.parseBoolean(DateEntrada.get(7));
 			Odacollection.ProcessAttributes();
