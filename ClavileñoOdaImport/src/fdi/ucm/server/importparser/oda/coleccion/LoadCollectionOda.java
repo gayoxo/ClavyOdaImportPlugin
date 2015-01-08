@@ -18,7 +18,7 @@ import fdi.ucm.server.modelComplete.LoadCollection;
  */
 public abstract class LoadCollectionOda extends LoadCollection {
 
-	private static final Pattern regexAmbito = Pattern.compile("^http://[a-zA-Z][a-zA-Z0-9._%-]*(:[0-9]+)?/[a-zA-Z0-9][a-zA-Z0-9._%-]+/*$");
+	private static final Pattern regexAmbito = Pattern.compile("^http://(([a-zA-Z][a-zA-Z0-9._%-]*)||([0-9]+.[0-9]+.[0-9]+.[0-9]+))(:[0-9]+)?/[a-zA-Z0-9][a-zA-Z0-9._%-]+/*$");
 	private static ArrayList<ImportExportPair> Parametros;
 	
 	public abstract boolean isConvert();
@@ -78,6 +78,7 @@ public abstract class LoadCollectionOda extends LoadCollection {
 		System.out.println(testURL("http://localhost/Oda"));
 		System.out.println(testURL("http://localhost:1000/Oda"));
 		System.out.println(testURL("http://localhost:/Oda"));
+		System.out.println(testURL("http://192.168.1.1:266/Oda"));
 		System.out.println(!("http://localhost/Oda").endsWith("/"));
 		System.out.println(!("http://localhost/oda-ref/").endsWith("/"));
 	}
