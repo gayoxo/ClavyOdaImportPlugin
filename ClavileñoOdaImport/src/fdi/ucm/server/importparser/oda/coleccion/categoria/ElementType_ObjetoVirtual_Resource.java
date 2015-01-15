@@ -85,7 +85,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 		ID.getShows().add(VistaOV);
 		
 		CompleteOperationalView VistaOV2=new CompleteOperationalView(NameConstantsOda.METATYPE);
-		 CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,VistaOV2);
+		 CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.IGNORED,VistaOV2);
 		 VistaOV2.getValues().add(Valor);
 		 ID.getShows().add(VistaOV2);
 		}

@@ -60,6 +60,7 @@ public class NameConstantsOda {
 		public static final String CONTROLED = "Controled";
 		public static final String DECIMALES = "Decimales";
 		public static final String DATE = "Date";
+		public static final String IGNORED = "IGNORED";
 		
 	//VOCABULARIO
 		public static final String VOCABULARY = "Vocabulary";
