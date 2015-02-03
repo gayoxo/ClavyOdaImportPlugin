@@ -15,7 +15,7 @@ public class NameConstantsOda {
 	public static final String DATOSNAME = "Datos";
 	public static final String IDOVNAME = "IDOV";
 	public static final String VIRTUAL_OBJECTNAME="Virtual Object";
-//	public static final String DESCRIPTIONNAME = "Descripción";
+	public static final String DESCRIPTIONNAME = "Descripción";
 	public static final String RESOURCENAME = "Recursos";
 	public static final String FILENAME = "File";
 	public static final String IDOV_OWNERNAME = "Idov Owner";

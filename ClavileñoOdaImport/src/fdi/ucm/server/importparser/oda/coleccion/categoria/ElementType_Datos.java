@@ -27,12 +27,14 @@ public class ElementType_Datos implements InterfaceOdaparser{
 	
 	private CompleteElementType AtributoMeta;
 	private LoadCollectionOda LColec;
+	private CompleteGrammar GPadre;
 
 
 	public ElementType_Datos(CompleteGrammar Padre,LoadCollectionOda L) {
 
 		AtributoMeta=new CompleteElementType(NameConstantsOda.DATOS, Padre);
 		LColec=L;
+		GPadre=Padre;
 		
 		CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
 		
@@ -99,7 +101,15 @@ public class ElementType_Datos implements InterfaceOdaparser{
 						
 						if (id.equals(NameConstantsOda.IDDESCRIPTIONNAME))
 						{
-							ProcessDescripcion(id);	
+							ProcessDescripcion(id);
+							if (!nombre.isEmpty())
+							{
+							CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
+							CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.DESCRIPTIONNAME,nombre,VistaOVMeta);
+							VistaOVMeta.getValues().add(ValorMeta);
+							GPadre.getViews().add(VistaOVMeta);
+							}
+							
 						}
 						else
 						{
