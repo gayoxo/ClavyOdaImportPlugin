@@ -304,7 +304,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 							try {
 							Date D= formatter.parse(valueclean);
 							DateFormat df = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
-							String valueE=df.format(D.toString());
+							String valueE=df.format(D);
 							
 							CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueE);
 							int Idov=Integer.parseInt(idov);
