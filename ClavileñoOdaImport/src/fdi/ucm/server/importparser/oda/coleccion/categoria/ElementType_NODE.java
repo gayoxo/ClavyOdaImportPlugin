@@ -309,7 +309,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 							CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueE);
 							int Idov=Integer.parseInt(idov);
 							CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-							C.getDescription().add(MTV);
+
 							MTV.setDocumentsFather(C);
 							if (IdRecurso!=null)
 							{
@@ -318,12 +318,21 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
 								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
 								if (AmbitoAsociado!=null)
-									Ambitos.add(AmbitoAsociado);
-								else Ambitos.add(0);
-								
+								{
+								Ambitos.add(AmbitoAsociado);
 								MTV.setAmbitos(Ambitos);
-							}
+								C.getDescription().add(MTV);
+								}
+							else 
+								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
+
+
+							}else
+								C.getDescription().add(MTV);
+							
 							} catch (Exception e) {
+								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' y fallo, revisa que la base de datos es correcta");
+								e.printStackTrace();
 							}
 						}
 						
@@ -390,32 +399,29 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
 						int Idov=Integer.parseInt(idov);
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-						C.getDescription().add(MTV);
 						MTV.setDocumentsFather(C);
 						
-						if (IdRecurso==null)
+						if (IdRecurso!=null)
 							{
 							try {
 								int RecursoIntId = Integer.parseInt(IdRecurso);
 								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
 								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
 								if (AmbitoAsociado!=null)
+									{
 									Ambitos.add(AmbitoAsociado);
-								else Ambitos.add(0);
-								
-								MTV.setAmbitos(Ambitos);
+									MTV.setAmbitos(Ambitos);
+									C.getDescription().add(MTV);
+									}
+								else 
+									LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
+
 							} catch (Exception e) {
+								LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' y fallo, revisa que la base de datos es correcta");
+								e.printStackTrace();
 							}
-							
-							
-							MTV.setDocumentsFather(C);
-//							 CompleteDocuments FileC = LColec.getCollection().getFilesId().get(IdRecurso);
-//							 if (FileC!=null) 
-//								 {
-//								 FileC.getDescription().add(MTV);
-//								 MTV.setDocumentsFather(FileC);
-//								 }
-							}
+							}else
+								C.getDescription().add(MTV);
 						}
 					else 
 						{
@@ -463,7 +469,6 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, value);
 						int Idov=Integer.parseInt(idov);
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-						C.getDescription().add(MTV);
 						MTV.setDocumentsFather(C);
 						
 						if (IdRecurso!=null)
@@ -473,14 +478,24 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 							Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
 							ArrayList<Integer> Ambitos=new ArrayList<Integer>();
 							if (AmbitoAsociado!=null)
+								{
 								Ambitos.add(AmbitoAsociado);
-							else Ambitos.add(0);
+								MTV.setAmbitos(Ambitos);
+								C.getDescription().add(MTV);
+								}
+							else 
+								LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
 							
-							MTV.setAmbitos(Ambitos);
+
 						} catch (Exception e) {
+							LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"'  y fallo, revisa que la base de datos es correcta");
+							e.printStackTrace();
 						}
 					
-						}
+						}else
+							C.getDescription().add(MTV);
+						
+						
 						}
 						
 					else 
@@ -532,22 +547,34 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
 						int Idov=Integer.parseInt(idov);
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-						C.getDescription().add(MTV);
+
 						MTV.setDocumentsFather(C);
 						if (IdRecurso!=null)
 						{
-						try {
-							int RecursoIntId = Integer.parseInt(IdRecurso);
-							Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
-							ArrayList<Integer> Ambitos=new ArrayList<Integer>();
-							if (AmbitoAsociado!=null)
-								Ambitos.add(AmbitoAsociado);
-							else Ambitos.add(0);
-							
-							MTV.setAmbitos(Ambitos);
-						} catch (Exception e) {
+							try {
+								int RecursoIntId = Integer.parseInt(IdRecurso);
+								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
+								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
+								if (AmbitoAsociado!=null)
+									{
+									Ambitos.add(AmbitoAsociado);
+									MTV.setAmbitos(Ambitos);
+									C.getDescription().add(MTV);
+									}
+								else 
+									LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
+
+								
+								
+							} catch (Exception e) {
+								LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' y fallo, revisa que la base de datos es correcta");
+								e.printStackTrace();
+							}
 						}
-						}
+						else
+							C.getDescription().add(MTV);
+						
+						
 						}
 					else 
 					{

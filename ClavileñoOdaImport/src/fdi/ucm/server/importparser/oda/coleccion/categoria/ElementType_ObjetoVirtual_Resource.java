@@ -422,15 +422,19 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						Visible=rs.getObject("visible").toString();
 					
 					String idovreferedFile="";
+					if(rs.getObject("idov_refered")!=null)
+						idovreferedFile=rs.getObject("idov_refered").toString();
+					
+					String idreferedFile="";
 					if(rs.getObject("idresource_refered")!=null)
-						idovreferedFile=rs.getObject("idresource_refered").toString();
+						idreferedFile=rs.getObject("idresource_refered").toString();
 					
 					String name="";
 					if(rs.getObject("name")!=null)
 						name=rs.getObject("name").toString();
 					
 					
-					if (idov!=null&&!idov.isEmpty()&&!name.isEmpty()&&!idovreferedFile.isEmpty())
+					if (idov!=null&&!idov.isEmpty()&&!name.isEmpty()&&(!idovreferedFile.isEmpty()||!idreferedFile.isEmpty()))
 						{
 						Integer Idov=Integer.parseInt(idov);
 						
@@ -438,7 +442,13 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						name=StaticFunctionsOda.CleanStringFromDatabase(name,LColec);
 						
 						CompleteDocuments OVirtual=LColec.getCollection().getObjetoVirtual().get(Idov);
-						CompleteDocuments FileC=LColec.getCollection().getFilesC().get(idovreferedFile+"/"+name);
+						CompleteDocuments FileC=LColec.getCollection().getFilesId().get(idreferedFile);
+						if (FileC==null) 
+							{
+							FileC=LColec.getCollection().getFilesC().get(idovreferedFile+"/"+name);
+							if (FileC!=null)
+								LColec.getLog().add("Warning: El recurso referencia al que apunta con referencia al objeto: Referencia : '" + idreferedFile + "' y objeto : '" + name +"', no existe, Idrecurso: '"+id+ "' REPARADO a traves de su objeto virtual '" + idovreferedFile + "'");
+							}
 						
 						if (OVirtual!=null&&FileC!=null)
 						{
@@ -502,7 +512,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							if (OVirtual==null)
 								LColec.getLog().add("Warning: Objeto Virtual al que se asocia este recurso no existe, Id de objeto virtual : '" +Idov + "', Idrecurso: '"+id+ "'(ignorado)");
 							if (FileC==null)
-								LColec.getLog().add("Warning: El recurso referencia al que apunta con referencia al objeto: Referencia : '" + idovreferedFile + "' y objeto : '" + name +"', no existe, Idrecurso: '"+id+ "'(ignorado)");
+								LColec.getLog().add("Warning: El recurso referencia al que apunta con referencia al objeto: ReferenciaOV : '" + idovreferedFile + "' Referencia Recurso : '" + idreferedFile + "' y objeto : '" + name +"', no existe, Idrecurso: '"+id+ "'(ignorado)");
 						}
 						}
 					else {
@@ -630,10 +640,11 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							}
 							}
 						else {
-							if (idov==null||idov.isEmpty())
-								LColec.getLog().add("Warning: Objeto Virtual asociado al que se asocia el recurso es vacio, Idrecurso: '"+id+"' es vacio o el file referencia asociado es vacio (ignorado)");
-							if (name==null||name.isEmpty())
-								LColec.getLog().add("Warning: Nombre recurso propio asociado vacio, Idrecurso: '"+id+"' (ignorado)");
+							//En la creacion de los objetos archivos aparece esta captura de errores
+//							if (idov==null||idov.isEmpty())
+//								LColec.getLog().add("Warning: Objeto Virtual asociado al que se asocia el recurso es vacio, Idrecurso: '"+id+"' es vacio o el file referencia asociado es vacio (ignorado)");
+//							if (name==null||name.isEmpty())
+//								LColec.getLog().add("Warning: Nombre recurso propio asociado vacio, Idrecurso: '"+id+"' (ignorado)");
 
 						}
 					}
