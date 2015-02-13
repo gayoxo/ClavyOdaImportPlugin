@@ -37,7 +37,7 @@ public class StaticFunctionsOda {
 	public static void InsertaEnLista(ArrayList<String> vocabulary, String valueclean) {
 		boolean Encontrado=false;
 		for (String term : vocabulary) {
-			if (term.equals(term))
+			if (term.equals(valueclean))
 				{
 				Encontrado=true;
 				break;
