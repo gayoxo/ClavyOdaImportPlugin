@@ -181,8 +181,15 @@ public class ElementType_Datos implements InterfaceOdaparser{
 						
 						
 						int Idov=Integer.parseInt(idov);
-						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-						C.setDescriptionText(valueclean);
+						
+						try {
+							CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
+							C.setDescriptionText(valueclean);
+						} catch (Exception e) {
+							LColec.getLog().add("Warning: Descripcion del objeto virtual asociada a un Objeto virtual vacio o nulo, id en text_data: '"+id1+"' (ignorado) con valor '"+ valueclean +"'" );
+						}
+						
+						
 						}
 					else
 					{
