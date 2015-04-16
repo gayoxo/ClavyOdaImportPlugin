@@ -331,7 +331,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 								C.getDescription().add(MTV);
 							
 							} catch (Exception e) {
-								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' y fallo, revisa que la base de datos es correcta");
+								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' y valor '"+valueclean+"', revisa que la base de datos es correcta");
 								e.printStackTrace();
 							}
 						}
@@ -395,7 +395,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 //						
 //						String T=StaticFunctionsOda1.BuscaEnLista(Vocabulary,valueclean);
 						
-						
+						try {
 						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
 						int Idov=Integer.parseInt(idov);
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
@@ -403,7 +403,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						
 						if (IdRecurso!=null)
 							{
-							try {
+							
 								int RecursoIntId = Integer.parseInt(IdRecurso);
 								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
 								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
@@ -416,12 +416,14 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 								else 
 									LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
 
-							} catch (Exception e) {
-								LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' y fallo, revisa que la base de datos es correcta");
-								e.printStackTrace();
-							}
+							
 							}else
 								C.getDescription().add(MTV);
+						
+						} catch (Exception e) {
+							LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' y valor '"+valueclean+"', revisa que la base de datos es correcta");
+							e.printStackTrace();
+						}
 						}
 					else 
 						{
@@ -466,6 +468,8 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						{
 		
 
+						try {
+						
 						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, value);
 						int Idov=Integer.parseInt(idov);
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
@@ -473,7 +477,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						
 						if (IdRecurso!=null)
 						{
-						try {
+						
 							int RecursoIntId = Integer.parseInt(IdRecurso);
 							Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
 							ArrayList<Integer> Ambitos=new ArrayList<Integer>();
@@ -486,15 +490,13 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 							else 
 								LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
 							
-
-						} catch (Exception e) {
-							LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"'  y fallo, revisa que la base de datos es correcta");
-							e.printStackTrace();
-						}
-					
 						}else
 							C.getDescription().add(MTV);
 						
+						} catch (Exception e) {
+							LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"'  y valor '"+value+"', revisa que la base de datos es correcta");
+							e.printStackTrace();
+						}
 						
 						}
 						
@@ -542,7 +544,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						value=value.trim();
 						String valueclean = StaticFunctionsOda.CleanStringFromDatabase(value,LColec);
 						
-						
+						try {
 						
 						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
 						int Idov=Integer.parseInt(idov);
@@ -551,7 +553,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						MTV.setDocumentsFather(C);
 						if (IdRecurso!=null)
 						{
-							try {
+							
 								int RecursoIntId = Integer.parseInt(IdRecurso);
 								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
 								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
@@ -566,14 +568,15 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 
 								
 								
-							} catch (Exception e) {
-								LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' y fallo, revisa que la base de datos es correcta");
-								e.printStackTrace();
-							}
+							
 						}
 						else
 							C.getDescription().add(MTV);
 						
+						} catch (Exception e) {
+							LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' y valor '"+valueclean+"', revisa que la base de datos es correcta");
+							e.printStackTrace();
+						}
 						
 						}
 					else 
