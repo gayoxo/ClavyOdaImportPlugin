@@ -70,6 +70,9 @@ public class NameConstantsOda {
 		public static final String URI = "URI";
 		public static final String COMPARTIDO = "Compartido";
 		
+		public static final String URLORIGINAL = "URL ORIGINAL";
+		public static final String VIEWDOC = "view/cm_view_virtual_object.php?idov=";
+		
 		
 
 
