@@ -25,6 +25,7 @@ public class LoadCollectionOda2 extends LoadCollectionOda{
 	private MySQLConnectionOda SQL;
 	private ArrayList<String> Log;
 	private CollectionOda Odacollection;
+	private String BaseURLOdaSimple;
 
 
 
@@ -49,6 +50,8 @@ public class LoadCollectionOda2 extends LoadCollectionOda{
 		
 		if (!BaseURLOda.endsWith("/"))
 			BaseURLOda=BaseURLOda+"/";
+		
+		BaseURLOdaSimple= new String(BaseURLOda);
 		
 		BaseURLOda=BaseURLOda+"bo/download/";
 			
@@ -83,6 +86,14 @@ public class LoadCollectionOda2 extends LoadCollectionOda{
 		this.convert = convert;
 	}
 
+	/**
+	 * @return the baseURLOda
+	 */
+	public String getBaseURLOdaSimple() {
+		return BaseURLOdaSimple;
+	}
+	
+	
 	/**
 	 * @return the baseURLOda
 	 */
