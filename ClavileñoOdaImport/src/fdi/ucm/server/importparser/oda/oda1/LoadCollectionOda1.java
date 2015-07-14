@@ -4,6 +4,7 @@
 package fdi.ucm.server.importparser.oda.oda1;
 
 import java.util.ArrayList;
+
 import fdi.ucm.server.importparser.oda.MySQLConnectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.CollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
@@ -25,6 +26,7 @@ public class LoadCollectionOda1 extends LoadCollectionOda{
 	private MySQLConnectionOda SQL;
 	private ArrayList<String> Log;
 	private CollectionOda Odacollection;
+	private String BaseURLOdaSimple;
 
 
 
@@ -48,6 +50,8 @@ public class LoadCollectionOda1 extends LoadCollectionOda{
 			
 			if (!BaseURLOda.endsWith("/"))
 				BaseURLOda=BaseURLOda+"/";
+			
+			BaseURLOdaSimple= new String(BaseURLOda);
 			
 			BaseURLOda=BaseURLOda+"bo/download";
 				
@@ -93,6 +97,15 @@ public class LoadCollectionOda1 extends LoadCollectionOda{
 	@Override
 	public String getBaseURLOda() {
 		return BaseURLOda;
+	}
+	
+	
+	/**
+	 * @return the baseURLOda
+	 */
+	@Override
+	public String getBaseURLOdaSimple() {
+		return BaseURLOdaSimple;
 	}
 
 	/**
