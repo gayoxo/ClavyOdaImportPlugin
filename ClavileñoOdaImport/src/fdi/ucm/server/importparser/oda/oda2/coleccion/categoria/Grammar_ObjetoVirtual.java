@@ -111,23 +111,21 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 			URLORIGINAL=new CompleteTextElementType(NameConstantsOda.URLORIGINAL, AtributoMeta);
 			
 			
-			CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
+			String VistaOVMeta=new String(NameConstantsOda.META);
 
 			CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.URLORIGINAL,VistaOVMeta);
 			
-			VistaOVMeta.getValues().add(ValorMeta);
+			 URLORIGINAL.getShows().add(ValorMeta);
 			
-			URLORIGINAL.getShows().add(VistaOVMeta);
-			
-			CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.METATYPE);
+
+			String VistaOV=new String(NameConstantsOda.METATYPE);
 			 CompleteOperationalValueType Valor4=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,VistaOV);
-			 VistaOV.getValues().add(Valor4);
-			 URLORIGINAL.getShows().add(VistaOV);
+			 URLORIGINAL.getShows().add(Valor4);
+	
 			
-			 CompleteOperationalView VistaOV2=new CompleteOperationalView(NameConstantsOda.META);
+			 String VistaOV2=new String(NameConstantsOda.META);
 			 CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.IGNORED,VistaOV2);
-			 VistaOV2.getValues().add(Valor);
-			 URLORIGINAL.getShows().add(VistaOV2);
+			 URLORIGINAL.getShows().add(Valor);
 			 
 			
 			AtributoMeta.getSons().add(URLORIGINAL);
