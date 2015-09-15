@@ -82,4 +82,6 @@ public abstract class LoadCollectionOda extends LoadCollection {
 		System.out.println(!("http://localhost/Oda").endsWith("/"));
 		System.out.println(!("http://localhost/oda-ref/").endsWith("/"));
 	}
+
+	public abstract String getBaseURLOdaSimple();
 }

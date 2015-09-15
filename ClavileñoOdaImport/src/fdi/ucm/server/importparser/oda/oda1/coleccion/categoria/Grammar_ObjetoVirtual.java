@@ -35,6 +35,7 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 //	private CompleteOperationalView VistaOV;
 //	private CompleteOperationalView VistaOVOda;
 	private LoadCollectionOda LColec;
+	private CompleteTextElementType URLORIGINAL;
 
 	
 	public Grammar_ObjetoVirtual(CompleteCollection completeCollection, LoadCollectionOda L) {
@@ -109,6 +110,33 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 		
 		}
 		
+		{
+			URLORIGINAL=new CompleteTextElementType(NameConstantsOda.URLORIGINAL, AtributoMeta);
+			
+			
+			CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
+
+			CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.URLORIGINAL,VistaOVMeta);
+			
+			VistaOVMeta.getValues().add(ValorMeta);
+			
+			URLORIGINAL.getShows().add(VistaOVMeta);
+			
+			CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.METATYPE);
+			 CompleteOperationalValueType Valor4=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,VistaOV);
+			 VistaOV.getValues().add(Valor4);
+			 URLORIGINAL.getShows().add(VistaOV);
+			
+			 CompleteOperationalView VistaOV2=new CompleteOperationalView(NameConstantsOda.META);
+			 CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.IGNORED,VistaOV2);
+			 VistaOV2.getValues().add(Valor);
+			 URLORIGINAL.getShows().add(VistaOV2);
+			 
+			
+			AtributoMeta.getSons().add(URLORIGINAL);
+			}
+		
+		
 		
 		CompleteIterator I=new CompleteIterator(AtributoMeta);
 		AtributoMeta.getSons().add(I);
@@ -170,6 +198,25 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 						
 //						ObjetoVirtualMetaValueAsociado.put(Idov, MetaValueAsociado);
 						ObjetoVirtual.put(Idov, sectionValue);
+						
+						
+						StringBuffer SB=new StringBuffer();
+						
+						if (LColec.getBaseURLOdaSimple().isEmpty()||
+								(!LColec.getBaseURLOdaSimple().startsWith("http://")
+										&&!LColec.getBaseURLOdaSimple().startsWith("https://")
+										&&!LColec.getBaseURLOdaSimple().startsWith("ftp://")))
+							SB.append("http://");
+						
+						SB.append(LColec.getBaseURLOdaSimple());
+						if (!LColec.getBaseURLOdaSimple().isEmpty()&&!LColec.getBaseURLOdaSimple().endsWith("//"))
+							SB.append("/");
+						SB.append(NameConstantsOda.VIEWDOC+id);
+						
+						String Path=SB.toString();
+						
+						CompleteTextElement RR=new CompleteTextElement(URLORIGINAL, Path);
+						sectionValue.getDescription().add(RR);
 						
 						}
 					else {
