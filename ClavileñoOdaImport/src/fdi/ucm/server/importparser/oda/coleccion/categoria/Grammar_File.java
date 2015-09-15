@@ -18,7 +18,6 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementF
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
 
 /**
@@ -31,7 +30,6 @@ public class Grammar_File implements InterfaceOdaparser {
 	private CompleteGrammar AtributoMeta;
 //	private MetaText PATH;
 	private CompleteResourceElementType FileR;
-	private CompleteOperationalView VistaOV;
 	private LoadCollectionOda LColec;
 	private static CompleteLinkElementType OWNER;
 	
@@ -39,24 +37,21 @@ public class Grammar_File implements InterfaceOdaparser {
 		AtributoMeta=new CompleteGrammar(NameConstantsOda.FILENAME, NameConstantsOda.FILENAME,completeCollection);
 		LColec=L;
 		
-		VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
+		String VistaOV = new String(NameConstantsOda.PRESNTACION); 
 		
 		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),VistaOV);
 		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
 		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
-		VistaOV.getValues().add(Valor);
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor3);
+		AtributoMeta.getViews().add(Valor);
+		AtributoMeta.getViews().add(Valor2);
+		AtributoMeta.getViews().add(Valor3);
 		
-		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
+		String VistaOVMeta=new String(NameConstantsOda.META);
 		
 		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.FILE,VistaOVMeta);
 		
-		VistaOVMeta.getValues().add(ValorMeta);
+		AtributoMeta.getViews().add(ValorMeta);
 		
-		AtributoMeta.getViews().add(VistaOVMeta);
-		
-		AtributoMeta.getViews().add(VistaOV);
 	}
 	
 	
@@ -72,45 +67,41 @@ public class Grammar_File implements InterfaceOdaparser {
 		OWNER=new CompleteLinkElementType(NameConstantsOda.IDOV_OWNERNAME, AtributoMeta);
 		AtributoMeta.getSons().add(OWNER);
 		
-		CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
+		String VistaOV=new String(NameConstantsOda.PRESNTACION); 
 		
 		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),VistaOV);
 		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
 		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
 		
-		VistaOV.getValues().add(Valor);
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor3);
+		OWNER.getShows().add(Valor);
+		OWNER.getShows().add(Valor2);
+		OWNER.getShows().add(Valor3);
 
-		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
-		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.IDOV_OWNER,VistaOV);
-		VistaOVMeta.getValues().add(ValorMeta);
+		String VistaOVMeta=new String(NameConstantsOda.META);
+		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.IDOV_OWNER,VistaOVMeta);
+		OWNER.getShows().add(ValorMeta);
 		
-		OWNER.getShows().add(VistaOVMeta);
-		
-		OWNER.getShows().add(VistaOV);
 		}
 		
 		{
 			FileR=new CompleteResourceElementType(NameConstantsOda.FILENAME, AtributoMeta);
 			AtributoMeta.getSons().add(FileR);
 			
-			CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
+			String VistaOV=new String(NameConstantsOda.PRESNTACION); 
 			
 			CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),VistaOV);
 			CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
 			CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
 			
-			VistaOV.getValues().add(Valor);
-			VistaOV.getValues().add(Valor2);
-			VistaOV.getValues().add(Valor3);
+			FileR.getShows().add(Valor);
+			FileR.getShows().add(Valor2);
+			FileR.getShows().add(Valor3);
 			
-			CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
-			CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.FILERESOURCE,VistaOV);
-			VistaOVMeta.getValues().add(ValorMeta);
+			String VistaOVMeta=new String(NameConstantsOda.META);
+			CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.FILERESOURCE,VistaOVMeta);
+			FileR.getShows().add(ValorMeta);
 			
-			FileR.getShows().add(VistaOVMeta);
-			FileR.getShows().add(VistaOV);
+
 			}
 	}
 

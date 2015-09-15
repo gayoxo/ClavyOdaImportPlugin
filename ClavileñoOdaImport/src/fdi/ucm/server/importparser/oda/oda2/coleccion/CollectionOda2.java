@@ -26,7 +26,6 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
@@ -95,26 +94,25 @@ public class CollectionOda2 extends CollectionOda {
 		CompleteGrammar Vocabulary = new CompleteGrammar(NameConstantsOda.VOCABULARY, NameConstantsOda.VOCABULARY,oda2);
 		oda2.getMetamodelGrammar().add(Vocabulary);
 		{
-		CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION);
+		String VistaOV=new String(NameConstantsOda.PRESNTACION);
 		
 		CompleteOperationalValueType Valor = new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(false),VistaOV);
 		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
 		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
 		
-		VistaOV.getValues().add(Valor);
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor3);
+		Vocabulary.getViews().add(Valor);
+		Vocabulary.getViews().add(Valor2);
+		Vocabulary.getViews().add(Valor3);
 		
 
-		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
+		String VistaOVMeta=new String(NameConstantsOda.META);
 		
 		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.VOCABULARY,VistaOVMeta);
 		
-		VistaOVMeta.getValues().add(ValorMeta);
+		Vocabulary.getViews().add(ValorMeta);
 		
 		
-		Vocabulary.getViews().add(VistaOV);
-		Vocabulary.getViews().add(VistaOVMeta);
+
 		}
 		
 		
@@ -128,26 +126,25 @@ public class CollectionOda2 extends CollectionOda {
 	
 		
 		{
-		CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION);
+			String VistaOV=new String(NameConstantsOda.PRESNTACION);
 		
 		CompleteOperationalValueType Valor = new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(false),VistaOV);
 		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
 		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
 		
-		VistaOV.getValues().add(Valor);
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor3);
+		Number.getShows().add(Valor);
+		Number.getShows().add(Valor2);
+		Number.getShows().add(Valor3);
 		
 
-		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
+		String VistaOVMeta=new String(NameConstantsOda.META);
 		
 		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.VOCNUMBER,VistaOVMeta);
 		
-		VistaOVMeta.getValues().add(ValorMeta);
+		Number.getShows().add(ValorMeta);
 		
 		
-		Number.getShows().add(VistaOV);
-		Number.getShows().add(VistaOVMeta);
+
 		}
 		
 		
@@ -155,26 +152,24 @@ public class CollectionOda2 extends CollectionOda {
 		IteraValor.getSons().add(Values);
 		
 		{
-		CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION);
+			String VistaOV=new String(NameConstantsOda.PRESNTACION);
 		
 		CompleteOperationalValueType Valor = new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(false),VistaOV);
 		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
 		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
 		
-		VistaOV.getValues().add(Valor);
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor3);
+		Values.getShows().add(Valor);
+		Values.getShows().add(Valor2);
+		Values.getShows().add(Valor3);
 		
 
-		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
+		String VistaOVMeta=new String(NameConstantsOda.META);
 		
 		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.TERM,VistaOVMeta);
 		
-		VistaOVMeta.getValues().add(ValorMeta);
+		Values.getShows().add(ValorMeta);
 		
-		
-		Values.getShows().add(VistaOV);
-		Values.getShows().add(VistaOVMeta);
+
 		}
 		
 		
@@ -187,7 +182,7 @@ public class CollectionOda2 extends CollectionOda {
 				ArrayList<String> voc = iterable_element.getValue();
 				
 				
-				CompleteOperationalView VistaVOC=new CompleteOperationalView(NameConstantsOda.VOCABULARY);
+				String VistaVOC=new String(NameConstantsOda.VOCABULARY);
 				
 				Integer I=procesados.get(voc);
 				if (I==null)
@@ -212,20 +207,19 @@ public class CollectionOda2 extends CollectionOda {
 				
 				
 				CompleteOperationalValueType ValorComp=new CompleteOperationalValueType(NameConstantsOda.VOCNUMBER,Integer.toString(I.intValue()),VistaVOC);
-				VistaVOC.getValues().add(ValorComp);
+				element.getShows().add(ValorComp);
 				
 				if (NoCompartidos.contains(element))
 				{
 				CompleteOperationalValueType ValorComp2=new CompleteOperationalValueType(NameConstantsOda.COMPARTIDO,Boolean.toString(false),VistaVOC);
-				VistaVOC.getValues().add(ValorComp2);
+				element.getShows().add(ValorComp2);
 				}
 			else
 			{
 				CompleteOperationalValueType ValorComp2=new CompleteOperationalValueType(NameConstantsOda.COMPARTIDO,Boolean.toString(true),VistaVOC);
-				VistaVOC.getValues().add(ValorComp2);
+				element.getShows().add(ValorComp2);
 				}
 				
-				element.getShows().add(VistaVOC);
 			}
 		
 		

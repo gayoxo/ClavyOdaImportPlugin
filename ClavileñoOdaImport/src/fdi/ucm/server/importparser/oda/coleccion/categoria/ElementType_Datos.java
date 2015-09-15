@@ -15,7 +15,6 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 
 /**
  * Clase que define la carga de los datos
@@ -36,22 +35,22 @@ public class ElementType_Datos implements InterfaceOdaparser{
 		LColec=L;
 		GPadre=Padre;
 		
-		CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
+		String VistaOV=new String(NameConstantsOda.PRESNTACION); 
 		
 		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),VistaOV);
 		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
 		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
 
-		VistaOV.getValues().add(Valor);
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor3);
+		AtributoMeta.getShows().add(Valor);
+		AtributoMeta.getShows().add(Valor2);
+		AtributoMeta.getShows().add(Valor3);
 		
-		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
+		String VistaOVMeta=new String(NameConstantsOda.META);
+		
 		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.DATOS,VistaOVMeta);
-		VistaOVMeta.getValues().add(ValorMeta);
-		AtributoMeta.getShows().add(VistaOVMeta);
 		
-		AtributoMeta.getShows().add(VistaOV);
+		AtributoMeta.getShows().add(ValorMeta);
+		
 	}
 
 	@Override
@@ -104,10 +103,9 @@ public class ElementType_Datos implements InterfaceOdaparser{
 							ProcessDescripcion(id);
 							if (!nombre.isEmpty())
 							{
-							CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
+							String VistaOVMeta=new String(NameConstantsOda.META);
 							CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.DESCRIPTIONNAME,nombre,VistaOVMeta);
-							VistaOVMeta.getValues().add(ValorMeta);
-							GPadre.getViews().add(VistaOVMeta);
+							GPadre.getViews().add(ValorMeta);
 							}
 							
 						}
@@ -119,10 +117,9 @@ public class ElementType_Datos implements InterfaceOdaparser{
 						
 						
 						
-						CompleteOperationalView VistaOVOda=new CompleteOperationalView(NameConstantsOda.ODA);
-						Nodo.getAtributoMeta().getShows().add(VistaOVOda);
+						String VistaOVOda=new String(NameConstantsOda.ODA);
 						CompleteOperationalValueType ValorOda=new CompleteOperationalValueType(NameConstantsOda.EXTENSIBLE,Boolean.toString(Extensible),VistaOVOda);
-						VistaOVOda.getValues().add(ValorOda);
+						Nodo.getAtributoMeta().getShows().add(ValorOda);
 						
 						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
 						}

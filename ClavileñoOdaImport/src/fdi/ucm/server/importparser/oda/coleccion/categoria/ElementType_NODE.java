@@ -18,7 +18,6 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
@@ -57,10 +56,11 @@ public class ElementType_NODE implements InterfaceOdaparser {
 			{
 			AtributoMeta = new CompleteTextElementType(nombre, tpadre);
 			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
-			CompleteOperationalView VistaMetaType=new CompleteOperationalView(NameConstantsOda.METATYPE);
+			
+			String VistaMetaType=new String(NameConstantsOda.METATYPE);
 			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.CONTROLED,VistaMetaType);
-			VistaMetaType.getValues().add(MetaType);
-			AtributoMeta.getShows().add(VistaMetaType);
+			AtributoMeta.getShows().add(MetaType);
+			
 			if (vocabulario != null) {
 				Integer Voc = Integer.parseInt(vocabulario);
 				if (Voc == 1 || Voc == 0) {
@@ -106,10 +106,10 @@ public class ElementType_NODE implements InterfaceOdaparser {
 			{
 			AtributoMeta = new CompleteTextElementType(nombre, tpadre);
 			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
-			CompleteOperationalView VistaMetaType=new CompleteOperationalView(NameConstantsOda.METATYPE);
+			String VistaMetaType=new String(NameConstantsOda.METATYPE);
 			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.DATE,VistaMetaType);
-			VistaMetaType.getValues().add(MetaType);
-			AtributoMeta.getShows().add(VistaMetaType);
+			AtributoMeta.getShows().add(MetaType);
+			
 			
 			}
 		else if (tipo_valores.equals("X"))
@@ -117,42 +117,40 @@ public class ElementType_NODE implements InterfaceOdaparser {
 		else if (tipo_valores.equals("T"))
 			{
 			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
-			CompleteOperationalView VistaMetaType=new CompleteOperationalView(NameConstantsOda.METATYPE);
+			String VistaMetaType=new String(NameConstantsOda.METATYPE);
 			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,VistaMetaType);
-			VistaMetaType.getValues().add(MetaType);
-			AtributoMeta.getShows().add(VistaMetaType);
+			AtributoMeta.getShows().add(MetaType);
 			}
 		else if (tipo_valores.equals("N"))
 			{
 			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
-			CompleteOperationalView VistaMetaType=new CompleteOperationalView(NameConstantsOda.METATYPE);
+			String VistaMetaType=new String(NameConstantsOda.METATYPE);
 			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.NUMERIC,VistaMetaType);
-			VistaMetaType.getValues().add(MetaType);
-			AtributoMeta.getShows().add(VistaMetaType);
+			AtributoMeta.getShows().add(MetaType);
+
 			}
 		else AtributoMeta=new CompleteElementType(nombre, tpadre);
 		
 		
-CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
+		String VistaOV=new String(NameConstantsOda.PRESNTACION); 
 		
 		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(visiblebool),VistaOV);
 		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(navegablebool),VistaOV);
 		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(summary),VistaOV);
 		
-		VistaOV.getValues().add(Valor);
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor3);
+		AtributoMeta.getShows().add(Valor);
+		AtributoMeta.getShows().add(Valor2);
+		AtributoMeta.getShows().add(Valor3);
 
 		
-CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.ODA); 
+		String VistaOda=new String(NameConstantsOda.ODA); 
 		
 		CompleteOperationalValueType ValorO=new CompleteOperationalValueType(NameConstantsOda.OdaID,Id,VistaOda);
 
 		
-		VistaOV.getValues().add(ValorO);
+		AtributoMeta.getShows().add(ValorO);
 
 		
-		AtributoMeta.getShows().add(VistaOV);
 		
 	}
 
