@@ -185,7 +185,7 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 						if (publicoT.equals("N"))
 							publico=false;
 						CompleteCollection C=LColec.getCollection().getCollection();
-						CompleteDocuments sectionValue = new CompleteDocuments(C,AtributoMeta,"","");
+						CompleteDocuments sectionValue = new CompleteDocuments(C,"","");
 						C.getEstructuras().add(sectionValue);
 						CompleteTextElement E=new CompleteTextElement(IDOV, id);
 						sectionValue.getDescription().add(E);

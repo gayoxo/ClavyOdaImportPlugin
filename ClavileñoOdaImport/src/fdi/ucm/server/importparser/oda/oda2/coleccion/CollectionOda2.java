@@ -190,7 +190,7 @@ public class CollectionOda2 extends CollectionOda {
 					procesados.put(voc, vocaInt);
 					I=vocaInt;
 					vocaInt++;
-					CompleteDocuments nuevo= new CompleteDocuments(oda2, Vocabulary, I.toString(), "");
+					CompleteDocuments nuevo= new CompleteDocuments(oda2, I.toString(), "");
 					nuevo.getDescription().add(new CompleteTextElement(Number, I.toString()));
 					for (int j = 0; j < voc.size(); j++) {		
 						CompleteTextElement T=new CompleteTextElement(Values, voc.get(j));

@@ -119,7 +119,7 @@ public class Grammar_URL implements InterfaceOdaparser {
 							
 							
 //							sectionValue.setIcon(sectionValue);
-							CompleteDocuments sectionValue=new CompleteDocuments(C,AtributoMeta,name,name);
+							CompleteDocuments sectionValue=new CompleteDocuments(C,name,name);
 							
 							
 							C.getEstructuras().add(sectionValue);

@@ -156,7 +156,7 @@ public class Grammar_File implements InterfaceOdaparser {
 							CompleteFile FileA = new CompleteFile(Path,C);
 							
 //							sectionValue.setIcon(sectionValue);
-							CompleteDocuments sectionValue=new CompleteDocuments(C,AtributoMeta,Path,Path);
+							CompleteDocuments sectionValue=new CompleteDocuments(C,Path,Path);
 							
 							
 							C.getSectionValues().add(FileA);
