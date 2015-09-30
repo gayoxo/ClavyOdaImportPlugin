@@ -1,26 +1,28 @@
 /**
  * 
  */
-package fdi.ucm.server.importparser.oda.coleccion.categoria;
+package fdi.ucm.server.importparser.oda.oda2.direct.collection.categoria;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-import fdi.ucm.server.importparser.oda.InterfaceOdaparser;
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
 import fdi.ucm.server.importparser.oda.StaticFunctionsOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
+import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_ObjetoVirtual_Resource;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteFile;
-import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
+import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementFile;
+import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementURL;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
@@ -28,27 +30,16 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
  * @author Joaquin Gayoso-Cabada
  *
  */
-public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
+public class ElementType_ObjetoVirtual_Resource_Direct_FILES_URL extends ElementType_ObjetoVirtual_Resource {
 
-	protected CompleteElementType AtributoMeta;
-	protected CompleteTextElementType ID;
-	protected CompleteIterator IteradorPadre;
-	protected CompleteOperationalValueType Valor;
-	protected CompleteOperationalValueType Valor2;
-	protected LoadCollectionOda LColec;
-	protected HashMap<Integer, Integer> Ambitos;
-	protected static HashMap<Integer, Integer> AmbitosResource;
+	private ArrayList<Long> idsOV=new ArrayList<Long>();
 	
-	
-	public ElementType_ObjetoVirtual_Resource() {
-		if (AmbitosResource==null)
-			AmbitosResource=new HashMap<Integer, Integer>();
-	}
-	
-	public ElementType_ObjetoVirtual_Resource(CompleteIterator I,LoadCollectionOda L) {
+	public ElementType_ObjetoVirtual_Resource_Direct_FILES_URL(CompleteIterator I,LoadCollectionOda L) {
+		super();
 		IteradorPadre=I;
-		AtributoMeta=new CompleteLinkElementType(NameConstantsOda.RESOURCENAME,I);
+		AtributoMeta=new CompleteResourceElementType(NameConstantsOda.RESOURCENAME,I);
 		LColec=L;
+		idsOV=new ArrayList<Long>();
 		
 		CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
 		
@@ -117,7 +108,6 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 		OwnInstancesPropias();
 		OwnInstancesURL();
 		InstancesAjenas();
-		OVInstances();
 		
 		atributes_Recursos();
 		
@@ -158,9 +148,9 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						name=name.trim();
 						name=StaticFunctionsOda.CleanStringFromDatabase(name,LColec);
 						CompleteDocuments OVirtual=LColec.getCollection().getObjetoVirtual().get(Idov);
-						CompleteDocuments FileC=LColec.getCollection().getURLC().get(name);
 						
-						if (OVirtual!=null&&FileC!=null)
+						
+						if (OVirtual!=null)
 						{
 							
 							Integer Base=Ambitos.get(Idov);
@@ -192,13 +182,15 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						
 						CompleteTextElement E=new CompleteTextElement(ID, id);
 						
-						LColec.getCollection().getFilesId().put(id,FileC);
+//						LColec.getCollection().getFilesId().put(id,name);
 						E.getAmbitos().add(Base);
 						OVirtual.getDescription().add(E);
 						
+						Long Idl=Long.parseLong(id);
+						idsOV.add(Idl);
 						
 						
-						CompleteLinkElement E3=new CompleteLinkElement((CompleteLinkElementType)AtributoMeta,FileC);
+						CompleteResourceElementURL E3=new CompleteResourceElementURL((CompleteResourceElementType)AtributoMeta,name);
 						E3.getAmbitos().add(Base);
 						OVirtual.getDescription().add(E3);			
 					
@@ -215,8 +207,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						else {
 							if (OVirtual==null)
 								LColec.getLog().add("Warning: Objeto Virtual al que se asocia este recurso no existe, Id de objeto virtual : '" +Idov + "', Idrecurso: '"+id+ "'(ignorado)");
-							if (FileC==null)
-								LColec.getLog().add("Warning: El recurso propio URL al que apunta con referencia objeto : '" + name +"', no existe, Idrecurso: '"+id+ "'(ignorado)");	
+							
 						}
 						}
 					else {
@@ -268,7 +259,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						nombre=nombre.trim();
 						nombre = StaticFunctionsOda.CleanStringFromDatabase(nombre,LColec);
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec);
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,idsOV);
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
 						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
@@ -296,118 +287,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 		
 	}
 
-	private void OVInstances() {
-		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM resources where type='OV' order by idov;");
-			if (rs!=null) 
-			{
-				Integer preIdov=null;
-				int MaxCount=0;
-				int count=0;
-				while (rs.next()) {
-					
-					String id=rs.getObject("id").toString();
-					String idov=rs.getObject("idov").toString();
-					
-					String Visible="N";
-					if(rs.getObject("visible")!=null)
-						Visible=rs.getObject("visible").toString();
-					
-					String idovrefered="";
-					if(rs.getObject("idov_refered")!=null)
-						idovrefered=rs.getObject("idov_refered").toString();
-					
-
-					
-					
-					if (idov!=null&&!idov.isEmpty()&&!idovrefered.isEmpty())
-						{
-						Integer Idov=Integer.parseInt(idov);
-						Integer idovrefered2=Integer.parseInt(idovrefered);
-						
-						
-						
-						CompleteDocuments OVirtual=LColec.getCollection().getObjetoVirtual().get(Idov);
-						CompleteDocuments OVirtualRef=LColec.getCollection().getObjetoVirtual().get(idovrefered2);
-						
-						if (OVirtual!=null&&OVirtualRef!=null)
-						{
-							
-							Integer Base=Ambitos.get(Idov);
-							
-							if (Base==null)
-							{
-								Ambitos.put(Idov, 0);
-								Base=0;
-								}
-							
-						if (preIdov!=null&&preIdov.intValue()==Idov.intValue())
-							count++;
-						else
-							{
-							if (count>MaxCount)
-								MaxCount=count;
-							
-							preIdov=Idov;
-							count=0;
-							}
-						
-						
-						boolean Visiblebool=false;
-						if (Visible.equals("S"))
-							Visiblebool=true;
-
-						{
-
-						CompleteTextElement E=new CompleteTextElement(ID, id);
-						E.getAmbitos().add(Base);
-						OVirtual.getDescription().add(E);
-
-						CompleteOperationalValue Valor=new CompleteOperationalValue(this.Valor,Boolean.toString(Visiblebool));
-						E.getShows().add(Valor);
-						}
-						
-						{
-							CompleteLinkElement E3=new CompleteLinkElement((CompleteLinkElementType)AtributoMeta,OVirtualRef);
-						E3.getAmbitos().add(Base);
-						OVirtual.getDescription().add(E3);
-						
-						Integer Id=Integer.parseInt(id);
-						AmbitosResource.put(Id, Base);
-
-						CompleteOperationalValue Valor=new CompleteOperationalValue(Valor2,Boolean.toString(Visiblebool));
-
-						E3.getShows().add(Valor);
-						
-						
-						}
-
-						Ambitos.put(Idov, Base+1);	
-						
-						}
-					else 
-					{
-						if (OVirtual==null)
-							LColec.getLog().add("Warning: Objeto Virtual al que se asocia este recurso no existe, Id de objeto virtual : '" +Idov + "', Idrecurso: '"+id+ "'(ignorado)");
-						if (OVirtualRef==null)
-							LColec.getLog().add("Warning: El Objeto Virtal referencia al que apunta : Referencia : '" + idovrefered + "' no existe, Idrecurso: '"+id+ "'(ignorado)");
-					}
-						}
-					else {
-						if (idov==null||idov.isEmpty())
-							LColec.getLog().add("Warning: Objeto Virtual asociado al que se asocia el recurso es vacio, Idrecurso: '"+id+"' es vacio o el file referencia asociado es vacio (ignorado)");
-						if (idovrefered==null||idovrefered.isEmpty())
-							LColec.getLog().add("Warning: Nombre objeto virtual referencia vacio, Idrecurso: '"+id+"' (ignorado)");
-					}
-				}
-			IteradorPadre.setAmbitoSTotales(MaxCount);
-			rs.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-	}
+	
 
 	private void InstancesAjenas() {
 		try {
@@ -447,15 +327,33 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						name=StaticFunctionsOda.CleanStringFromDatabase(name,LColec);
 						
 						CompleteDocuments OVirtual=LColec.getCollection().getObjetoVirtual().get(Idov);
-						CompleteDocuments FileC=LColec.getCollection().getFilesId().get(idreferedFile);
+						
+						
+StringBuffer SB=new StringBuffer();
+						
+						if (LColec.getBaseURLOda().isEmpty()||
+								(!LColec.getBaseURLOda().startsWith("http://")
+										&&!LColec.getBaseURLOda().startsWith("https://")
+										&&!LColec.getBaseURLOda().startsWith("ftp://")))
+							SB.append("http://");
+						
+						SB.append(LColec.getBaseURLOda());
+						if (!LColec.getBaseURLOda().isEmpty()&&!LColec.getBaseURLOda().endsWith("//"))
+							SB.append("/");
+						SB.append(idov+"/"+name);
+						
+						String Path=SB.toString();
+						
+						CompleteFile FileC=LColec.getCollection().getFiles().get(Path);
+						
 						if (FileC==null) 
 							{
-							FileC=LColec.getCollection().getFilesC().get(idovreferedFile+"/"+name);
-							if (FileC!=null)
-								LColec.getLog().add("Warning: El recurso referencia al que apunta con referencia al objeto: Referencia : '" + idreferedFile + "' y objeto : '" + name +"', no existe, Idrecurso: '"+id+ "' REPARADO a traves de su objeto virtual '" + idovreferedFile + "'");
+							FileC=new CompleteFile(Path, LColec.getCollection().getCollection());
+							LColec.getCollection().getFiles().put(Path, FileC);
+							LColec.getCollection().getCollection().getSectionValues().add(FileC);
 							}
 						
-						if (OVirtual!=null&&FileC!=null)
+						if (OVirtual!=null)
 						{
 							
 						
@@ -489,12 +387,12 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						E.getAmbitos().add(Base);
 						OVirtual.getDescription().add(E);
 						
-						LColec.getCollection().getFilesId().put(id,FileC);
 						
 						
-						CompleteLinkElement E3=new CompleteLinkElement((CompleteLinkElementType)AtributoMeta,FileC);
+						CompleteResourceElementFile E3=new CompleteResourceElementFile((CompleteResourceElementType)AtributoMeta,FileC);
 						
-						
+						Long Idl=Long.parseLong(id);
+						idsOV.add(Idl);
 			
 						
 						E3.getAmbitos().add(Base);
@@ -516,8 +414,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						else{
 							if (OVirtual==null)
 								LColec.getLog().add("Warning: Objeto Virtual al que se asocia este recurso no existe, Id de objeto virtual : '" +Idov + "', Idrecurso: '"+id+ "'(ignorado)");
-							if (FileC==null)
-								LColec.getLog().add("Warning: El recurso referencia al que apunta con referencia al objeto: ReferenciaOV : '" + idovreferedFile + "' Referencia Recurso : '" + idreferedFile + "' y objeto : '" + name +"', no existe, Idrecurso: '"+id+ "'(ignorado)");
+							
 						}
 						}
 					else {
@@ -574,10 +471,32 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							name=name.trim();
 							name=StaticFunctionsOda.CleanStringFromDatabase(name,LColec);
 							CompleteDocuments OVirtual=LColec.getCollection().getObjetoVirtual().get(Idov);
-							CompleteFile FileActual=LColec.getCollection().getFiles().get(Idov+"/"+name);
-							CompleteDocuments FileC=LColec.getCollection().getFilesC().get(Idov+"/"+name);
+//							CompleteFile FileActual=LColec.getCollection().getFiles().get(Idov+"/"+name);
+							StringBuffer SB=new StringBuffer();
 							
-							if (OVirtual!=null&&FileC!=null)
+							if (LColec.getBaseURLOda().isEmpty()||
+									(!LColec.getBaseURLOda().startsWith("http://")
+											&&!LColec.getBaseURLOda().startsWith("https://")
+											&&!LColec.getBaseURLOda().startsWith("ftp://")))
+								SB.append("http://");
+							
+							SB.append(LColec.getBaseURLOda());
+							if (!LColec.getBaseURLOda().isEmpty()&&!LColec.getBaseURLOda().endsWith("//"))
+								SB.append("/");
+							SB.append(idov+"/"+name);
+							
+							String Path=SB.toString();
+							
+							CompleteFile FileC=LColec.getCollection().getFiles().get(Path);
+							
+							if (FileC==null) 
+							{
+							FileC=new CompleteFile(Path, LColec.getCollection().getCollection());
+							LColec.getCollection().getFiles().put(Path, FileC);
+							LColec.getCollection().getCollection().getSectionValues().add(FileC);
+							}
+							
+							if (OVirtual!=null)
 							{
 								
 								Integer Base=Ambitos.get(Idov);
@@ -605,17 +524,17 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							if (Visible.equals("N"))
 								Visiblebool=false;
 							
-
+							Long Idl=Long.parseLong(id);
+							idsOV.add(Idl);
 							
 							CompleteTextElement E=new CompleteTextElement(ID, id);
 							
-							LColec.getCollection().getFilesId().put(id,FileC);
 							E.getAmbitos().add(Base);
 							OVirtual.getDescription().add(E);
 							
 							
 							
-							CompleteLinkElement E3=new CompleteLinkElement((CompleteLinkElementType)AtributoMeta,FileC);
+							CompleteResourceElementFile E3=new CompleteResourceElementFile((CompleteResourceElementType)AtributoMeta,FileC);
 							E3.getAmbitos().add(Base);
 							OVirtual.getDescription().add(E3);			
 						
@@ -624,24 +543,18 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 
 								E3.getShows().add(Valor);
 							
-
-							CompleteLinkElement FileValue=new CompleteLinkElement(Grammar_File.getOWNER(),OVirtual);
-							
-							FileC.getDescription().add(FileValue);
-							
 							Integer Id=Integer.parseInt(id);
 							AmbitosResource.put(Id, Base);
 							
 							if (iconoOV.equals("S"))
-								OVirtual.setIcon(FileActual.getPath());
+								OVirtual.setIcon(FileC.getPath());
 
 							Ambitos.put(Idov, Base+1);
 							}
 							else {
 								if (OVirtual==null)
 									LColec.getLog().add("Warning: Objeto Virtual al que se asocia este recurso no existe, Id de objeto virtual : '" +Idov + "', Idrecurso: '"+id+ "'(ignorado)");
-								if (FileC==null)
-									LColec.getLog().add("Warning: El recurso propio al que apunta con referencia objeto : '" + name +"', no existe, Idrecurso: '"+id+ "'(ignorado)");	
+
 							}
 							}
 						else {
@@ -672,7 +585,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 	/**
 	 * @param atributoMeta the atributoMeta to set
 	 */
-	public void setAtributoMeta(CompleteLinkElementType atributoMeta) {
+	public void setAtributoMeta(CompleteResourceElementType atributoMeta) {
 		AtributoMeta = atributoMeta;
 	}
 	
