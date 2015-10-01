@@ -224,7 +224,27 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 	 */
 	private void ProcessVocabulary() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT distinct value FROM controlled_data where idseccion="+Id+";");
+			ResultSet rs;
+			if (RecursosAfectados.isEmpty())
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT distinct value FROM controlled_data where idseccion="+Id+";");
+			else
+			{
+				StringBuffer SB=new StringBuffer();
+				SB.append("(");
+				boolean primer=true;
+				for (Long long1 : RecursosAfectados) {
+					if (!primer)
+						SB.append(",");
+					else
+						primer=false;
+					
+				SB.append(long1);
+						
+				}
+				SB.append(")");
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT distinct value FROM controlled_data where idseccion="+Id+" and idrecurso IN "+SB.toString()+";");
+			}
+			
 			if (rs!=null) 
 			{
 				while (rs.next()) {
@@ -277,7 +297,27 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 
 	private void ProcessInstancesFecha() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM date_data where idseccion="+Id+";");
+			ResultSet rs;
+			if (RecursosAfectados.isEmpty())
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM date_data where idseccion="+Id+";");
+			else
+			{
+				StringBuffer SB=new StringBuffer();
+				SB.append("(");
+				boolean primer=true;
+				for (Long long1 : RecursosAfectados) {
+					if (!primer)
+						SB.append(",");
+					else
+						primer=false;
+					
+				SB.append(long1);
+						
+				}
+				SB.append(")");
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM date_data where idseccion="+Id+" and idrecurso IN "+SB.toString()+";");
+			}
+			
 			if (rs!=null) 
 			{
 				while (rs.next()) {
@@ -366,7 +406,26 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 
 	private void ProcessInstancesControladas() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM controlled_data where idseccion="+Id+";");
+			ResultSet rs;
+			if (RecursosAfectados.isEmpty())
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM controlled_data where idseccion="+Id+";");
+			else
+			{
+				StringBuffer SB=new StringBuffer();
+				SB.append("(");
+				boolean primer=true;
+				for (Long long1 : RecursosAfectados) {
+					if (!primer)
+						SB.append(",");
+					else
+						primer=false;
+					
+				SB.append(long1);
+						
+				}
+				SB.append(")");
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM controlled_data where idseccion="+Id+" and idrecurso IN "+SB.toString()+";");
+			}
 			if (rs!=null) 
 			{
 				while (rs.next()) {
@@ -449,7 +508,26 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 
 	private void ProcessInstancesNumericas() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM numeric_data where idseccion="+Id+";");
+			ResultSet rs;
+			if (RecursosAfectados.isEmpty())
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM numeric_data where idseccion="+Id+";");
+			else
+			{
+				StringBuffer SB=new StringBuffer();
+				SB.append("(");
+				boolean primer=true;
+				for (Long long1 : RecursosAfectados) {
+					if (!primer)
+						SB.append(",");
+					else
+						primer=false;
+					
+				SB.append(long1);
+						
+				}
+				SB.append(")");
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM numeric_data where idseccion="+Id+" and idrecurso IN "+SB.toString()+";");
+			}
 			if (rs!=null) 
 			{
 				while (rs.next()) {
@@ -523,7 +601,26 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 
 	private void ProcessInstancesTexto() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM text_data where idseccion="+Id+";");
+			ResultSet rs;
+			if (RecursosAfectados.isEmpty())
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM text_data where idseccion="+Id+";");
+			else
+			{
+				StringBuffer SB=new StringBuffer();
+				SB.append("(");
+				boolean primer=true;
+				for (Long long1 : RecursosAfectados) {
+					if (!primer)
+						SB.append(",");
+					else
+						primer=false;
+					
+				SB.append(long1);
+						
+				}
+				SB.append(")");
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM text_data where idseccion="+Id+" and idrecurso IN "+SB.toString()+";");
+			}
 			if (rs!=null) 
 			{
 				while (rs.next()) {
