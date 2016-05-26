@@ -46,6 +46,8 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 	}
 	
 	public ElementType_ObjetoVirtual_Resource(CompleteIterator I,LoadCollectionOda L) {
+		if (AmbitosResource==null)
+			AmbitosResource=new HashMap<Integer, Integer>();
 		IteradorPadre=I;
 		AtributoMeta=new CompleteLinkElementType(NameConstantsOda.RESOURCENAME,I);
 		LColec=L;
