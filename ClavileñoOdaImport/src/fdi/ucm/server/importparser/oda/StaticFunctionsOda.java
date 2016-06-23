@@ -106,8 +106,7 @@ public class StaticFunctionsOda {
 		valor1 = valor1.replace("Ã‘", "Ñ");
 		valor1 = valor1.replace("Ã¶", "Ó");
 		valor1 = valor1.replace("Ã¼", "Ó");
-		
-		
+			
 		valor1 = valor1.replace("Â", "");
 		
 		valor1 = valor1.replace("Ã", "í");
