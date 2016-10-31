@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
+import fdi.ucm.server.importparser.oda.StaticFunctionsOda;
 import fdi.ucm.server.importparser.oda.coleccion.CollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Datos;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Metadatos;
@@ -194,9 +195,9 @@ public class CollectionOda1 extends CollectionOda {
 					vocaInt++;
 					CompleteDocuments nuevo= new CompleteDocuments(oda1,  I.toString(), "");
 					nuevo.getDescription().add(new CompleteTextElement(Number, I.toString()));
+					
 					for (int j = 0; j < voc.size(); j++) {		
-						CompleteTextElement T=new CompleteTextElement(Values, voc.get(j));
-						T.getAmbitos().add(j);
+						CompleteTextElement T=new CompleteTextElement(StaticFunctionsOda.cloneElement(Values), voc.get(j));
 						nuevo.getDescription().add(T);
 					}
 					oda1.getEstructuras().add(nuevo);

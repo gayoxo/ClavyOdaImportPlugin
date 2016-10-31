@@ -11,8 +11,13 @@ import java.util.List;
 
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
 import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
+import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
+import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
  * Clase que genera las funciones estaticas para el sistema Oda1.
@@ -156,6 +161,74 @@ public class StaticFunctionsOda {
 			}
 		}
 		return false;
+	}
+
+	public static CompleteElementType cloneElement(CompleteElementType aclonar) {
+		aclonar.setMultivalued(true);
+		
+		CompleteElementType nuevo=null;
+		if (aclonar instanceof CompleteTextElementType)
+			nuevo=new CompleteTextElementType(aclonar.getName(),aclonar.getFather() , aclonar.getCollectionFather());
+		if (aclonar instanceof CompleteResourceElementType)
+			nuevo=new CompleteResourceElementType(aclonar.getName(),aclonar.getFather() , aclonar.getCollectionFather());
+		if (aclonar instanceof CompleteLinkElementType)
+			nuevo=new CompleteLinkElementType(aclonar.getName(),aclonar.getFather() , aclonar.getCollectionFather());
+		if (nuevo==null)
+			nuevo=new CompleteElementType(aclonar.getName(),aclonar.getFather() , aclonar.getCollectionFather());
+		
+		nuevo.setMultivalued(aclonar.isMultivalued());
+		nuevo.setBrowseable(aclonar.isBrowseable());
+		aclonar.getFather().getSons().add(nuevo);
+		
+		CompleteElementType ultimohermano=aclonar;
+		while (ultimohermano.getBSon()!=null)
+			ultimohermano=ultimohermano.getBSon();
+		
+		ultimohermano.setBSon(nuevo);
+		nuevo.setBFather(ultimohermano);
+		
+		nuevo.setClassOfIterator(aclonar);
+
+		for (CompleteElementType iterable_element : aclonar.getSons()) {
+			cloneElementintern(iterable_element,nuevo);
+		}
+		
+		
+		return nuevo;
+	}
+
+	private static void cloneElementintern(CompleteElementType aclonar, CompleteElementType nuevopadre) {
+		
+		CompleteElementType nuevo=null;
+		if (aclonar instanceof CompleteTextElementType)
+			nuevo=new CompleteTextElementType(aclonar.getName(),nuevopadre , aclonar.getCollectionFather());
+		if (aclonar instanceof CompleteResourceElementType)
+			nuevo=new CompleteResourceElementType(aclonar.getName(),nuevopadre , aclonar.getCollectionFather());
+		if (aclonar instanceof CompleteLinkElementType)
+			nuevo=new CompleteLinkElementType(aclonar.getName(),nuevopadre , aclonar.getCollectionFather());
+		if (nuevo==null)
+			nuevo=new CompleteElementType(aclonar.getName(),nuevopadre , aclonar.getCollectionFather());
+		
+		nuevo.setMultivalued(aclonar.isMultivalued());
+		nuevo.setBrowseable(aclonar.isBrowseable());
+		nuevopadre.getSons().add(nuevo);
+		
+		neesito que se clonen los hijos internamente
+		
+		CompleteElementType ultimohermano=aclonar;
+		while (ultimohermano.getBSon()!=null)
+			ultimohermano=ultimohermano.getBSon();
+		
+		ultimohermano.setBSon(nuevo);
+		nuevo.setBFather(ultimohermano);
+		
+		nuevo.setClassOfIterator(aclonar);
+
+		for (CompleteElementType iterable_element : aclonar.getSons()) {
+			cloneElementintern(iterable_element,nuevo);
+		}
+		
+		
 	}
 
 	
