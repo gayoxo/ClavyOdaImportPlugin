@@ -37,7 +37,6 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 	private LoadCollectionOda LColec;
 	private HashMap<Integer, Integer> Ambitos;
 	private CompleteGrammar Grammar;
-	private static HashMap<Integer, Integer> AmbitosResource;
 	
 	
 	public ElementType_ObjetoVirtual_Resource(CompleteElementType I,LoadCollectionOda L, CompleteGrammar G) {
@@ -106,7 +105,6 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 	 */
 	private void OwnInstances() {
 		Ambitos=new HashMap<Integer, Integer>();
-		AmbitosResource=new HashMap<Integer, Integer>();
 		OwnInstancesPropias();
 		OwnInstancesURL();
 		InstancesAjenas();
@@ -667,10 +665,6 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 	 */
 	public void setAtributoMeta(CompleteLinkElementType atributoMeta) {
 		AtributoMeta = atributoMeta;
-	}
-	
-	public static HashMap<Integer, Integer> getAmbitosResource() {
-		return AmbitosResource;
 	}
 
 }

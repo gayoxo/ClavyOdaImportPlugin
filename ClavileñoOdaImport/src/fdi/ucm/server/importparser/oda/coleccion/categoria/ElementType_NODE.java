@@ -163,7 +163,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 	@Override
 	public void ProcessAttributes() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM section_data where idpadre="+Id+" order by orden;");
+			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM section_data where idpadre="+Id+" ORDER by orden;");
 			if (rs!=null) 
 			{
 				while (rs.next()) {
@@ -275,7 +275,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 
 	private void ProcessInstancesFecha() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM date_data where idseccion="+Id+";");
+			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM date_data where idseccion="+Id+" ORDER BY idov;");
 			if (rs!=null) 
 			{
 				while (rs.next()) {
