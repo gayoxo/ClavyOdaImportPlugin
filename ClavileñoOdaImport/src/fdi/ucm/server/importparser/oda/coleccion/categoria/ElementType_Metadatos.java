@@ -24,12 +24,14 @@ public class ElementType_Metadatos implements InterfaceOdaparser{
 	
 	private CompleteElementType AtributoMeta;
 	private LoadCollectionOda LColec;
+	private CompleteGrammar GPadre;
 
 
 	public ElementType_Metadatos(CompleteGrammar Padre,LoadCollectionOda L) {
 
 		AtributoMeta=new CompleteElementType(NameConstantsOda.METADATOSNAME, Padre);
 		LColec=L;
+		GPadre=Padre;
 		
 		String VistaOV=new String(NameConstantsOda.PRESNTACION); 
 		
@@ -77,7 +79,7 @@ public class ElementType_Metadatos implements InterfaceOdaparser{
 						nombre=nombre.trim();
 						nombre = StaticFunctionsOda.CleanStringFromDatabase(nombre,LColec);
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec);
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,GPadre);
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
 						AtributoMeta.getSons().add(Nodo.getAtributoMeta());

@@ -16,7 +16,6 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
@@ -132,11 +131,10 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 			}
 		
 		
-		CompleteIterator I=new CompleteIterator(AtributoMeta);
-		AtributoMeta.getSons().add(I);
-		Recursos=new ElementType_ObjetoVirtual_Resource(I,LColec);
+
+		Recursos=new ElementType_ObjetoVirtual_Resource(null,LColec,AtributoMeta);
 		Recursos.ProcessAttributes();
-		I.getSons().add(Recursos.getAtributoMeta());
+		AtributoMeta.getSons().add(Recursos.getAtributoMeta());
 		
 
 		

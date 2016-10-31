@@ -111,7 +111,7 @@ public class ElementType_Datos implements InterfaceOdaparser{
 						}
 						else
 						{
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec);
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,GPadre);
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
 						

@@ -17,6 +17,7 @@ import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
@@ -31,13 +32,15 @@ public class ElementType_NODE implements InterfaceOdaparser {
 	private String Id;
 	private ArrayList<String> Vocabulary;
 	private LoadCollectionOda LColec;
+	private CompleteGrammar coGram;
 
 	
 	public ElementType_NODE(String id, String nombre,
 			String navegable, String visible, String tipo_valores,
-			String vocabulario, CompleteElementType tpadre, boolean summary,LoadCollectionOda L) {
+			String vocabulario, CompleteElementType tpadre, boolean summary,LoadCollectionOda L,CompleteGrammar G) {
 		
 		LColec=L;
+		coGram=G;
 		
 		boolean navegablebool = true;
 		if (navegable.equals("N"))
@@ -54,8 +57,8 @@ public class ElementType_NODE implements InterfaceOdaparser {
 		
 		if (tipo_valores.equals("C"))
 			{
-			AtributoMeta = new CompleteTextElementType(nombre, tpadre);
-			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
+			AtributoMeta = new CompleteTextElementType(nombre, tpadre,coGram);
+			AtributoMeta=new CompleteTextElementType(nombre, tpadre,coGram);
 			
 			String VistaMetaType=new String(NameConstantsOda.METATYPE);
 			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.CONTROLED,VistaMetaType);
@@ -104,8 +107,8 @@ public class ElementType_NODE implements InterfaceOdaparser {
 			}
 		else if (tipo_valores.equals("F"))
 			{
-			AtributoMeta = new CompleteTextElementType(nombre, tpadre);
-			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
+			AtributoMeta = new CompleteTextElementType(nombre, tpadre,coGram);
+			AtributoMeta=new CompleteTextElementType(nombre, tpadre,coGram);
 			String VistaMetaType=new String(NameConstantsOda.METATYPE);
 			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.DATE,VistaMetaType);
 			AtributoMeta.getShows().add(MetaType);
@@ -113,23 +116,23 @@ public class ElementType_NODE implements InterfaceOdaparser {
 			
 			}
 		else if (tipo_valores.equals("X"))
-			AtributoMeta=new CompleteElementType(nombre, tpadre);
+			AtributoMeta=new CompleteElementType(nombre, tpadre,coGram);
 		else if (tipo_valores.equals("T"))
 			{
-			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
+			AtributoMeta=new CompleteTextElementType(nombre, tpadre,coGram);
 			String VistaMetaType=new String(NameConstantsOda.METATYPE);
 			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,VistaMetaType);
 			AtributoMeta.getShows().add(MetaType);
 			}
 		else if (tipo_valores.equals("N"))
 			{
-			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
+			AtributoMeta=new CompleteTextElementType(nombre, tpadre,coGram);
 			String VistaMetaType=new String(NameConstantsOda.METATYPE);
 			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.NUMERIC,VistaMetaType);
 			AtributoMeta.getShows().add(MetaType);
 
 			}
-		else AtributoMeta=new CompleteElementType(nombre, tpadre);
+		else AtributoMeta=new CompleteElementType(nombre, tpadre,coGram);
 		
 		
 		String VistaOV=new String(NameConstantsOda.PRESNTACION); 
@@ -185,7 +188,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					if (nombre!=null&&!nombre.isEmpty()&&tipo_valores!=null&&!tipo_valores.isEmpty()&&((tipo_valores.equals("C")&&vocabulario!=null)||(!(tipo_valores.equals("C")))))
 						{
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec);
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,coGram);
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
 						AtributoMeta.getSons().add(Nodo.getAtributoMeta());

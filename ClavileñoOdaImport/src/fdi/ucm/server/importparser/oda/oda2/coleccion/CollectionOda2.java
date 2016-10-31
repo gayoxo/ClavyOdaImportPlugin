@@ -24,7 +24,6 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteFile;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
@@ -120,8 +119,8 @@ public class CollectionOda2 extends CollectionOda {
 		Vocabulary.getSons().add(Number);
 		
 		
-		CompleteIterator IteraValor=new CompleteIterator(Vocabulary);
-		Vocabulary.getSons().add(IteraValor);
+//		CompleteIterator IteraValor=new CompleteIterator(Vocabulary);
+//		Vocabulary.getSons().add(IteraValor);
 		
 	
 		
@@ -148,8 +147,9 @@ public class CollectionOda2 extends CollectionOda {
 		}
 		
 		
-		CompleteTextElementType Values=new CompleteTextElementType(NameConstantsOda.TERM, IteraValor);
-		IteraValor.getSons().add(Values);
+		CompleteTextElementType Values=new CompleteTextElementType(NameConstantsOda.TERM, Vocabulary);
+		Values.setMultivalued(true);
+		Vocabulary.getSons().add(Values);
 		
 		{
 			String VistaOV=new String(NameConstantsOda.PRESNTACION);

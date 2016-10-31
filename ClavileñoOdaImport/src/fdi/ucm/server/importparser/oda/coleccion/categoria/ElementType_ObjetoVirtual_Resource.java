@@ -220,7 +220,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 
 					}
 				}
-			IteradorPadre.setAmbitoSTotales(MaxCount);
+//			IteradorPadre.setAmbitoSTotales(MaxCount);
 			rs.close();
 			}
 		} catch (SQLException e) {
@@ -261,7 +261,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						nombre=nombre.trim();
 						nombre = StaticFunctionsOda.CleanStringFromDatabase(nombre,LColec);
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec);
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,Grammar);
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
 						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
@@ -393,7 +393,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							LColec.getLog().add("Warning: Nombre objeto virtual referencia vacio, Idrecurso: '"+id+"' (ignorado)");
 					}
 				}
-			IteradorPadre.setAmbitoSTotales(MaxCount);
+//			IteradorPadre.setAmbitoSTotales(MaxCount);
 			rs.close();
 			}
 		} catch (SQLException e) {
@@ -522,7 +522,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							LColec.getLog().add("Warning: Nombre objeto virtual referencia vacio, Idrecurso: '"+id+"' (ignorado)");
 					}
 				}
-			IteradorPadre.setAmbitoSTotales(MaxCount);
+//			IteradorPadre.setAmbitoSTotales(MaxCount);
 			rs.close();
 			}
 		} catch (SQLException e) {
@@ -646,7 +646,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 
 						}
 					}
-				IteradorPadre.setAmbitoSTotales(MaxCount);
+//				IteradorPadre.setAmbitoSTotales(MaxCount);
 				rs.close();
 				}
 			} catch (SQLException e) {
