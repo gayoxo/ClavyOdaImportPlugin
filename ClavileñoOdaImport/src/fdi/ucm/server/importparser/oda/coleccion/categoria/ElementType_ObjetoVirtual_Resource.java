@@ -12,11 +12,13 @@ import fdi.ucm.server.importparser.oda.NameConstantsOda;
 import fdi.ucm.server.importparser.oda.StaticFunctionsOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
+import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteFile;
 import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
@@ -30,17 +32,17 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 
 	private CompleteLinkElementType AtributoMeta;
 	private CompleteTextElementType ID;
-	private CompleteIterator IteradorPadre;
 	private CompleteOperationalValueType Valor;
 	private CompleteOperationalValueType Valor2;
 	private LoadCollectionOda LColec;
 	private HashMap<Integer, Integer> Ambitos;
+	private CompleteGrammar Grammar;
 	private static HashMap<Integer, Integer> AmbitosResource;
 	
 	
-	public ElementType_ObjetoVirtual_Resource(CompleteIterator I,LoadCollectionOda L) {
-		IteradorPadre=I;
-		AtributoMeta=new CompleteLinkElementType(NameConstantsOda.RESOURCENAME,I);
+	public ElementType_ObjetoVirtual_Resource(CompleteElementType I,LoadCollectionOda L, CompleteGrammar G) {
+		Grammar=G;
+		AtributoMeta=new CompleteLinkElementType(NameConstantsOda.RESOURCENAME,I,Grammar);
 		LColec=L;
 		
 		String VistaOV=new String(NameConstantsOda.PRESNTACION); 
@@ -67,7 +69,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 	@Override
 	public void ProcessAttributes() {
 		{
-		ID=new CompleteTextElementType(NameConstantsOda.IDNAME, AtributoMeta);
+		ID=new CompleteTextElementType(NameConstantsOda.IDNAME, AtributoMeta,Grammar);
 		AtributoMeta.getSons().add(ID);
 		
 		String VistaOV=new String(NameConstantsOda.PRESNTACION); 
