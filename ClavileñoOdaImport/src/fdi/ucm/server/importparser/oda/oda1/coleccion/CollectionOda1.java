@@ -177,7 +177,7 @@ public class CollectionOda1 extends CollectionOda {
 		
 		
 		
-
+		ArrayList<CompleteTextElementType> ListaVoc=new ArrayList<CompleteTextElementType>();
 			HashMap<ArrayList<String>, Integer> procesados=new HashMap<ArrayList<String>, Integer>();
 			int vocaInt=0;
 			for (Entry<CompleteElementType, ArrayList<String>> iterable_element : Vocabularios.entrySet()) {
@@ -197,9 +197,14 @@ public class CollectionOda1 extends CollectionOda {
 					nuevo.getDescription().add(new CompleteTextElement(Number, I.toString()));
 					
 					for (int j = 0; j < voc.size(); j++) {		
-						CompleteTextElement T=new CompleteTextElement(StaticFunctionsOda.cloneElement(Values), voc.get(j));
+						CompleteTextElement T;
+						while (j>=ListaVoc.size())
+							ListaVoc.add((CompleteTextElementType)StaticFunctionsOda.cloneElement(Values));
+						
+						T=new CompleteTextElement(ListaVoc.get(j), voc.get(j));
 						nuevo.getDescription().add(T);
 					}
+					
 					oda1.getEstructuras().add(nuevo);
 					
 				}

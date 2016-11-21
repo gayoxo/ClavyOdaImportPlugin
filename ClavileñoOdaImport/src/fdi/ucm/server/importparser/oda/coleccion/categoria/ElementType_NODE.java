@@ -18,6 +18,7 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
@@ -33,7 +34,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 	private ArrayList<String> Vocabulary;
 	private LoadCollectionOda LColec;
 	private CompleteGrammar coGram;
-
+	private ArrayList<CompleteElementType> ListaAtributoMeta;
 	
 	public ElementType_NODE(String id, String nombre,
 			String navegable, String visible, String tipo_valores,
@@ -53,6 +54,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 		Id=id;
 		
 		Vocabulary=new ArrayList<String>();
+		
 		
 		
 		if (tipo_valores.equals("C"))
@@ -134,6 +136,9 @@ public class ElementType_NODE implements InterfaceOdaparser {
 			}
 		else AtributoMeta=new CompleteElementType(nombre, tpadre,coGram);
 		
+		
+		ListaAtributoMeta=new ArrayList<CompleteElementType>();
+		ListaAtributoMeta.add(AtributoMeta);
 		
 		String VistaOV=new String(NameConstantsOda.PRESNTACION); 
 		
@@ -307,29 +312,44 @@ public class ElementType_NODE implements InterfaceOdaparser {
 							DateFormat df = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
 							String valueE=df.format(D);
 							
-							CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueE);
-							int Idov=Integer.parseInt(idov);
-							CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-
-							MTV.setDocumentsFather(C);
+							
+							
+							
+							
 							if (IdRecurso!=null)
 							{
-							
 								int RecursoIntId = Integer.parseInt(IdRecurso);
 								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
-								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
+								
 								if (AmbitoAsociado!=null)
 								{
+								
+								
+								CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueE);
+								int Idov=Integer.parseInt(idov);
+								CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
+
+								MTV.setDocumentsFather(C);
+								
+								
+								//Aqui TODO
+								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
+
 								Ambitos.add(AmbitoAsociado);
 								MTV.setAmbitos(Ambitos);
 								C.getDescription().add(MTV);
+
+								
+								
 								}
+								
+								
 							else 
 								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
 
 
 							}else
-								C.getDescription().add(MTV);
+								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
 							
 							} catch (Exception e) {
 								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' y valor '"+valueclean+"', revisa que la base de datos es correcta");

@@ -5,6 +5,7 @@ package fdi.ucm.server.importparser.oda.coleccion.categoria;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import fdi.ucm.server.importparser.oda.InterfaceOdaparser;
@@ -12,7 +13,6 @@ import fdi.ucm.server.importparser.oda.NameConstantsOda;
 import fdi.ucm.server.importparser.oda.StaticFunctionsOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
-import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteFile;
 import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
@@ -37,7 +37,9 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 	private LoadCollectionOda LColec;
 	private HashMap<Integer, Integer> Ambitos;
 	private CompleteGrammar Grammar;
-	
+	private ArrayList<CompleteTextElementType> ListaRec;
+	private ArrayList<CompleteLinkElementType> ListaAtributoMeta;
+	protected static HashMap<Integer, Integer> AmbitosResource;
 	
 	public ElementType_ObjetoVirtual_Resource(CompleteElementType I,LoadCollectionOda L, CompleteGrammar G) {
 		Grammar=G;
@@ -59,7 +61,12 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.RESOURCE,VistaOVMeta);
 		AtributoMeta.getShows().add(ValorMeta);
 		
-
+		ListaRec=new ArrayList<CompleteTextElementType>();
+		
+		ListaAtributoMeta=new ArrayList<CompleteLinkElementType>();
+		ListaAtributoMeta.add(AtributoMeta);
+		
+		AmbitosResource=new HashMap<Integer, Integer>();
 	}
 	
 	/* (non-Javadoc)
@@ -87,7 +94,7 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 		 ID.getShows().add(Valor);
 		}
 
-		
+		ListaRec.add(ID);
 		
 	}
 
@@ -179,27 +186,30 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						if (Visible.equals("N"))
 							Visiblebool=false;
 						
-
-						
-						CompleteTextElement E=new CompleteTextElement(ID, id);
 						
 						LColec.getCollection().getFilesId().put(id,FileC);
-						E.getAmbitos().add(Base);
+						
+						while (Base<=ListaRec.size())
+							ListaRec.add((CompleteTextElementType) StaticFunctionsOda.cloneElement(ID));
+						
+						CompleteTextElementType IDac = ListaRec.get(Base);
+						CompleteTextElement E=new CompleteTextElement(IDac, id);
 						OVirtual.getDescription().add(E);
+
 						
+						while (Base<=ListaAtributoMeta.size())
+							ListaAtributoMeta.add((CompleteLinkElementType) StaticFunctionsOda.cloneElement(AtributoMeta));
 						
-						
-						CompleteLinkElement E3=new CompleteLinkElement(AtributoMeta,FileC);
-						E3.getAmbitos().add(Base);
+						CompleteLinkElementType AtributoMetaac = ListaAtributoMeta.get(Base);
+						CompleteLinkElement E3=new CompleteLinkElement(AtributoMetaac,FileC);
 						OVirtual.getDescription().add(E3);			
 					
 							CompleteOperationalValue Valor=new CompleteOperationalValue(Valor2,Boolean.toString(Visiblebool));
 
 							E3.getShows().add(Valor);
 						
-						
-						Integer Id=Integer.parseInt(id);
-						AmbitosResource.put(Id, Base);
+							Integer Id=Integer.parseInt(id);
+							AmbitosResource.put(Id, Base);
 
 						Ambitos.put(Idov, Base+1);
 						}
@@ -350,21 +360,25 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 
 						{
 
-						CompleteTextElement E=new CompleteTextElement(ID, id);
-						E.getAmbitos().add(Base);
-						OVirtual.getDescription().add(E);
+							
+							
+							while (Base<=ListaRec.size())
+								ListaRec.add((CompleteTextElementType) StaticFunctionsOda.cloneElement(ID));
+							
+							CompleteTextElementType IDac = ListaRec.get(Base);
+							CompleteTextElement E=new CompleteTextElement(IDac, id);
+							OVirtual.getDescription().add(E);
 
-						CompleteOperationalValue Valor=new CompleteOperationalValue(this.Valor,Boolean.toString(Visiblebool));
-						E.getShows().add(Valor);
-						}
-						
-						{
-							CompleteLinkElement E3=new CompleteLinkElement(AtributoMeta,OVirtualRef);
-						E3.getAmbitos().add(Base);
-						OVirtual.getDescription().add(E3);
-						
-						Integer Id=Integer.parseInt(id);
-						AmbitosResource.put(Id, Base);
+							
+							while (Base<=ListaAtributoMeta.size())
+								ListaAtributoMeta.add((CompleteLinkElementType) StaticFunctionsOda.cloneElement(AtributoMeta));
+							
+							CompleteLinkElementType AtributoMetaac = ListaAtributoMeta.get(Base);
+							CompleteLinkElement E3=new CompleteLinkElement(AtributoMetaac,OVirtualRef);
+							OVirtual.getDescription().add(E3);
+							
+							
+					
 
 						CompleteOperationalValue Valor=new CompleteOperationalValue(Valor2,Boolean.toString(Visiblebool));
 
@@ -372,6 +386,9 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 						
 						
 						}
+						
+						Integer Id=Integer.parseInt(id);
+						AmbitosResource.put(Id, Base);
 
 						Ambitos.put(Idov, Base+1);	
 						
@@ -476,28 +493,25 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							Visiblebool=false;
 						
 						
-						CompleteTextElement E=new CompleteTextElement(ID, id);
-						E.getAmbitos().add(Base);
+						while (Base<=ListaRec.size())
+							ListaRec.add((CompleteTextElementType) StaticFunctionsOda.cloneElement(ID));
+						
+						CompleteTextElementType IDac = ListaRec.get(Base);
+						CompleteTextElement E=new CompleteTextElement(IDac, id);
 						OVirtual.getDescription().add(E);
+
 						
-						LColec.getCollection().getFilesId().put(id,FileC);
+						while (Base<=ListaAtributoMeta.size())
+							ListaAtributoMeta.add((CompleteLinkElementType) StaticFunctionsOda.cloneElement(AtributoMeta));
 						
-						
-						CompleteLinkElement E3=new CompleteLinkElement(AtributoMeta,FileC);
-						
-						
-			
-						
-						E3.getAmbitos().add(Base);
+						CompleteLinkElementType AtributoMetaac = ListaAtributoMeta.get(Base);
+						CompleteLinkElement E3=new CompleteLinkElement(AtributoMetaac,FileC);
 						OVirtual.getDescription().add(E3);
-//						
+						
 						Integer Id=Integer.parseInt(id);
 						AmbitosResource.put(Id, Base);
-						
 						Ambitos.put(Idov, Base+1);
-//						MetaBooleanValue E2=new MetaBooleanValue(VISIBLE, Visiblebool);
-//						E2.getAmbitos().add(count);
-//						OVirtual.getDescription().add(E2);
+
 
 							CompleteOperationalValue Valor=new CompleteOperationalValue(Valor2,Boolean.toString(Visiblebool));
 
@@ -598,16 +612,21 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							
 
 							
-							CompleteTextElement E=new CompleteTextElement(ID, id);
 							
-							LColec.getCollection().getFilesId().put(id,FileC);
-							E.getAmbitos().add(Base);
+							
+							while (Base<=ListaRec.size())
+								ListaRec.add((CompleteTextElementType) StaticFunctionsOda.cloneElement(ID));
+							
+							CompleteTextElementType IDac = ListaRec.get(Base);
+							CompleteTextElement E=new CompleteTextElement(IDac, id);
 							OVirtual.getDescription().add(E);
+
 							
+							while (Base<=ListaAtributoMeta.size())
+								ListaAtributoMeta.add((CompleteLinkElementType) StaticFunctionsOda.cloneElement(AtributoMeta));
 							
-							
-							CompleteLinkElement E3=new CompleteLinkElement(AtributoMeta,FileC);
-							E3.getAmbitos().add(Base);
+							CompleteLinkElementType AtributoMetaac = ListaAtributoMeta.get(Base);
+							CompleteLinkElement E3=new CompleteLinkElement(AtributoMetaac,FileC);
 							OVirtual.getDescription().add(E3);			
 						
 
@@ -619,13 +638,15 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 							CompleteLinkElement FileValue=new CompleteLinkElement(Grammar_File.getOWNER(),OVirtual);
 							
 							FileC.getDescription().add(FileValue);
-							
-							Integer Id=Integer.parseInt(id);
-							AmbitosResource.put(Id, Base);
+						
 							
 							if (iconoOV.equals("S"))
 								OVirtual.setIcon(FileActual.getPath());
 
+							
+							Integer Id=Integer.parseInt(id);
+							AmbitosResource.put(Id, Base);
+							
 							Ambitos.put(Idov, Base+1);
 							}
 							else {
@@ -665,6 +686,10 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 	 */
 	public void setAtributoMeta(CompleteLinkElementType atributoMeta) {
 		AtributoMeta = atributoMeta;
+	}
+	
+	public static HashMap<Integer, Integer> getAmbitosResource() {
+		return AmbitosResource;
 	}
 
 }

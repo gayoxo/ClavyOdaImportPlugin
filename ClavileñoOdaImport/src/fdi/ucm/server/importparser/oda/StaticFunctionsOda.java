@@ -7,6 +7,7 @@ package fdi.ucm.server.importparser.oda;
 //import java.nio.CharBuffer;
 //import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
@@ -178,7 +179,17 @@ public class StaticFunctionsOda {
 		
 		nuevo.setMultivalued(aclonar.isMultivalued());
 		nuevo.setBrowseable(aclonar.isBrowseable());
+		nuevo.setCollectionFather(aclonar.getCollectionFather());
+		nuevo.setClassOfIterator(aclonar.getClassOfIterator());
+		if (aclonar.getFather()!=null)
+		{
 		aclonar.getFather().getSons().add(nuevo);
+		nuevo.setFather(aclonar.getFather());
+		}
+		else
+		{
+			aclonar.getCollectionFather().getSons().add(nuevo);
+		}
 		
 		CompleteElementType ultimohermano=aclonar;
 		while (ultimohermano.getBSon()!=null)
@@ -189,15 +200,32 @@ public class StaticFunctionsOda {
 		
 		nuevo.setClassOfIterator(aclonar);
 
+		HashSet<CompleteElementType> procesados=new HashSet<CompleteElementType>();
+		
 		for (CompleteElementType iterable_element : aclonar.getSons()) {
-			cloneElementintern(iterable_element,nuevo);
+			if (!procesados.contains(iterable_element))
+			{
+			procesados.add(iterable_element);
+			CompleteElementType Hermano=iterable_element;
+			CompleteElementType nuevoHijo = cloneElementintern(iterable_element,nuevo);
+			while (Hermano.getBSon()!=null)
+			{
+				Hermano=Hermano.getBSon();
+				procesados.add(Hermano);
+				CompleteElementType nuevoHijoH = cloneElementintern(Hermano,nuevo);
+				nuevoHijo.setBSon(nuevoHijoH);
+				nuevoHijoH.setBFather(nuevoHijo);
+				nuevoHijo=nuevoHijoH;
+			}
+			
+			}
 		}
 		
 		
 		return nuevo;
 	}
 
-	private static void cloneElementintern(CompleteElementType aclonar, CompleteElementType nuevopadre) {
+	private static CompleteElementType cloneElementintern(CompleteElementType aclonar, CompleteElementType nuevopadre) {
 		
 		CompleteElementType nuevo=null;
 		if (aclonar instanceof CompleteTextElementType)
@@ -211,23 +239,36 @@ public class StaticFunctionsOda {
 		
 		nuevo.setMultivalued(aclonar.isMultivalued());
 		nuevo.setBrowseable(aclonar.isBrowseable());
+		nuevo.setClassOfIterator(aclonar.getClassOfIterator());
 		nuevopadre.getSons().add(nuevo);
+		nuevo.setCollectionFather(aclonar.getCollectionFather());
+		nuevo.setFather(nuevopadre);
 		
-		neesito que se clonen los hijos internamente
+		HashSet<CompleteElementType> procesados=new HashSet<CompleteElementType>();
 		
-		CompleteElementType ultimohermano=aclonar;
-		while (ultimohermano.getBSon()!=null)
-			ultimohermano=ultimohermano.getBSon();
-		
-		ultimohermano.setBSon(nuevo);
-		nuevo.setBFather(ultimohermano);
-		
-		nuevo.setClassOfIterator(aclonar);
-
 		for (CompleteElementType iterable_element : aclonar.getSons()) {
-			cloneElementintern(iterable_element,nuevo);
+			
+			if (!procesados.contains(iterable_element))
+			{
+			procesados.add(iterable_element);
+			CompleteElementType Hermano=iterable_element;
+			CompleteElementType nuevoHijo = cloneElementintern(iterable_element,nuevo);
+			while (Hermano.getBSon()!=null)
+			{
+				Hermano=Hermano.getBSon();
+				procesados.add(Hermano);
+				CompleteElementType nuevoHijoH = cloneElementintern(Hermano,nuevo);
+				nuevoHijo.setBSon(nuevoHijoH);
+				nuevoHijoH.setBFather(nuevoHijo);
+				nuevoHijo=nuevoHijoH;
+			}
+			
+			}
 		}
 		
+		
+		
+		return nuevo;
 		
 	}
 

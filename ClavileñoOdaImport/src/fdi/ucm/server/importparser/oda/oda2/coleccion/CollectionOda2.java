@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
+import fdi.ucm.server.importparser.oda.StaticFunctionsOda;
 import fdi.ucm.server.importparser.oda.coleccion.CollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Datos;
@@ -177,6 +178,9 @@ public class CollectionOda2 extends CollectionOda {
 
 			HashMap<ArrayList<String>, Integer> procesados=new HashMap<ArrayList<String>, Integer>();
 			int vocaInt=0;
+			ArrayList<CompleteTextElementType> ListaVoc=new ArrayList<CompleteTextElementType>();
+			ListaVoc.add(Values);
+			
 			for (Entry<CompleteElementType, ArrayList<String>> iterable_element : Vocabularios.entrySet()) {
 				CompleteElementType element = iterable_element.getKey();
 				ArrayList<String> voc = iterable_element.getValue();
@@ -191,12 +195,17 @@ public class CollectionOda2 extends CollectionOda {
 					I=vocaInt;
 					vocaInt++;
 					CompleteDocuments nuevo= new CompleteDocuments(oda2, I.toString(), "");
-					nuevo.getDescription().add(new CompleteTextElement(Number, I.toString()));
+					nuevo.getDescription().add(new CompleteTextElement(Number, I.toString()));		
+					
 					for (int j = 0; j < voc.size(); j++) {		
-						CompleteTextElement T=new CompleteTextElement(Values, voc.get(j));
-						T.getAmbitos().add(j);
+						CompleteTextElement T;
+						while (j>=ListaVoc.size())
+							ListaVoc.add((CompleteTextElementType)StaticFunctionsOda.cloneElement(Values));
+						
+						T=new CompleteTextElement(ListaVoc.get(j), voc.get(j));
 						nuevo.getDescription().add(T);
 					}
+					
 					oda2.getEstructuras().add(nuevo);
 					
 				}
