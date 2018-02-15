@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fdi.ucm.server.importparser.oda.oda1.coleccion.categoria;
+package fdi.ucm.server.importparser.oda.oda2.direct.collection.categoria;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +10,6 @@ import java.util.HashMap;
 import fdi.ucm.server.importparser.oda.InterfaceOdaparser;
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
-import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_ObjetoVirtual_Resource;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
@@ -26,20 +25,22 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
  * @author Joaquin Gayoso-Cabada
  *
  */
-public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
+public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 
 	private CompleteGrammar AtributoMeta;
 	private CompleteTextElementType IDOV;
-	private ElementType_ObjetoVirtual_Resource Recursos;
+	private ElementType_ObjetoVirtual_Resource_Direct_OV Recursos;
+	private ElementType_ObjetoVirtual_Resource_Direct_FILES_URL Recursos2;
 	private CompleteOperationalValueType ValorOdaPUBLIC;
 //	private HashMap<Integer, Element> ObjetoVirtualMetaValueAsociado;
 	private CompleteOperationalView VistaOV;
 	private CompleteOperationalView VistaOVOda;
+	private CompleteOperationalValueType ValorOdaPRIVATE;
 	private LoadCollectionOda LColec;
 	private CompleteTextElementType URLORIGINAL;
 
 	
-	public Grammar_ObjetoVirtual(CompleteCollection completeCollection, LoadCollectionOda L) {
+	public Grammar_ObjetoVirtualDirect(CompleteCollection completeCollection, LoadCollectionOda L) {
 		AtributoMeta=new CompleteGrammar(NameConstantsOda.VIRTUAL_OBJECTNAME, NameConstantsOda.VIRTUAL_OBJECTNAME,completeCollection);
 		
 		VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
@@ -64,10 +65,10 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 		
 		ValorOdaPUBLIC=new CompleteOperationalValueType(NameConstantsOda.PUBLIC,Boolean.toString(true),VistaOVOda);
 
-		CompleteOperationalValueType ValorOda2=new CompleteOperationalValueType(NameConstantsOda.PRIVATE,Boolean.toString(false),VistaOVOda);
+		ValorOdaPRIVATE=new CompleteOperationalValueType(NameConstantsOda.PRIVATE,Boolean.toString(false),VistaOVOda);
 
 		VistaOVOda.getValues().add(ValorOdaPUBLIC);
-		VistaOVOda.getValues().add(ValorOda2);
+		VistaOVOda.getValues().add(ValorOdaPRIVATE);
 		
 		AtributoMeta.getViews().add(VistaOVMeta);
 		
@@ -142,14 +143,17 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 			}
 		
 		
-		
 		CompleteIterator I=new CompleteIterator(AtributoMeta);
 		AtributoMeta.getSons().add(I);
-		Recursos=new ElementType_ObjetoVirtual_Resource(I,LColec);
+		Recursos=new ElementType_ObjetoVirtual_Resource_Direct_OV(I,LColec);
 		Recursos.ProcessAttributes();
 		I.getSons().add(Recursos.getAtributoMeta());
 		
-
+		CompleteIterator I2=new CompleteIterator(AtributoMeta);
+		AtributoMeta.getSons().add(I2);
+		Recursos2=new ElementType_ObjetoVirtual_Resource_Direct_FILES_URL(I2,LColec);
+		Recursos2.ProcessAttributes();
+		I2.getSons().add(Recursos2.getAtributoMeta());
 		
 		
 		
@@ -162,6 +166,7 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 	public void ProcessInstances() {
 		OwnInstances();
 		Recursos.ProcessInstances();
+		Recursos2.ProcessInstances();
 
 	}
 
@@ -182,6 +187,11 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 					String publicoT="";
 					if(rs.getObject("ispublic")!=null)
 						publicoT=rs.getObject("ispublic").toString();
+
+					String privateT="S";
+					if(rs.getObject("isprivate")!=null&&!rs.getObject("isprivate").toString().isEmpty())
+						privateT=rs.getObject("isprivate").toString();
+					
 					
 					if (publicoT!=null&&!publicoT.isEmpty())
 						{
@@ -189,6 +199,9 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 						boolean publico=true;
 						if (publicoT.equals("N"))
 							publico=false;
+						boolean privado=true;
+						if (privateT.equals("N"))
+							privado=false;
 						CompleteCollection C=LColec.getCollection().getCollection();
 						CompleteDocuments sectionValue = new CompleteDocuments(C,AtributoMeta,"","");
 						C.getEstructuras().add(sectionValue);
@@ -200,6 +213,12 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 				//		Element MetaValueAsociado = new Element(AtributoMeta);
 						sectionValue.getViewsValues().add(ValorOdaPUBLIInstance);
 //						MetaValueAsociado.getShows().add(ValorOdaPUBLIInstance);
+						
+						CompleteOperationalValue ValorOdaPRIVInstance=new CompleteOperationalValue(ValorOdaPRIVATE,Boolean.toString(privado));
+
+						//		Element MetaValueAsociado = new Element(AtributoMeta);
+								sectionValue.getViewsValues().add(ValorOdaPRIVInstance);
+						
 						
 //						ObjetoVirtualMetaValueAsociado.put(Idov, MetaValueAsociado);
 						ObjetoVirtual.put(Idov, sectionValue);
@@ -222,6 +241,7 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 						
 						CompleteTextElement RR=new CompleteTextElement(URLORIGINAL, Path);
 						sectionValue.getDescription().add(RR);
+						
 						
 						}
 					else {

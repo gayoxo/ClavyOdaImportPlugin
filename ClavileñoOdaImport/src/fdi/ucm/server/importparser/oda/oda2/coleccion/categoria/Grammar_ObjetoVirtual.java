@@ -16,7 +16,9 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
@@ -31,8 +33,8 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 	private ElementType_ObjetoVirtual_Resource Recursos;
 	private CompleteOperationalValueType ValorOdaPUBLIC;
 //	private HashMap<Integer, Element> ObjetoVirtualMetaValueAsociado;
-//	private CompleteOperationalView VistaOV;
-//	private CompleteOperationalView VistaOVOda;
+	private CompleteOperationalView VistaOV;
+	private CompleteOperationalView VistaOVOda;
 	private CompleteOperationalValueType ValorOdaPRIVATE;
 	private LoadCollectionOda LColec;
 	private CompleteTextElementType URLORIGINAL;
@@ -41,34 +43,38 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 	public Grammar_ObjetoVirtual(CompleteCollection completeCollection, LoadCollectionOda L) {
 		AtributoMeta=new CompleteGrammar(NameConstantsOda.VIRTUAL_OBJECTNAME, NameConstantsOda.VIRTUAL_OBJECTNAME,completeCollection);
 		
-		String VistaOV=new String(NameConstantsOda.PRESNTACION); 
+		VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
 		LColec=L;
 		
 		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),VistaOV);
 		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
 		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
 		
-		AtributoMeta.getViews().add(Valor);
-		AtributoMeta.getViews().add(Valor2);
-		AtributoMeta.getViews().add(Valor3);
+		VistaOV.getValues().add(Valor);
+		VistaOV.getValues().add(Valor2);
+		VistaOV.getValues().add(Valor3);
 		
-		String VistaOVMeta=new String(NameConstantsOda.META);
+		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
 
 		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.VIRTUAL_OBJECT,VistaOVMeta);
 		
-		AtributoMeta.getViews().add(ValorMeta);
+		VistaOVMeta.getValues().add(ValorMeta);
 	
 		
-		String VistaOVOda=new String(NameConstantsOda.ODA);
+		VistaOVOda=new CompleteOperationalView(NameConstantsOda.ODA);
 		
 		ValorOdaPUBLIC=new CompleteOperationalValueType(NameConstantsOda.PUBLIC,Boolean.toString(true),VistaOVOda);
 
 		ValorOdaPRIVATE=new CompleteOperationalValueType(NameConstantsOda.PRIVATE,Boolean.toString(false),VistaOVOda);
 
-		AtributoMeta.getViews().add(ValorOdaPUBLIC);
-		AtributoMeta.getViews().add(ValorOdaPRIVATE);
+		VistaOVOda.getValues().add(ValorOdaPUBLIC);
+		VistaOVOda.getValues().add(ValorOdaPRIVATE);
 		
+		AtributoMeta.getViews().add(VistaOVMeta);
 		
+		AtributoMeta.getViews().add(VistaOV);
+		
+		AtributoMeta.getViews().add(VistaOVOda);
 	}
 	
 	
@@ -81,28 +87,32 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 		IDOV=new CompleteTextElementType(NameConstantsOda.IDOVNAME, AtributoMeta);
 		
 		
-		String VistaOV=new String(NameConstantsOda.PRESNTACION); 
+		CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
 		
 		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),VistaOV);
 		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
 		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(true),VistaOV);
 		
-		IDOV.getShows().add(Valor);
-		IDOV.getShows().add(Valor2);
-		IDOV.getShows().add(Valor3);
+		VistaOV.getValues().add(Valor);
+		VistaOV.getValues().add(Valor2);
+		VistaOV.getValues().add(Valor3);
 		
-		String VistaOVMeta=new String(NameConstantsOda.META);
+		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
+
 		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.IDOV,VistaOVMeta);
-		IDOV.getShows().add(ValorMeta);
 		
+		VistaOVMeta.getValues().add(ValorMeta);
 		
-		String VistaOV2=new String(NameConstantsOda.METATYPE);
-		 CompleteOperationalValueType Valor4=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,VistaOV2);
-		 IDOV.getShows().add(Valor4);
+		IDOV.getShows().add(VistaOVMeta);
+		
+		IDOV.getShows().add(VistaOV);
 		
 		AtributoMeta.getSons().add(IDOV);
 		
-		
+		CompleteOperationalView VistaOV2=new CompleteOperationalView(NameConstantsOda.METATYPE);
+		 CompleteOperationalValueType Valor4=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,VistaOV2);
+		 VistaOV2.getValues().add(Valor4);
+		 IDOV.getShows().add(VistaOV2);
 		
 		}
 		
@@ -110,31 +120,34 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 			URLORIGINAL=new CompleteTextElementType(NameConstantsOda.URLORIGINAL, AtributoMeta);
 			
 			
-			String VistaOVMeta=new String(NameConstantsOda.META);
+			CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
 
 			CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.URLORIGINAL,VistaOVMeta);
 			
-			 URLORIGINAL.getShows().add(ValorMeta);
+			VistaOVMeta.getValues().add(ValorMeta);
 			
-
-			String VistaOV=new String(NameConstantsOda.METATYPE);
+			URLORIGINAL.getShows().add(VistaOVMeta);
+			
+			CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.METATYPE);
 			 CompleteOperationalValueType Valor4=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,VistaOV);
-			 URLORIGINAL.getShows().add(Valor4);
-	
+			 VistaOV.getValues().add(Valor4);
+			 URLORIGINAL.getShows().add(VistaOV);
 			
-			 String VistaOV2=new String(NameConstantsOda.META);
+			 CompleteOperationalView VistaOV2=new CompleteOperationalView(NameConstantsOda.META);
 			 CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.IGNORED,VistaOV2);
-			 URLORIGINAL.getShows().add(Valor);
+			 VistaOV2.getValues().add(Valor);
+			 URLORIGINAL.getShows().add(VistaOV2);
 			 
 			
 			AtributoMeta.getSons().add(URLORIGINAL);
 			}
 		
 		
-
-		Recursos=new ElementType_ObjetoVirtual_Resource(null,LColec,AtributoMeta);
+		CompleteIterator I=new CompleteIterator(AtributoMeta);
+		AtributoMeta.getSons().add(I);
+		Recursos=new ElementType_ObjetoVirtual_Resource(I,LColec);
 		Recursos.ProcessAttributes();
-		AtributoMeta.getSons().add(Recursos.getAtributoMeta());
+		I.getSons().add(Recursos.getAtributoMeta());
 		
 
 		
@@ -185,7 +198,7 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 						if (privateT.equals("N"))
 							privado=false;
 						CompleteCollection C=LColec.getCollection().getCollection();
-						CompleteDocuments sectionValue = new CompleteDocuments(C,"","");
+						CompleteDocuments sectionValue = new CompleteDocuments(C,AtributoMeta,"","");
 						C.getEstructuras().add(sectionValue);
 						CompleteTextElement E=new CompleteTextElement(IDOV, id);
 						sectionValue.getDescription().add(E);
@@ -258,22 +271,22 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 
 
 
-//	/**
-//	 * @return the vistaOV
-//	 */
-//	public String getVistaOV() {
-//		return VistaOV;
-//	}
-//
-//
-//	/**
-//	 * @param vistaOV the vistaOV to set
-//	 */
-//	public void setVistaOV(String vistaOV) {
-//		VistaOV = vistaOV;
-//	}
-//
-//	
+	/**
+	 * @return the vistaOV
+	 */
+	public CompleteOperationalView getVistaOV() {
+		return VistaOV;
+	}
+
+
+	/**
+	 * @param vistaOV the vistaOV to set
+	 */
+	public void setVistaOV(CompleteOperationalView vistaOV) {
+		VistaOV = vistaOV;
+	}
+
+	
 	
 	
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fdi.ucm.server.importparser.oda.coleccion.categoria;
+package fdi.ucm.server.importparser.oda.oda2.direct.collection.categoria;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +14,7 @@ import fdi.ucm.server.importparser.oda.InterfaceOdaparser;
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
 import fdi.ucm.server.importparser.oda.StaticFunctionsOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
+import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_ObjetoVirtual_Resource;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
@@ -32,13 +33,15 @@ public class ElementType_NODE implements InterfaceOdaparser {
 	private String Id;
 	private ArrayList<String> Vocabulary;
 	private LoadCollectionOda LColec;
+	private ArrayList<Long> RecursosAfectados;
 
 	
 	public ElementType_NODE(String id, String nombre,
 			String navegable, String visible, String tipo_valores,
-			String vocabulario, CompleteElementType tpadre, boolean summary,LoadCollectionOda L) {
+			String vocabulario, CompleteElementType tpadre, boolean summary,LoadCollectionOda L,ArrayList<Long> recursosAfectados) {
 		
 		LColec=L;
+		RecursosAfectados=recursosAfectados;
 		
 		boolean navegablebool = true;
 		if (navegable.equals("N"))
@@ -187,7 +190,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 					if (nombre!=null&&!nombre.isEmpty()&&tipo_valores!=null&&!tipo_valores.isEmpty()&&((tipo_valores.equals("C")&&vocabulario!=null)||(!(tipo_valores.equals("C")))))
 						{
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec);
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,RecursosAfectados);
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
 						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
@@ -221,7 +224,27 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 	 */
 	private void ProcessVocabulary() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT distinct value FROM controlled_data where idseccion="+Id+";");
+			ResultSet rs;
+			if (RecursosAfectados.isEmpty())
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT distinct value FROM controlled_data where idseccion="+Id+";");
+			else
+			{
+				StringBuffer SB=new StringBuffer();
+				SB.append("(");
+				boolean primer=true;
+				for (Long long1 : RecursosAfectados) {
+					if (!primer)
+						SB.append(",");
+					else
+						primer=false;
+					
+				SB.append(long1);
+						
+				}
+				SB.append(")");
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT distinct value FROM controlled_data where idseccion="+Id+" and idrecurso IN "+SB.toString()+";");
+			}
+			
 			if (rs!=null) 
 			{
 				while (rs.next()) {
@@ -274,7 +297,27 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 
 	private void ProcessInstancesFecha() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM date_data where idseccion="+Id+";");
+			ResultSet rs;
+			if (RecursosAfectados.isEmpty())
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM date_data where idseccion="+Id+";");
+			else
+			{
+				StringBuffer SB=new StringBuffer();
+				SB.append("(");
+				boolean primer=true;
+				for (Long long1 : RecursosAfectados) {
+					if (!primer)
+						SB.append(",");
+					else
+						primer=false;
+					
+				SB.append(long1);
+						
+				}
+				SB.append(")");
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM date_data where idseccion="+Id+" and idrecurso IN "+SB.toString()+";");
+			}
+			
 			if (rs!=null) 
 			{
 				while (rs.next()) {
@@ -363,7 +406,26 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 
 	private void ProcessInstancesControladas() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM controlled_data where idseccion="+Id+";");
+			ResultSet rs;
+			if (RecursosAfectados.isEmpty())
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM controlled_data where idseccion="+Id+";");
+			else
+			{
+				StringBuffer SB=new StringBuffer();
+				SB.append("(");
+				boolean primer=true;
+				for (Long long1 : RecursosAfectados) {
+					if (!primer)
+						SB.append(",");
+					else
+						primer=false;
+					
+				SB.append(long1);
+						
+				}
+				SB.append(")");
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM controlled_data where idseccion="+Id+" and idrecurso IN "+SB.toString()+";");
+			}
 			if (rs!=null) 
 			{
 				while (rs.next()) {
@@ -446,7 +508,26 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 
 	private void ProcessInstancesNumericas() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM numeric_data where idseccion="+Id+";");
+			ResultSet rs;
+			if (RecursosAfectados.isEmpty())
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM numeric_data where idseccion="+Id+";");
+			else
+			{
+				StringBuffer SB=new StringBuffer();
+				SB.append("(");
+				boolean primer=true;
+				for (Long long1 : RecursosAfectados) {
+					if (!primer)
+						SB.append(",");
+					else
+						primer=false;
+					
+				SB.append(long1);
+						
+				}
+				SB.append(")");
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM numeric_data where idseccion="+Id+" and idrecurso IN "+SB.toString()+";");
+			}
 			if (rs!=null) 
 			{
 				while (rs.next()) {
@@ -520,7 +601,26 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 
 	private void ProcessInstancesTexto() {
 		try {
-			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM text_data where idseccion="+Id+";");
+			ResultSet rs;
+			if (RecursosAfectados.isEmpty())
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM text_data where idseccion="+Id+";");
+			else
+			{
+				StringBuffer SB=new StringBuffer();
+				SB.append("(");
+				boolean primer=true;
+				for (Long long1 : RecursosAfectados) {
+					if (!primer)
+						SB.append(",");
+					else
+						primer=false;
+					
+				SB.append(long1);
+						
+				}
+				SB.append(")");
+				rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM text_data where idseccion="+Id+" and idrecurso IN "+SB.toString()+";");
+			}
 			if (rs!=null) 
 			{
 				while (rs.next()) {

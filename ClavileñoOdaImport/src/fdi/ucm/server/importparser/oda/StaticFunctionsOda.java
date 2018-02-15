@@ -7,18 +7,13 @@ package fdi.ucm.server.importparser.oda;
 //import java.nio.CharBuffer;
 //import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
 import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
-import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
-import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 
 /**
  * Clase que genera las funciones estaticas para el sistema Oda1.
@@ -109,6 +104,12 @@ public class StaticFunctionsOda {
 		valor1 = valor1.replace("Ãš", "Ú");
 		valor1 = valor1.replace("Ã±", "ñ");
 		valor1 = valor1.replace("Ã‘", "Ñ");
+		valor1 = valor1.replace("Ã¶", "Ó");
+		valor1 = valor1.replace("Ã¼", "Ó");
+			
+		valor1 = valor1.replace("Â", "");
+		
+		valor1 = valor1.replace("Ã", "í");
 		return valor1;
 	}
 	
@@ -118,14 +119,16 @@ public class StaticFunctionsOda {
 	 * @return
 	 */
 	public static boolean isControled(CompleteElementType attribute) {
-		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
-		for (CompleteOperationalValueType show : Shows) {	
-			if (show.getView().equals(NameConstantsOda.METATYPE))
+		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
+		for (CompleteOperationalView show : Shows) {	
+			if (show.getName().equals(NameConstantsOda.METATYPE))
 			{
-
-					if (show.getName().equals(NameConstantsOda.METATYPETYPE))
-							if (show.getDefault().equals(NameConstantsOda.CONTROLED)) 
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType showValues : ShowValue) {
+					if (showValues.getName().equals(NameConstantsOda.METATYPETYPE))
+							if (showValues.getDefault().equals(NameConstantsOda.CONTROLED)) 
 										return true;
+				}
 			}
 		}
 		return false;
@@ -138,13 +141,16 @@ public class StaticFunctionsOda {
 	 * @return
 	 */
 	public static boolean isDate(CompleteElementType attribute) {
-		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
-		for (CompleteOperationalValueType show : Shows) {	
-			if (show.getView().equals(NameConstantsOda.METATYPE))
+		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
+		for (CompleteOperationalView show : Shows) {	
+			if (show.getName().equals(NameConstantsOda.METATYPE))
 			{
-					if (show.getName().equals(NameConstantsOda.METATYPETYPE))
-							if (show.getDefault().equals(NameConstantsOda.DATE)) 
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType showValues : ShowValue) {
+					if (showValues.getName().equals(NameConstantsOda.METATYPETYPE))
+							if (showValues.getDefault().equals(NameConstantsOda.DATE)) 
 										return true;
+				}
 			}
 		}
 		return false;
@@ -152,124 +158,19 @@ public class StaticFunctionsOda {
 
 	
 	public static boolean isNumeric(CompleteElementType attribute) {
-		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
-		for (CompleteOperationalValueType show : Shows) {	
-			if (show.getView().equals(NameConstantsOda.METATYPE))
+		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
+		for (CompleteOperationalView show : Shows) {	
+			if (show.getName().equals(NameConstantsOda.METATYPE))
 			{
-					if (show.getName().equals(NameConstantsOda.METATYPETYPE))
-							if (show.getDefault().equals(NameConstantsOda.NUMERIC)) 
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType showValues : ShowValue) {
+					if (showValues.getName().equals(NameConstantsOda.METATYPETYPE))
+							if (showValues.getDefault().equals(NameConstantsOda.NUMERIC)) 
 										return true;
+				}
 			}
 		}
 		return false;
-	}
-
-	public static CompleteElementType cloneElement(CompleteElementType aclonar) {
-		aclonar.setMultivalued(true);
-		
-		CompleteElementType nuevo=null;
-		if (aclonar instanceof CompleteTextElementType)
-			nuevo=new CompleteTextElementType(aclonar.getName(),aclonar.getFather() , aclonar.getCollectionFather());
-		if (aclonar instanceof CompleteResourceElementType)
-			nuevo=new CompleteResourceElementType(aclonar.getName(),aclonar.getFather() , aclonar.getCollectionFather());
-		if (aclonar instanceof CompleteLinkElementType)
-			nuevo=new CompleteLinkElementType(aclonar.getName(),aclonar.getFather() , aclonar.getCollectionFather());
-		if (nuevo==null)
-			nuevo=new CompleteElementType(aclonar.getName(),aclonar.getFather() , aclonar.getCollectionFather());
-		
-		nuevo.setMultivalued(aclonar.isMultivalued());
-		nuevo.setBrowseable(aclonar.isBrowseable());
-		nuevo.setCollectionFather(aclonar.getCollectionFather());
-		nuevo.setClassOfIterator(aclonar.getClassOfIterator());
-		if (aclonar.getFather()!=null)
-		{
-		aclonar.getFather().getSons().add(nuevo);
-		nuevo.setFather(aclonar.getFather());
-		}
-		else
-		{
-			aclonar.getCollectionFather().getSons().add(nuevo);
-		}
-		
-		CompleteElementType ultimohermano=aclonar;
-		while (ultimohermano.getBSon()!=null)
-			ultimohermano=ultimohermano.getBSon();
-		
-		ultimohermano.setBSon(nuevo);
-		nuevo.setBFather(ultimohermano);
-		
-		nuevo.setClassOfIterator(aclonar);
-
-		HashSet<CompleteElementType> procesados=new HashSet<CompleteElementType>();
-		
-		for (CompleteElementType iterable_element : aclonar.getSons()) {
-			if (!procesados.contains(iterable_element))
-			{
-			procesados.add(iterable_element);
-			CompleteElementType Hermano=iterable_element;
-			CompleteElementType nuevoHijo = cloneElementintern(iterable_element,nuevo);
-			while (Hermano.getBSon()!=null)
-			{
-				Hermano=Hermano.getBSon();
-				procesados.add(Hermano);
-				CompleteElementType nuevoHijoH = cloneElementintern(Hermano,nuevo);
-				nuevoHijo.setBSon(nuevoHijoH);
-				nuevoHijoH.setBFather(nuevoHijo);
-				nuevoHijo=nuevoHijoH;
-			}
-			
-			}
-		}
-		
-		
-		return nuevo;
-	}
-
-	private static CompleteElementType cloneElementintern(CompleteElementType aclonar, CompleteElementType nuevopadre) {
-		
-		CompleteElementType nuevo=null;
-		if (aclonar instanceof CompleteTextElementType)
-			nuevo=new CompleteTextElementType(aclonar.getName(),nuevopadre , aclonar.getCollectionFather());
-		if (aclonar instanceof CompleteResourceElementType)
-			nuevo=new CompleteResourceElementType(aclonar.getName(),nuevopadre , aclonar.getCollectionFather());
-		if (aclonar instanceof CompleteLinkElementType)
-			nuevo=new CompleteLinkElementType(aclonar.getName(),nuevopadre , aclonar.getCollectionFather());
-		if (nuevo==null)
-			nuevo=new CompleteElementType(aclonar.getName(),nuevopadre , aclonar.getCollectionFather());
-		
-		nuevo.setMultivalued(aclonar.isMultivalued());
-		nuevo.setBrowseable(aclonar.isBrowseable());
-		nuevo.setClassOfIterator(aclonar.getClassOfIterator());
-		nuevopadre.getSons().add(nuevo);
-		nuevo.setCollectionFather(aclonar.getCollectionFather());
-		nuevo.setFather(nuevopadre);
-		
-		HashSet<CompleteElementType> procesados=new HashSet<CompleteElementType>();
-		
-		for (CompleteElementType iterable_element : aclonar.getSons()) {
-			
-			if (!procesados.contains(iterable_element))
-			{
-			procesados.add(iterable_element);
-			CompleteElementType Hermano=iterable_element;
-			CompleteElementType nuevoHijo = cloneElementintern(iterable_element,nuevo);
-			while (Hermano.getBSon()!=null)
-			{
-				Hermano=Hermano.getBSon();
-				procesados.add(Hermano);
-				CompleteElementType nuevoHijoH = cloneElementintern(Hermano,nuevo);
-				nuevoHijo.setBSon(nuevoHijoH);
-				nuevoHijoH.setBFather(nuevoHijo);
-				nuevoHijo=nuevoHijoH;
-			}
-			
-			}
-		}
-		
-		
-		
-		return nuevo;
-		
 	}
 
 	
