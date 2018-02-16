@@ -103,56 +103,45 @@ public class ElementType_NODE implements InterfaceOdaparser {
 			}
 		else if (tipo_valores.equals("F"))
 			{
-			AtributoMeta = new CompleteTextElementType(nombre, tpadre);
-			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
-			CompleteOperationalView VistaMetaType=new CompleteOperationalView(NameConstantsOda.METATYPE);
-			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.DATE,VistaMetaType);
-			VistaMetaType.getValues().add(MetaType);
-			AtributoMeta.getShows().add(VistaMetaType);
+			AtributoMeta = new CompleteTextElementType(nombre, tpadre,CM);
+			AtributoMeta=new CompleteTextElementType(nombre, tpadre,CM);
+			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.DATE,NameConstantsOda.METATYPE);
+			AtributoMeta.getShows().add(MetaType);
 			
 			}
 		else if (tipo_valores.equals("X"))
-			AtributoMeta=new CompleteElementType(nombre, tpadre);
+			AtributoMeta=new CompleteElementType(nombre, tpadre,CM);
 		else if (tipo_valores.equals("T"))
 			{
-			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
-			CompleteOperationalView VistaMetaType=new CompleteOperationalView(NameConstantsOda.METATYPE);
-			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,VistaMetaType);
-			VistaMetaType.getValues().add(MetaType);
-			AtributoMeta.getShows().add(VistaMetaType);
+			AtributoMeta=new CompleteTextElementType(nombre, tpadre,CM);
+			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,NameConstantsOda.METATYPE);
+			AtributoMeta.getShows().add(MetaType);
 			}
 		else if (tipo_valores.equals("N"))
 			{
-			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
-			CompleteOperationalView VistaMetaType=new CompleteOperationalView(NameConstantsOda.METATYPE);
-			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.NUMERIC,VistaMetaType);
-			VistaMetaType.getValues().add(MetaType);
-			AtributoMeta.getShows().add(VistaMetaType);
+			AtributoMeta=new CompleteTextElementType(nombre, tpadre,CM);
+			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.NUMERIC,NameConstantsOda.METATYPE);
+			AtributoMeta.getShows().add(MetaType);
 			}
-		else AtributoMeta=new CompleteElementType(nombre, tpadre);
+		else AtributoMeta=new CompleteElementType(nombre, tpadre,CM);
 		
 		
-CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
 		
-		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(visiblebool),VistaOV);
-		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(navegablebool),VistaOV);
-		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(summary),VistaOV);
+		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(visiblebool),NameConstantsOda.PRESNTACION);
+		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(navegablebool),NameConstantsOda.PRESNTACION);
+		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(summary),NameConstantsOda.PRESNTACION);
 		
-		VistaOV.getValues().add(Valor);
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor3);
+		AtributoMeta.getShows().add(Valor);
+		AtributoMeta.getShows().add(Valor2);
+		AtributoMeta.getShows().add(Valor3);
 
 		
-CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.ODA); 
 		
-		CompleteOperationalValueType ValorO=new CompleteOperationalValueType(NameConstantsOda.OdaID,Id,VistaOda);
+		CompleteOperationalValueType ValorO=new CompleteOperationalValueType(NameConstantsOda.OdaID,Id,NameConstantsOda.ODA);
 
 		
-		VistaOV.getValues().add(ValorO);
+		AtributoMeta.getShows().add(ValorO);
 
-		
-		AtributoMeta.getShows().add(VistaOV);
-		
 	}
 
 	/* (non-Javadoc)
@@ -186,7 +175,7 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 					if (nombre!=null&&!nombre.isEmpty()&&tipo_valores!=null&&!tipo_valores.isEmpty()&&((tipo_valores.equals("C")&&vocabulario!=null)||(!(tipo_valores.equals("C")))))
 						{
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec);
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,CM);
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
 						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
@@ -310,23 +299,25 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 							CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
 
 							MTV.setDocumentsFather(C);
-							if (IdRecurso!=null)
-							{
 							
-								int RecursoIntId = Integer.parseInt(IdRecurso);
-								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
-								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
-								if (AmbitoAsociado!=null)
-								{
-								Ambitos.add(AmbitoAsociado);
-								MTV.setAmbitos(Ambitos);
-								C.getDescription().add(MTV);
-								}
-							else 
-								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
-
-
-							}else
+							//TODO Anulado
+//							if (IdRecurso!=null)
+//							{
+//							
+//								int RecursoIntId = Integer.parseInt(IdRecurso);
+//								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
+//								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
+//								if (AmbitoAsociado!=null)
+//								{
+//								Ambitos.add(AmbitoAsociado);
+//								MTV.setAmbitos(Ambitos);
+//								C.getDescription().add(MTV);
+//								}
+//							else 
+//								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
+//
+//
+//							}else
 								C.getDescription().add(MTV);
 							
 							} catch (Exception e) {
@@ -400,23 +391,24 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
 						MTV.setDocumentsFather(C);
 						
-						if (IdRecurso!=null)
-							{
-							
-								int RecursoIntId = Integer.parseInt(IdRecurso);
-								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
-								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
-								if (AmbitoAsociado!=null)
-									{
-									Ambitos.add(AmbitoAsociado);
-									MTV.setAmbitos(Ambitos);
-									C.getDescription().add(MTV);
-									}
-								else 
-									LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
-
-							
-							}else
+						//TODO Anulado
+//						if (IdRecurso!=null)
+//							{
+//							
+//								int RecursoIntId = Integer.parseInt(IdRecurso);
+//								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
+//								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
+//								if (AmbitoAsociado!=null)
+//									{
+//									Ambitos.add(AmbitoAsociado);
+//									MTV.setAmbitos(Ambitos);
+//									C.getDescription().add(MTV);
+//									}
+//								else 
+//									LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
+//
+//							
+//							}else
 								C.getDescription().add(MTV);
 						
 						} catch (Exception e) {
@@ -474,22 +466,23 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
 						MTV.setDocumentsFather(C);
 						
-						if (IdRecurso!=null)
-						{
-						
-							int RecursoIntId = Integer.parseInt(IdRecurso);
-							Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
-							ArrayList<Integer> Ambitos=new ArrayList<Integer>();
-							if (AmbitoAsociado!=null)
-								{
-								Ambitos.add(AmbitoAsociado);
-								MTV.setAmbitos(Ambitos);
-								C.getDescription().add(MTV);
-								}
-							else 
-								LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
-							
-						}else
+						//TODO Anulado
+//						if (IdRecurso!=null)
+//						{
+//						
+//							int RecursoIntId = Integer.parseInt(IdRecurso);
+//							Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
+//							ArrayList<Integer> Ambitos=new ArrayList<Integer>();
+//							if (AmbitoAsociado!=null)
+//								{
+//								Ambitos.add(AmbitoAsociado);
+//								MTV.setAmbitos(Ambitos);
+//								C.getDescription().add(MTV);
+//								}
+//							else 
+//								LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
+//							
+//						}else
 							C.getDescription().add(MTV);
 						
 						} catch (Exception e) {
@@ -550,26 +543,28 @@ CompleteOperationalView VistaOda=new CompleteOperationalView(NameConstantsOda.OD
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
 
 						MTV.setDocumentsFather(C);
-						if (IdRecurso!=null)
-						{
-							
-								int RecursoIntId = Integer.parseInt(IdRecurso);
-								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
-								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
-								if (AmbitoAsociado!=null)
-									{
-									Ambitos.add(AmbitoAsociado);
-									MTV.setAmbitos(Ambitos);
-									C.getDescription().add(MTV);
-									}
-								else 
-									LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
-
-								
-								
-							
-						}
-						else
+						
+						//TODO Anulado
+//						if (IdRecurso!=null)
+//						{
+//							
+//								int RecursoIntId = Integer.parseInt(IdRecurso);
+//								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
+//								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
+//								if (AmbitoAsociado!=null)
+//									{
+//									Ambitos.add(AmbitoAsociado);
+//									MTV.setAmbitos(Ambitos);
+//									C.getDescription().add(MTV);
+//									}
+//								else 
+//									LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
+//
+//								
+//								
+//							
+//						}
+//						else
 							C.getDescription().add(MTV);
 						
 						} catch (Exception e) {

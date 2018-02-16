@@ -13,7 +13,6 @@ import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 
 /**
  * Clase que define la carga de los datos recurso
@@ -25,28 +24,26 @@ public class ElementType_Metadatos implements InterfaceOdaparser{
 	
 	private CompleteElementType AtributoMeta;
 	private LoadCollectionOda LColec;
+	private CompleteGrammar Padre;
 
 
 	public ElementType_Metadatos(CompleteGrammar Padre,LoadCollectionOda L) {
 
 		AtributoMeta=new CompleteElementType(NameConstantsOda.METADATOSNAME, Padre);
 		LColec=L;
+		this.Padre=Padre;
 		
-CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
 		
-		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),VistaOV);
-		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
-		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
-		VistaOV.getValues().add(Valor);
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor3);
+		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),NameConstantsOda.PRESNTACION);
+		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
+		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
+		AtributoMeta.getShows().add(Valor);
+		AtributoMeta.getShows().add(Valor2);
+		AtributoMeta.getShows().add(Valor3);
 		
-		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
-		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.METADATOS,VistaOVMeta);
-		VistaOVMeta.getValues().add(ValorMeta);
-		AtributoMeta.getShows().add(VistaOVMeta);
-		
-		AtributoMeta.getShows().add(VistaOV);
+		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.METADATOS,NameConstantsOda.META);
+		AtributoMeta.getShows().add(ValorMeta);
+
 	}
 
 	@Override
@@ -80,7 +77,7 @@ CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRE
 						nombre=nombre.trim();
 						nombre = StaticFunctionsOda.CleanStringFromDatabase(nombre,LColec);
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec);
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,Padre);
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
 						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
