@@ -17,8 +17,8 @@ import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
@@ -32,14 +32,15 @@ public class ElementType_NODE implements InterfaceOdaparser {
 	private String Id;
 	private ArrayList<String> Vocabulary;
 	private LoadCollectionOda LColec;
+	private CompleteGrammar CM;
 
 	
 	public ElementType_NODE(String id, String nombre,
 			String navegable, String visible, String tipo_valores,
-			String vocabulario, CompleteElementType tpadre, boolean summary,LoadCollectionOda L) {
+			String vocabulario, CompleteElementType tpadre, boolean summary,LoadCollectionOda L, CompleteGrammar Cm) {
 		
 		LColec=L;
-		
+		CM=Cm;
 		boolean navegablebool = true;
 		if (navegable.equals("N"))
 			navegablebool=false;
@@ -55,12 +56,10 @@ public class ElementType_NODE implements InterfaceOdaparser {
 		
 		if (tipo_valores.equals("C"))
 			{
-			AtributoMeta = new CompleteTextElementType(nombre, tpadre);
-			AtributoMeta=new CompleteTextElementType(nombre, tpadre);
-			CompleteOperationalView VistaMetaType=new CompleteOperationalView(NameConstantsOda.METATYPE);
-			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.CONTROLED,VistaMetaType);
-			VistaMetaType.getValues().add(MetaType);
-			AtributoMeta.getShows().add(VistaMetaType);
+			AtributoMeta = new CompleteTextElementType(nombre, tpadre,CM);
+			AtributoMeta=new CompleteTextElementType(nombre, tpadre,CM);
+			CompleteOperationalValueType MetaType=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.CONTROLED,NameConstantsOda.METATYPE);
+			AtributoMeta.getShows().add(MetaType);
 			if (vocabulario != null) {
 				Integer Voc = Integer.parseInt(vocabulario);
 				if (Voc == 1 || Voc == 0) {

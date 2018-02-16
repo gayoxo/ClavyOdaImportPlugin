@@ -12,7 +12,6 @@ import java.util.List;
 import fdi.ucm.server.importparser.oda.InterfaceOdaparser;
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
-import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_ObjetoVirtual_Resource;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
@@ -30,7 +29,8 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 
 	private CompleteGrammar AtributoMeta;
 	private CompleteTextElementType IDOV;
-	private ElementType_ObjetoVirtual_Resource Recursos;
+//	TODO anulado
+//	private ElementType_ObjetoVirtual_Resource Recursos;
 	private CompleteOperationalValueType ValorOdaPUBLIC;
 //	private HashMap<Integer, Element> ObjetoVirtualMetaValueAsociado;
 	private List<CompleteOperationalValueType> VistaOV;
@@ -131,10 +131,10 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 		
 		
 
-
-		Recursos=new ElementType_ObjetoVirtual_Resource(AtributoMeta,LColec);
-		Recursos.ProcessAttributes();
-		AtributoMeta.getSons().add(Recursos.getAtributoMeta());
+//TODO Anulado
+//		Recursos=new ElementType_ObjetoVirtual_Resource(AtributoMeta,LColec);
+//		Recursos.ProcessAttributes();
+//		AtributoMeta.getSons().add(Recursos.getAtributoMeta());
 		
 
 		
@@ -148,7 +148,8 @@ public class Grammar_ObjetoVirtual implements InterfaceOdaparser {
 	@Override
 	public void ProcessInstances() {
 		OwnInstances();
-		Recursos.ProcessInstances();
+//TODO Anulado
+//		Recursos.ProcessInstances();
 
 	}
 

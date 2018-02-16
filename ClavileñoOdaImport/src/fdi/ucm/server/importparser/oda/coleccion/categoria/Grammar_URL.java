@@ -5,6 +5,8 @@ package fdi.ucm.server.importparser.oda.coleccion.categoria;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import fdi.ucm.server.importparser.oda.InterfaceOdaparser;
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
@@ -17,7 +19,6 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementU
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
 
 /**
@@ -30,7 +31,7 @@ public class Grammar_URL implements InterfaceOdaparser {
 	private CompleteGrammar AtributoMeta;
 //	private MetaText PATH;
 	private CompleteResourceElementType PathF;
-	private CompleteOperationalView VistaOV;
+	private List<CompleteOperationalValueType> VistaOV;
 	private LoadCollectionOda LColec;
 	private static CompleteLinkElementType OWNER;
 	
@@ -38,24 +39,28 @@ public class Grammar_URL implements InterfaceOdaparser {
 		AtributoMeta=new CompleteGrammar(NameConstantsOda.URL, NameConstantsOda.FILENAME,completeCollection);
 		LColec=L;
 		
-		VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
+		VistaOV=new ArrayList<CompleteOperationalValueType>(); 
 		
-		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),VistaOV);
-		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
-		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
-		VistaOV.getValues().add(Valor);
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor3);
+		CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),NameConstantsOda.PRESNTACION);
+		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
+		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
 		
-		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
 		
-		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.URL,VistaOVMeta);
+		VistaOV.add(Valor);
+		VistaOV.add(Valor2);
+		VistaOV.add(Valor3);
 		
-		VistaOVMeta.getValues().add(ValorMeta);
+		AtributoMeta.getViews().add(Valor);
+		AtributoMeta.getViews().add(Valor2);
+		AtributoMeta.getViews().add(Valor3);
 		
-		AtributoMeta.getViews().add(VistaOVMeta);
+
 		
-		AtributoMeta.getViews().add(VistaOV);
+		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.URL,NameConstantsOda.META);
+		
+		AtributoMeta.getViews().add(ValorMeta);
+		
+
 	}
 	
 	
@@ -71,22 +76,20 @@ public class Grammar_URL implements InterfaceOdaparser {
 			PathF=new CompleteResourceElementType(NameConstantsOda.URI, AtributoMeta);
 			AtributoMeta.getSons().add(PathF);
 			
-			CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
+
 			
-			CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),VistaOV);
-			CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
-			CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
+			CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),NameConstantsOda.PRESNTACION);
+			CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
+			CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
 			
-			VistaOV.getValues().add(Valor);
-			VistaOV.getValues().add(Valor2);
-			VistaOV.getValues().add(Valor3);
+			PathF.getShows().add(Valor);
+			PathF.getShows().add(Valor2);
+			PathF.getShows().add(Valor3);
+
+			CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.URI,NameConstantsOda.META);
+			PathF.getShows().add(ValorMeta);
 			
-			CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
-			CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.URI,VistaOV);
-			VistaOVMeta.getValues().add(ValorMeta);
-			
-			PathF.getShows().add(VistaOVMeta);
-			PathF.getShows().add(VistaOV);
+
 			}
 	}
 
@@ -124,7 +127,7 @@ public class Grammar_URL implements InterfaceOdaparser {
 							
 							
 //							sectionValue.setIcon(sectionValue);
-							CompleteDocuments sectionValue=new CompleteDocuments(C,AtributoMeta,name,name);
+							CompleteDocuments sectionValue=new CompleteDocuments(C,name,name);
 							
 							
 							C.getEstructuras().add(sectionValue);

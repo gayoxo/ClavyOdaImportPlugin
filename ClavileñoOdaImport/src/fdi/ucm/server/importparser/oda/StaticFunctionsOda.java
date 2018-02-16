@@ -13,7 +13,6 @@ import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
 import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 
 /**
  * Clase que genera las funciones estaticas para el sistema Oda1.
@@ -119,17 +118,12 @@ public class StaticFunctionsOda {
 	 * @return
 	 */
 	public static boolean isControled(CompleteElementType attribute) {
-		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
-		for (CompleteOperationalView show : Shows) {	
-			if (show.getName().equals(NameConstantsOda.METATYPE))
-			{
-				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
-				for (CompleteOperationalValueType showValues : ShowValue) {
-					if (showValues.getName().equals(NameConstantsOda.METATYPETYPE))
-							if (showValues.getDefault().equals(NameConstantsOda.CONTROLED)) 
+		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
+		for (CompleteOperationalValueType show : Shows) {	
+			if (show.getView().equals(NameConstantsOda.METATYPE))
+					if (show.getName().equals(NameConstantsOda.METATYPETYPE))
+							if (show.getDefault().equals(NameConstantsOda.CONTROLED)) 
 										return true;
-				}
-			}
 		}
 		return false;
 	}
@@ -141,37 +135,30 @@ public class StaticFunctionsOda {
 	 * @return
 	 */
 	public static boolean isDate(CompleteElementType attribute) {
-		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
-		for (CompleteOperationalView show : Shows) {	
-			if (show.getName().equals(NameConstantsOda.METATYPE))
-			{
-				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
-				for (CompleteOperationalValueType showValues : ShowValue) {
-					if (showValues.getName().equals(NameConstantsOda.METATYPETYPE))
-							if (showValues.getDefault().equals(NameConstantsOda.DATE)) 
+		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
+		for (CompleteOperationalValueType show : Shows) {	
+			if (show.getView().equals(NameConstantsOda.METATYPE))
+					if (show.getName().equals(NameConstantsOda.METATYPETYPE))
+							if (show.getDefault().equals(NameConstantsOda.DATE)) 
 										return true;
-				}
-			}
+
 		}
 		return false;
 	}
 
 	
 	public static boolean isNumeric(CompleteElementType attribute) {
-		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
-		for (CompleteOperationalView show : Shows) {	
-			if (show.getName().equals(NameConstantsOda.METATYPE))
-			{
-				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
-				for (CompleteOperationalValueType showValues : ShowValue) {
-					if (showValues.getName().equals(NameConstantsOda.METATYPETYPE))
-							if (showValues.getDefault().equals(NameConstantsOda.NUMERIC)) 
+		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
+		for (CompleteOperationalValueType show : Shows) {	
+			if (show.getView().equals(NameConstantsOda.METATYPE))
+					if (show.getName().equals(NameConstantsOda.METATYPETYPE))
+							if (show.getDefault().equals(NameConstantsOda.NUMERIC)) 
 										return true;
-				}
-			}
+
 		}
 		return false;
 	}
+
 
 	
 
