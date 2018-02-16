@@ -17,10 +17,9 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
@@ -32,11 +31,11 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 
 	protected CompleteElementType AtributoMeta;
 	protected CompleteTextElementType ID;
-	protected CompleteIterator IteradorPadre;
 	protected CompleteOperationalValueType Valor;
 	protected CompleteOperationalValueType Valor2;
 	protected LoadCollectionOda LColec;
 	protected HashMap<Integer, Integer> Ambitos;
+	private CompleteGrammar PadreGrammar;
 	protected static HashMap<Integer, Integer> AmbitosResource;
 	
 	
@@ -45,31 +44,29 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 			AmbitosResource=new HashMap<Integer, Integer>();
 	}
 	
-	public ElementType_ObjetoVirtual_Resource(CompleteIterator I,LoadCollectionOda L) {
+	public ElementType_ObjetoVirtual_Resource(CompleteGrammar padre,LoadCollectionOda L) {
 		if (AmbitosResource==null)
 			AmbitosResource=new HashMap<Integer, Integer>();
-		IteradorPadre=I;
-		AtributoMeta=new CompleteLinkElementType(NameConstantsOda.RESOURCENAME,I);
+		PadreGrammar=padre;
+		AtributoMeta=new CompleteLinkElementType(NameConstantsOda.RESOURCENAME,padre);
+		AtributoMeta.setMultivalued(true);
 		LColec=L;
 		
-		CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
 		
-		Valor2=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),VistaOV);
-		CompleteOperationalValueType Valor4=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
-		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
+		Valor2=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),NameConstantsOda.PRESNTACION);
+		CompleteOperationalValueType Valor4=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
+		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
 		
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor4);
-		VistaOV.getValues().add(Valor3);
+		AtributoMeta.getShows().add(Valor2);
+		AtributoMeta.getShows().add(Valor4);
+		AtributoMeta.getShows().add(Valor3);
 		
-		CompleteOperationalView VistaOVMeta=new CompleteOperationalView(NameConstantsOda.META);
 
-		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.RESOURCE,VistaOV);
-		VistaOVMeta.getValues().add(ValorMeta);
+
+		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.RESOURCE,NameConstantsOda.META);
+		AtributoMeta.getShows().add(ValorMeta);
 		
-		AtributoMeta.getShows().add(VistaOVMeta);
-		
-		AtributoMeta.getShows().add(VistaOV);
+
 	}
 	
 	/* (non-Javadoc)
@@ -78,24 +75,20 @@ public class ElementType_ObjetoVirtual_Resource implements InterfaceOdaparser {
 	@Override
 	public void ProcessAttributes() {
 		{
-		ID=new CompleteTextElementType(NameConstantsOda.IDNAME, AtributoMeta);
+		ID=new CompleteTextElementType(NameConstantsOda.IDNAME, AtributoMeta,PadreGrammar);
 		AtributoMeta.getSons().add(ID);
 		
-		CompleteOperationalView VistaOV=new CompleteOperationalView(NameConstantsOda.PRESNTACION); 
+		Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),NameConstantsOda.PRESNTACION);
+		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
+		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
 		
-		Valor=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),VistaOV);
-		CompleteOperationalValueType Valor2=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),VistaOV);
-		CompleteOperationalValueType Valor3=new CompleteOperationalValueType(NameConstantsOda.SUMMARYSHOWN,Boolean.toString(false),VistaOV);
+		ID.getShows().add(Valor);
+		ID.getShows().add(Valor2);
+		ID.getShows().add(Valor3);
 		
-		VistaOV.getValues().add(Valor);
-		VistaOV.getValues().add(Valor2);
-		VistaOV.getValues().add(Valor3);
-		ID.getShows().add(VistaOV);
-		
-		CompleteOperationalView VistaOV2=new CompleteOperationalView(NameConstantsOda.META);
-		 CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.IGNORED,VistaOV2);
-		 VistaOV2.getValues().add(Valor);
-		 ID.getShows().add(VistaOV2);
+
+		 CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.IGNORED,NameConstantsOda.META);
+		 ID.getShows().add(Valor);
 		}
 
 		

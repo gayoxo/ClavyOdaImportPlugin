@@ -15,9 +15,7 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
@@ -33,8 +31,8 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 	private ElementType_ObjetoVirtual_Resource_Direct_FILES_URL Recursos2;
 	private CompleteOperationalValueType ValorOdaPUBLIC;
 //	private HashMap<Integer, Element> ObjetoVirtualMetaValueAsociado;
-	private CompleteOperationalView VistaOV;
-	private CompleteOperationalView VistaOVOda;
+	private List<CompleteOperationalView> VistaOV;
+	private List<CompleteOperationalView> VistaOVOda;
 	private CompleteOperationalValueType ValorOdaPRIVATE;
 	private LoadCollectionOda LColec;
 	private CompleteTextElementType URLORIGINAL;
