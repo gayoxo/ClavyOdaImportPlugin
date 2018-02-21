@@ -28,6 +28,47 @@ public class LoadCollectionOda2Direct extends LoadCollectionOda{
 	private String BaseURLOdaSimple;
 
 
+public static void main(String[] args) {
+//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Server"));
+//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Database"));
+//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Number, "Port"));
+//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "User"));
+//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.EncriptedText, "Password"));
+//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Convert to UTF-8"));
+//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Oda base url for files (if need it, ej: http://<Server Name>/Oda)",true));
+//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Clone local files to Clavy",true));
+	
+	ArrayList<String> DateEntrada=new ArrayList<String>();
+	DateEntrada.add("localhost");
+	DateEntrada.add("odalimpia");
+	DateEntrada.add("3306");
+	DateEntrada.add("root");
+	DateEntrada.add("");
+	DateEntrada.add("false");
+	DateEntrada.add("");
+	DateEntrada.add("false");
+
+	LoadCollectionOda LC=new LoadCollectionOda2Direct();
+	CompleteCollectionAndLog Salida=LC.processCollecccion(DateEntrada);
+	if (Salida!=null)
+		{
+		
+		System.out.println("Correcto");
+		
+		for (String warning : Salida.getLogLines())
+			System.err.println(warning);
+
+		
+		System.exit(0);
+		
+		}
+	else
+		{
+		System.err.println("Error");
+		System.exit(-1);
+		}
+}
+
 
 
 	@Override

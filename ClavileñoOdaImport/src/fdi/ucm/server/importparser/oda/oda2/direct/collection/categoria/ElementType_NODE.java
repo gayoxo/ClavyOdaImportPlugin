@@ -346,7 +346,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 							MTV.setDocumentsFather(C);
 							
 							
-//							//TODO ANULADO
+
 //							if (IdRecurso!=null)
 //							{
 //							
