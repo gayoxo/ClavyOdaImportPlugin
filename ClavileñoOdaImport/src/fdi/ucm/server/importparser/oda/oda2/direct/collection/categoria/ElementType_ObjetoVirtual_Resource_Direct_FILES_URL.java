@@ -27,6 +27,7 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 
 
+
 /**
  * Implementa el atributo de los recursos en los Objetos Virtuales
  * @author Joaquin Gayoso-Cabada
@@ -37,11 +38,18 @@ public class ElementType_ObjetoVirtual_Resource_Direct_FILES_URL extends Element
 	private ArrayList<Long> idsOV=new ArrayList<Long>();
 	protected HashMap<Integer, List<CompleteResourceElementType>> numActivos;
 	protected List<CompleteResourceElementType> numTotales;
+	private HashMap<Long, CompleteElementType> CompleteAsociado;
+	
+	private HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> CompleteAsociadoTabla;
 	
 	public ElementType_ObjetoVirtual_Resource_Direct_FILES_URL(CompleteGrammar gramaPa,LoadCollectionOda L) {
 		super();
 		PadreGrammar=gramaPa;
 		AtributoMeta=new CompleteResourceElementType(NameConstantsOda.RESOURCENAME,gramaPa);
+		AtributoMeta.setMultivalued(true);
+		
+		CompleteAsociado=new HashMap<Long, CompleteElementType>();
+		CompleteAsociadoTabla=new HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>>();
 		
 		numTotales=new ArrayList<CompleteResourceElementType>();
 		numActivos=new HashMap<Integer, List<CompleteResourceElementType>>();
@@ -50,6 +58,13 @@ public class ElementType_ObjetoVirtual_Resource_Direct_FILES_URL extends Element
 		LColec=L;
 		idsOV=new ArrayList<Long>();
 		
+		
+		
+		HashMap<CompleteElementType, CompleteElementType> noexiste = CompleteAsociadoTabla.get(AtributoMeta);
+		if (noexiste==null)
+			noexiste=new HashMap<CompleteElementType, CompleteElementType>();
+		noexiste.put(AtributoMeta, AtributoMeta);
+		CompleteAsociadoTabla.put(AtributoMeta, noexiste);
 		
 		Valor2=new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),NameConstantsOda.PRESNTACION);
 		CompleteOperationalValueType Valor4=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
@@ -167,6 +182,11 @@ List<CompleteResourceElementType> Actuales = numActivos.get(Idov);
 							
 							numActivos.put(Idov, Actuales);
 							
+							Long Idl=Long.parseLong(id);
+							idsOV.add(Idl);
+							
+							CompleteAsociado.put(Idl, mio);
+							
 							boolean Visiblebool=true;
 							if (Visible.equals("N"))
 								Visiblebool=false;
@@ -217,6 +237,7 @@ List<CompleteResourceElementType> Actuales = numActivos.get(Idov);
 		CompleteResourceElementType AtributoMeta2 = new CompleteResourceElementType(NameConstantsOda.RESOURCENAME,PadreGrammar);
 		numTotales.add(AtributoMeta2);
 		AtributoMeta2.setClassOfIterator(AtributoMeta);
+		AtributoMeta2.setMultivalued(true);
 		
 		CompleteOperationalValueType Valor23 = new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),NameConstantsOda.PRESNTACION);
 		CompleteOperationalValueType Valor43=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
@@ -248,6 +269,14 @@ List<CompleteResourceElementType> Actuales = numActivos.get(Idov);
 			 CompleteOperationalValueType Valor42=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.IGNORED,NameConstantsOda.META);
 			 ID2.getShows().add(Valor42);
 			}
+		
+		PadreGrammar.getSons().add(AtributoMeta2);
+		
+		HashMap<CompleteElementType, CompleteElementType> noexiste = CompleteAsociadoTabla.get(AtributoMeta2);
+		if (noexiste==null)
+			noexiste=new HashMap<CompleteElementType, CompleteElementType>();
+		noexiste.put(AtributoMeta, AtributoMeta2);
+		CompleteAsociadoTabla.put(AtributoMeta2, noexiste);
 		
 	}
 
@@ -283,10 +312,49 @@ List<CompleteResourceElementType> Actuales = numActivos.get(Idov);
 						nombre=nombre.trim();
 						nombre = StaticFunctionsOda.CleanStringFromDatabase(nombre,LColec);
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,idsOV,PadreGrammar);
+						ArrayList<CompleteResourceElementType> parsear = new ArrayList<CompleteResourceElementType>(numTotales);
+						parsear.remove(AtributoMeta);
+						
+						
+						ArrayList<CompleteElementType> Hermanos=new ArrayList<CompleteElementType>();
+						
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,idsOV,PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+						CompleteElementType nodeattr = Nodo.getAtributoMeta();
+						Hermanos.add(nodeattr);
+						AtributoMeta.getSons().add(nodeattr);
+						
+						HashMap<CompleteElementType, CompleteElementType> noexiste = CompleteAsociadoTabla.get(AtributoMeta);
+						if (noexiste==null)
+							noexiste=new HashMap<CompleteElementType, CompleteElementType>();
+						noexiste.put(nodeattr, nodeattr);
+						CompleteAsociadoTabla.put(AtributoMeta, noexiste);
+						
+						for (CompleteResourceElementType AtributoMeta2 : parsear) {
+							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,idsOV,PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+							CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
+							nodeattr2.setClassOfIterator(nodeattr);
+							AtributoMeta2.getSons().add(nodeattr2);
+							Hermanos.add(nodeattr2);
+							
+							HashMap<CompleteElementType, CompleteElementType> noexiste2 = CompleteAsociadoTabla.get(AtributoMeta);
+							if (noexiste2==null)
+								noexiste2=new HashMap<CompleteElementType, CompleteElementType>();
+							noexiste2.put(nodeattr, nodeattr2);
+							CompleteAsociadoTabla.put(AtributoMeta, noexiste2);
+						}
+						
+						
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
-						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
+						
+//						
+//						
+//						//TODO ESTO ES UN POCO MAS COMPLEJO
+//						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,idsOV,PadreGrammar,CompleteAsociado);
+//						
+//						Nodo.ProcessAttributes();
+//						Nodo.ProcessInstances();
+//						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
 						}
 					else
 						{
@@ -398,7 +466,9 @@ StringBuffer SB=new StringBuffer();
 							if (Visible.equals("N"))
 								Visiblebool=false;
 							
-
+							
+							
+							
 							//TODO 
 //							LColec.getCollection().getFilesId().put(id,FileC);
 							
@@ -417,7 +487,7 @@ StringBuffer SB=new StringBuffer();
 							Long Idl=Long.parseLong(id);
 							idsOV.add(Idl);
 							
-						
+							CompleteAsociado.put(Idl, mio);
 						
 					
 						}
@@ -526,6 +596,7 @@ StringBuffer SB=new StringBuffer();
 									Visiblebool=false;
 								
 
+								
 								//TODO 
 //								LColec.getCollection().getFilesId().put(id,FileC);
 								
@@ -544,6 +615,8 @@ StringBuffer SB=new StringBuffer();
 								Long Idl=Long.parseLong(id);
 								idsOV.add(Idl);
 							
+								CompleteAsociado.put(Idl, mio);
+								
 							if (iconoOV.equals("S"))
 								OVirtual.setIcon(FileC.getPath());
 

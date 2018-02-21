@@ -608,6 +608,7 @@ List<CompleteLinkElementType> Actuales = numActivos.get(Idov);
 		CompleteLinkElementType AtributoMeta2 = new CompleteLinkElementType(NameConstantsOda.RESOURCENAME,PadreGrammar);
 		numTotales.add(AtributoMeta2);
 		AtributoMeta2.setClassOfIterator(AtributoMeta);
+		AtributoMeta2.setMultivalued(true);
 		
 		CompleteOperationalValueType Valor23 = new CompleteOperationalValueType(NameConstantsOda.VISIBLESHOWN,Boolean.toString(true),NameConstantsOda.PRESNTACION);
 		CompleteOperationalValueType Valor43=new CompleteOperationalValueType(NameConstantsOda.BROWSERSHOWN,Boolean.toString(false),NameConstantsOda.PRESNTACION);
@@ -639,6 +640,9 @@ List<CompleteLinkElementType> Actuales = numActivos.get(Idov);
 			 CompleteOperationalValueType Valor42=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.IGNORED,NameConstantsOda.META);
 			 ID2.getShows().add(Valor42);
 			}
+		
+		
+		PadreGrammar.getSons().add(AtributoMeta2);
 		
 	}
 

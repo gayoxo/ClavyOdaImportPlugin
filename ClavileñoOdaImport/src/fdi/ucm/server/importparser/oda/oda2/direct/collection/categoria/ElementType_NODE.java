@@ -9,16 +9,17 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import fdi.ucm.server.importparser.oda.InterfaceOdaparser;
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
 import fdi.ucm.server.importparser.oda.StaticFunctionsOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
-import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_ObjetoVirtual_Resource;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
@@ -35,15 +36,21 @@ public class ElementType_NODE implements InterfaceOdaparser {
 	private LoadCollectionOda LColec;
 	private ArrayList<Long> RecursosAfectados;
 	private CompleteGrammar CM;
+	private HashMap<Long, CompleteElementType> CompleteAsociado;
+	private HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> CompleteAsociadoTabla;
+	private ArrayList<CompleteElementType> Hermanos;
 
 	
 	public ElementType_NODE(String id, String nombre,
 			String navegable, String visible, String tipo_valores,
-			String vocabulario, CompleteElementType tpadre, boolean summary,LoadCollectionOda L,ArrayList<Long> recursosAfectados, CompleteGrammar Cm) {
+			String vocabulario, CompleteElementType tpadre, boolean summary,LoadCollectionOda L,ArrayList<Long> recursosAfectados, CompleteGrammar Cm, HashMap<Long, CompleteElementType> completeAsociado, HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> completeAsociadoTabla, ArrayList<CompleteElementType> hermanos) {
 		
 		CM=Cm;
 		LColec=L;
 		RecursosAfectados=recursosAfectados;
+		CompleteAsociado=completeAsociado;
+		CompleteAsociadoTabla=completeAsociadoTabla;
+		Hermanos=hermanos;
 		
 		boolean navegablebool = true;
 		if (navegable.equals("N"))
@@ -180,10 +187,42 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					if (nombre!=null&&!nombre.isEmpty()&&tipo_valores!=null&&!tipo_valores.isEmpty()&&((tipo_valores.equals("C")&&vocabulario!=null)||(!(tipo_valores.equals("C")))))
 						{
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,RecursosAfectados,CM);
+						ArrayList<CompleteElementType> parsear = new ArrayList<CompleteElementType>(Hermanos);
+						parsear.remove(AtributoMeta);
+						
+						ArrayList<CompleteElementType> Hermanosint=new ArrayList<CompleteElementType>();
+						
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,RecursosAfectados,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+						CompleteElementType nodeattr = Nodo.getAtributoMeta();
+						Hermanosint.add(nodeattr);
+						AtributoMeta.getSons().add(nodeattr);
+						
+						HashMap<CompleteElementType, CompleteElementType> noexiste = CompleteAsociadoTabla.get(AtributoMeta);
+						if (noexiste==null)
+							noexiste=new HashMap<CompleteElementType, CompleteElementType>();
+						noexiste.put(nodeattr, nodeattr);
+						CompleteAsociadoTabla.put(AtributoMeta, noexiste);
+						
+						for (CompleteElementType AtributoMeta2 : parsear) {
+							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,RecursosAfectados,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+							CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
+							nodeattr2.setClassOfIterator(nodeattr);
+							AtributoMeta2.getSons().add(nodeattr2);
+							Hermanosint.add(nodeattr2);
+							
+							HashMap<CompleteElementType, CompleteElementType> noexiste2 = CompleteAsociadoTabla.get(AtributoMeta);
+							if (noexiste2==null)
+								noexiste2=new HashMap<CompleteElementType, CompleteElementType>();
+							noexiste2.put(nodeattr, nodeattr2);
+							CompleteAsociadoTabla.put(AtributoMeta, noexiste2);
+						}
+						
+						
+
+						
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
-						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
+
 						}
 					else
 					{

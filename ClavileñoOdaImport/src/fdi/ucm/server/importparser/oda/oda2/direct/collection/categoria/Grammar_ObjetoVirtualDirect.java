@@ -140,13 +140,9 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 		
 		
 		{
-		Recursos=new ElementType_ObjetoVirtual_Resource_Direct_OV(AtributoMeta,LColec);
-		Recursos.ProcessAttributes();
-		AtributoMeta.getSons().add(Recursos.getAtributoMeta());
 		
-		Recursos2=new ElementType_ObjetoVirtual_Resource_Direct_FILES_URL(AtributoMeta,LColec);
-		Recursos2.ProcessAttributes();
-		AtributoMeta.getSons().add(Recursos2.getAtributoMeta());
+		
+		
 		}
 		
 		
@@ -159,8 +155,17 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 	public void ProcessInstances() {
 		OwnInstances();
 		
+		Recursos=new ElementType_ObjetoVirtual_Resource_Direct_OV(AtributoMeta,LColec);
+		Recursos.ProcessAttributes();
+		AtributoMeta.getSons().add(Recursos.getAtributoMeta());
 
 		Recursos.ProcessInstances();
+		
+		
+		Recursos2=new ElementType_ObjetoVirtual_Resource_Direct_FILES_URL(AtributoMeta,LColec);
+		Recursos2.ProcessAttributes();
+		AtributoMeta.getSons().add(Recursos2.getAtributoMeta());
+		
 		Recursos2.ProcessInstances();
 
 	}
