@@ -35,6 +35,7 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 	
 	private ArrayList<Long> idsOV;
 	
+	//TODO CANDIDATO A IR AL PADRE
 	private HashMap<Long, CompleteElementType> CompleteAsociado;
 	private HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> CompleteAsociadoTabla;
 
@@ -179,11 +180,11 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 							AtributoMeta2.getSons().add(nodeattr2);
 							Hermanos.add(nodeattr2);
 							
-							HashMap<CompleteElementType, CompleteElementType> noexiste2 = CompleteAsociadoTabla.get(AtributoMeta);
+							HashMap<CompleteElementType, CompleteElementType> noexiste2 = CompleteAsociadoTabla.get(AtributoMeta2);
 							if (noexiste2==null)
 								noexiste2=new HashMap<CompleteElementType, CompleteElementType>();
 							noexiste2.put(nodeattr, nodeattr2);
-							CompleteAsociadoTabla.put(AtributoMeta, noexiste2);
+							CompleteAsociadoTabla.put(AtributoMeta2, noexiste2);
 						}
 						
 						

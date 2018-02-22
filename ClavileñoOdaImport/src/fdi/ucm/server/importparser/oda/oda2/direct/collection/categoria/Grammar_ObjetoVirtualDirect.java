@@ -166,6 +166,8 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 		Recursos2.ProcessAttributes();
 		AtributoMeta.getSons().add(Recursos2.getAtributoMeta());
 		
+		
+		
 		Recursos2.ProcessInstances();
 
 	}
