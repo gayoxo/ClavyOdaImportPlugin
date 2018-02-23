@@ -43,6 +43,9 @@ implements InterfaceOdaparser
 	protected HashMap<Integer, List<CompleteLinkElementType>> numActivos;
 	protected List<CompleteLinkElementType> numTotales;
 	
+	protected HashMap<Long, CompleteElementType> CompleteAsociado;
+	protected HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> CompleteAsociadoTabla;
+	
 	public ElementType_ObjetoVirtual_Resource() {
 
 		
@@ -55,6 +58,18 @@ implements InterfaceOdaparser
 		AtributoMeta=new CompleteLinkElementType(NameConstantsOda.RESOURCENAME,padre);
 		AtributoMeta.setMultivalued(true);
 		LColec=L;
+		
+		CompleteAsociado=new HashMap<Long, CompleteElementType>();
+		CompleteAsociadoTabla=new HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>>();
+		
+		
+		HashMap<CompleteElementType, CompleteElementType> noexiste = CompleteAsociadoTabla.get(AtributoMeta);
+		if (noexiste==null)
+			noexiste=new HashMap<CompleteElementType, CompleteElementType>();
+		noexiste.put(AtributoMeta, AtributoMeta);
+		CompleteAsociadoTabla.put(AtributoMeta, noexiste);
+		
+		
 		numTotales=new ArrayList<CompleteLinkElementType>();
 		numActivos=new HashMap<Integer, List<CompleteLinkElementType>>();
 		numTotales.add((CompleteLinkElementType)AtributoMeta);
@@ -72,6 +87,7 @@ implements InterfaceOdaparser
 		CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.RESOURCE,NameConstantsOda.META);
 		AtributoMeta.getShows().add(ValorMeta);
 		
+
 
 	}
 	
@@ -176,6 +192,8 @@ implements InterfaceOdaparser
 							
 							numActivos.put(Idov, Actuales);
 							
+							Long Idl=Long.parseLong(id);
+							CompleteAsociado.put(Idl, mio);
 							
 							boolean Visiblebool=true;
 							if (Visible.equals("N"))
@@ -255,10 +273,41 @@ implements InterfaceOdaparser
 						nombre=nombre.trim();
 						nombre = StaticFunctionsOda.CleanStringFromDatabase(nombre,LColec);
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,PadreGrammar);
+						ArrayList<CompleteLinkElementType> parsear = new ArrayList<CompleteLinkElementType>(numTotales);
+						parsear.remove(AtributoMeta);
+						
+						
+						ArrayList<CompleteElementType> Hermanos=new ArrayList<CompleteElementType>();
+						
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+						CompleteElementType nodeattr = Nodo.getAtributoMeta();
+						Hermanos.add(nodeattr);
+						AtributoMeta.getSons().add(nodeattr);
+						
+						HashMap<CompleteElementType, CompleteElementType> noexiste = CompleteAsociadoTabla.get(AtributoMeta);
+						if (noexiste==null)
+							noexiste=new HashMap<CompleteElementType, CompleteElementType>();
+						noexiste.put(nodeattr, nodeattr);
+						CompleteAsociadoTabla.put(AtributoMeta, noexiste);
+						
+						for (CompleteLinkElementType AtributoMeta2 : parsear) {
+							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+							CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
+							nodeattr2.setClassOfIterator(nodeattr);
+							AtributoMeta2.getSons().add(nodeattr2);
+							Hermanos.add(nodeattr2);
+							
+							HashMap<CompleteElementType, CompleteElementType> noexiste2 = CompleteAsociadoTabla.get(AtributoMeta2);
+							if (noexiste2==null)
+								noexiste2=new HashMap<CompleteElementType, CompleteElementType>();
+							noexiste2.put(nodeattr, nodeattr2);
+							CompleteAsociadoTabla.put(AtributoMeta2, noexiste2);
+						}
+						
+						
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
-						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
+						
 						}
 					else
 						{
@@ -332,6 +381,8 @@ List<CompleteLinkElementType> Actuales = numActivos.get(Idov);
 							
 							numActivos.put(Idov, Actuales);
 							
+							Long Idl=Long.parseLong(id);
+							CompleteAsociado.put(Idl, mio);
 							
 							boolean Visiblebool=true;
 							if (Visible.equals("N"))
@@ -439,6 +490,8 @@ List<CompleteLinkElementType> Actuales = numActivos.get(Idov);
 							
 							numActivos.put(Idov, Actuales);
 							
+							Long Idl=Long.parseLong(id);
+							CompleteAsociado.put(Idl, mio);
 							
 							boolean Visiblebool=true;
 							if (Visible.equals("N"))
@@ -540,7 +593,8 @@ List<CompleteLinkElementType> Actuales = numActivos.get(Idov);
 								
 								numActivos.put(Idov, Actuales);
 								
-							
+								Long Idl=Long.parseLong(id);
+								CompleteAsociado.put(Idl, mio);
 							
 							
 							boolean Visiblebool=true;
@@ -643,6 +697,12 @@ List<CompleteLinkElementType> Actuales = numActivos.get(Idov);
 		
 		
 		PadreGrammar.getSons().add(AtributoMeta2);
+		
+		HashMap<CompleteElementType, CompleteElementType> noexiste = CompleteAsociadoTabla.get(AtributoMeta2);
+		if (noexiste==null)
+			noexiste=new HashMap<CompleteElementType, CompleteElementType>();
+		noexiste.put(AtributoMeta, AtributoMeta2);
+		CompleteAsociadoTabla.put(AtributoMeta2, noexiste);
 		
 	}
 

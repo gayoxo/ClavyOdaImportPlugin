@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import fdi.ucm.server.importparser.oda.InterfaceOdaparser;
 import fdi.ucm.server.importparser.oda.NameConstantsOda;
@@ -33,11 +34,14 @@ public class ElementType_NODE implements InterfaceOdaparser {
 	private ArrayList<String> Vocabulary;
 	private LoadCollectionOda LColec;
 	private CompleteGrammar CM;
-
+	private HashMap<Long, CompleteElementType> CompleteAsociado;
+	private HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> CompleteAsociadoTabla;
+	private ArrayList<CompleteElementType> Hermanos;
 	
 	public ElementType_NODE(String id, String nombre,
 			String navegable, String visible, String tipo_valores,
-			String vocabulario, CompleteElementType tpadre, boolean summary,LoadCollectionOda L, CompleteGrammar Cm) {
+			String vocabulario, CompleteElementType tpadre, boolean summary,LoadCollectionOda L, CompleteGrammar Cm,
+			HashMap<Long, CompleteElementType> completeAsociado, HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> completeAsociadoTabla, ArrayList<CompleteElementType> hermanos) {
 		
 		LColec=L;
 		CM=Cm;
@@ -52,7 +56,9 @@ public class ElementType_NODE implements InterfaceOdaparser {
 		Id=id;
 		
 		Vocabulary=new ArrayList<String>();
-		
+		CompleteAsociado=completeAsociado;
+		CompleteAsociadoTabla=completeAsociadoTabla;
+		Hermanos=hermanos;
 		
 		if (tipo_valores.equals("C"))
 			{
@@ -175,10 +181,40 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					if (nombre!=null&&!nombre.isEmpty()&&tipo_valores!=null&&!tipo_valores.isEmpty()&&((tipo_valores.equals("C")&&vocabulario!=null)||(!(tipo_valores.equals("C")))))
 						{
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,CM);
+						ArrayList<CompleteElementType> parsear = new ArrayList<CompleteElementType>(Hermanos);
+						parsear.remove(AtributoMeta);
+						
+						ArrayList<CompleteElementType> Hermanosint=new ArrayList<CompleteElementType>();
+						
+						
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint);
+						CompleteElementType nodeattr = Nodo.getAtributoMeta();
+						Hermanosint.add(nodeattr);
+						AtributoMeta.getSons().add(nodeattr);
+						
+						HashMap<CompleteElementType, CompleteElementType> noexiste = CompleteAsociadoTabla.get(AtributoMeta);
+						if (noexiste==null)
+							noexiste=new HashMap<CompleteElementType, CompleteElementType>();
+						noexiste.put(nodeattr, nodeattr);
+						CompleteAsociadoTabla.put(AtributoMeta, noexiste);
+						
+						for (CompleteElementType AtributoMeta2 : parsear) {
+							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint);
+							CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
+							nodeattr2.setClassOfIterator(nodeattr);
+							AtributoMeta2.getSons().add(nodeattr2);
+							Hermanosint.add(nodeattr2);
+							
+							HashMap<CompleteElementType, CompleteElementType> noexiste2 = CompleteAsociadoTabla.get(AtributoMeta2);
+							if (noexiste2==null)
+								noexiste2=new HashMap<CompleteElementType, CompleteElementType>();
+							noexiste2.put(nodeattr, nodeattr2);
+							CompleteAsociadoTabla.put(AtributoMeta, noexiste2);
+						}
+						
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
-						AtributoMeta.getSons().add(Nodo.getAtributoMeta());
+						
 						}
 					else
 					{
@@ -294,16 +330,45 @@ public class ElementType_NODE implements InterfaceOdaparser {
 							DateFormat df = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
 							String valueE=df.format(D);
 							
-							CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueE);
+//							CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueE);
 							int Idov=Integer.parseInt(idov);
 							CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
 
-							MTV.setDocumentsFather(C);
+//							MTV.setDocumentsFather(C);
 							
 							//TODO Anulado
-//							if (IdRecurso!=null)
-//							{
-//							
+							if (IdRecurso!=null)
+							{
+							
+								
+								Long RecursoIntId = Long.parseLong(IdRecurso);
+								
+								
+								CompleteElementType EsteActual = CompleteAsociado.get(RecursoIntId);
+								
+								
+								if (EsteActual!=null)
+								{
+
+									HashMap<CompleteElementType, CompleteElementType> TablaCuadre = CompleteAsociadoTabla.get(EsteActual);
+									if (TablaCuadre!=null)
+									{
+										CompleteElementType estees = TablaCuadre.get(AtributoMeta);
+										if (estees!=null && estees instanceof CompleteTextElementType)
+										{
+											CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) estees, valueE);
+											MTV.setDocumentsFather(C);
+											C.getDescription().add(MTV);
+										}
+										else
+											LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NB)");
+									}
+									else
+										LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NT)");
+								}
+							else 
+								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");								
+								
 //								int RecursoIntId = Integer.parseInt(IdRecurso);
 //								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
 //								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
@@ -315,10 +380,14 @@ public class ElementType_NODE implements InterfaceOdaparser {
 //								}
 //							else 
 //								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
-//
-//
-//							}else
+
+
+							}else
+							{
+								CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueE);
+								MTV.setDocumentsFather(C);	
 								C.getDescription().add(MTV);
+							}
 							
 							} catch (Exception e) {
 								LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' y valor '"+valueclean+"', revisa que la base de datos es correcta");
@@ -386,15 +455,45 @@ public class ElementType_NODE implements InterfaceOdaparser {
 //						String T=StaticFunctionsOda1.BuscaEnLista(Vocabulary,valueclean);
 						
 						try {
-						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
+//						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
 						int Idov=Integer.parseInt(idov);
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-						MTV.setDocumentsFather(C);
+//						MTV.setDocumentsFather(C);
 						
 						//TODO Anulado
-//						if (IdRecurso!=null)
-//							{
-//							
+						if (IdRecurso!=null)
+							{
+							
+							Long RecursoIntId = Long.parseLong(IdRecurso);
+							CompleteElementType EsteActual = CompleteAsociado.get(RecursoIntId);
+														
+														
+														if (EsteActual!=null)
+														{
+
+															HashMap<CompleteElementType, CompleteElementType> TablaCuadre = CompleteAsociadoTabla.get(EsteActual);
+															if (TablaCuadre!=null)
+															{
+																CompleteElementType estees = TablaCuadre.get(AtributoMeta);
+																if (estees!=null && estees instanceof CompleteTextElementType)
+																{
+																	CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) estees, valueclean);
+																	MTV.setDocumentsFather(C);
+																	C.getDescription().add(MTV);
+																}
+																else
+																	LColec.getLog().add("Error en controled_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NB)");
+															}
+															else
+																LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NT)");
+														}
+													else 
+														LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");
+														
+
+													
+							
+							
 //								int RecursoIntId = Integer.parseInt(IdRecurso);
 //								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
 //								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
@@ -406,10 +505,14 @@ public class ElementType_NODE implements InterfaceOdaparser {
 //									}
 //								else 
 //									LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
-//
-//							
-//							}else
+
+							
+							}else
+							{
+								CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
 								C.getDescription().add(MTV);
+								MTV.setDocumentsFather(C);
+								}
 						
 						} catch (Exception e) {
 							LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' y valor '"+valueclean+"', revisa que la base de datos es correcta");
@@ -461,15 +564,44 @@ public class ElementType_NODE implements InterfaceOdaparser {
 
 						try {
 						
-						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, value);
+//						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, value);
 						int Idov=Integer.parseInt(idov);
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
-						MTV.setDocumentsFather(C);
+//						MTV.setDocumentsFather(C);
 						
 						//TODO Anulado
-//						if (IdRecurso!=null)
-//						{
-//						
+						if (IdRecurso!=null)
+						{
+						
+Long RecursoIntId = Long.parseLong(IdRecurso);
+							
+							
+							CompleteElementType EsteActual = CompleteAsociado.get(RecursoIntId);
+							
+							
+							if (EsteActual!=null)
+							{
+
+								HashMap<CompleteElementType, CompleteElementType> TablaCuadre = CompleteAsociadoTabla.get(EsteActual);
+								if (TablaCuadre!=null)
+								{
+									CompleteElementType estees = TablaCuadre.get(AtributoMeta);
+									if (estees!=null && estees instanceof CompleteTextElementType)
+									{
+										CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) estees, value);
+										MTV.setDocumentsFather(C);
+										C.getDescription().add(MTV);
+									}
+									else
+										LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NB)");
+								}
+								else
+									LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NT)");
+							}
+						else 
+							LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");
+							
+							
 //							int RecursoIntId = Integer.parseInt(IdRecurso);
 //							Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
 //							ArrayList<Integer> Ambitos=new ArrayList<Integer>();
@@ -482,8 +614,12 @@ public class ElementType_NODE implements InterfaceOdaparser {
 //							else 
 //								LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
 //							
-//						}else
+						}else
+						{
+							CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, value);
+							MTV.setDocumentsFather(C);
 							C.getDescription().add(MTV);
+							}
 						
 						} catch (Exception e) {
 							LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"'  y valor '"+value+"', revisa que la base de datos es correcta");
@@ -538,16 +674,44 @@ public class ElementType_NODE implements InterfaceOdaparser {
 						
 						try {
 						
-						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
+//						CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
 						int Idov=Integer.parseInt(idov);
 						CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);
 
-						MTV.setDocumentsFather(C);
+//						MTV.setDocumentsFather(C);
 						
 						//TODO Anulado
-//						if (IdRecurso!=null)
-//						{
-//							
+						if (IdRecurso!=null)
+						{
+							
+
+							Long RecursoIntId = Long.parseLong(IdRecurso);
+								CompleteElementType EsteActual = CompleteAsociado.get(RecursoIntId);
+								
+								
+								if (EsteActual!=null)
+								{
+
+									HashMap<CompleteElementType, CompleteElementType> TablaCuadre = CompleteAsociadoTabla.get(EsteActual);
+									if (TablaCuadre!=null)
+									{
+										CompleteElementType estees = TablaCuadre.get(AtributoMeta);
+										if (estees!=null && estees instanceof CompleteTextElementType)
+										{
+											CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) estees, valueclean);
+											MTV.setDocumentsFather(C);
+											C.getDescription().add(MTV);
+										}
+										else
+											LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NB)");
+									}
+									else
+										LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NT)");
+								}
+							else 
+								LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");
+								
+							
 //								int RecursoIntId = Integer.parseInt(IdRecurso);
 //								Integer AmbitoAsociado = ElementType_ObjetoVirtual_Resource.getAmbitosResource().get(RecursoIntId);
 //								ArrayList<Integer> Ambitos=new ArrayList<Integer>();
@@ -559,13 +723,18 @@ public class ElementType_NODE implements InterfaceOdaparser {
 //									}
 //								else 
 //									LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado");
-//
-//								
-//								
-//							
-//						}
-//						else
+
+								
+								
+							
+						}
+						else
+{
+							
+							CompleteTextElement MTV=new CompleteTextElement((CompleteTextElementType) AtributoMeta, valueclean);
+							MTV.setDocumentsFather(C);
 							C.getDescription().add(MTV);
+							}
 						
 						} catch (Exception e) {
 							LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' y valor '"+valueclean+"', revisa que la base de datos es correcta");

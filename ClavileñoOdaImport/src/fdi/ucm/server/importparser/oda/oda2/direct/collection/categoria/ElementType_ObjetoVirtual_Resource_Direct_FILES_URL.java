@@ -40,8 +40,7 @@ public class ElementType_ObjetoVirtual_Resource_Direct_FILES_URL extends Element
 	protected List<CompleteResourceElementType> numTotales;
 	
 	//TODO CANDIDATO A IR AL PADRE
-	private HashMap<Long, CompleteElementType> CompleteAsociado;
-	private HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> CompleteAsociadoTabla;
+
 	
 	public ElementType_ObjetoVirtual_Resource_Direct_FILES_URL(CompleteGrammar gramaPa,LoadCollectionOda L) {
 		super();

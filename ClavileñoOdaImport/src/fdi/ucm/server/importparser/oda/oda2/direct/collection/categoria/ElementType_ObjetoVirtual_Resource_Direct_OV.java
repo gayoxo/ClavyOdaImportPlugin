@@ -36,8 +36,7 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 	private ArrayList<Long> idsOV;
 	
 	//TODO CANDIDATO A IR AL PADRE
-	private HashMap<Long, CompleteElementType> CompleteAsociado;
-	private HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> CompleteAsociadoTabla;
+
 
 	public ElementType_ObjetoVirtual_Resource_Direct_OV(CompleteGrammar I,LoadCollectionOda L) {
 		super();
@@ -173,7 +172,7 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 						noexiste.put(nodeattr, nodeattr);
 						CompleteAsociadoTabla.put(AtributoMeta, noexiste);
 						
-						for (CompleteLinkElementType AtributoMeta2 : numTotales) {
+						for (CompleteLinkElementType AtributoMeta2 : parsear) {
 							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,idsOV,PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
 							CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
 							nodeattr2.setClassOfIterator(nodeattr);

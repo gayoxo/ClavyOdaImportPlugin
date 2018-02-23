@@ -191,7 +191,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 						
 						ArrayList<CompleteElementType> Hermanosint=new ArrayList<CompleteElementType>();
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,RecursosAfectados,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,RecursosAfectados,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint);
 						CompleteElementType nodeattr = Nodo.getAtributoMeta();
 						Hermanosint.add(nodeattr);
 						AtributoMeta.getSons().add(nodeattr);
@@ -203,13 +203,13 @@ public class ElementType_NODE implements InterfaceOdaparser {
 						CompleteAsociadoTabla.put(AtributoMeta, noexiste);
 						
 						for (CompleteElementType AtributoMeta2 : parsear) {
-							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,RecursosAfectados,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,RecursosAfectados,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint);
 							CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
 							nodeattr2.setClassOfIterator(nodeattr);
 							AtributoMeta2.getSons().add(nodeattr2);
 							Hermanosint.add(nodeattr2);
 							
-							HashMap<CompleteElementType, CompleteElementType> noexiste2 = CompleteAsociadoTabla.get(AtributoMeta);
+							HashMap<CompleteElementType, CompleteElementType> noexiste2 = CompleteAsociadoTabla.get(AtributoMeta2);
 							if (noexiste2==null)
 								noexiste2=new HashMap<CompleteElementType, CompleteElementType>();
 							noexiste2.put(nodeattr, nodeattr2);

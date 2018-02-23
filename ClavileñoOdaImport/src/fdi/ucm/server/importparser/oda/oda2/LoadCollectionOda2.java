@@ -28,7 +28,37 @@ public class LoadCollectionOda2 extends LoadCollectionOda{
 	private String BaseURLOdaSimple;
 
 
+public static void main(String[] args) {
+	ArrayList<String> DateEntrada=new ArrayList<String>();
+	DateEntrada.add("localhost");
+	DateEntrada.add("odalimpia");
+	DateEntrada.add("3306");
+	DateEntrada.add("root");
+	DateEntrada.add("");
+	DateEntrada.add("false");
+	DateEntrada.add("");
+	DateEntrada.add("false");
 
+	LoadCollectionOda LC=new LoadCollectionOda2();
+	CompleteCollectionAndLog Salida=LC.processCollecccion(DateEntrada);
+	if (Salida!=null)
+		{
+		
+		System.out.println("Correcto");
+		
+		for (String warning : Salida.getLogLines())
+			System.err.println(warning);
+
+		
+		System.exit(0);
+		
+		}
+	else
+		{
+		System.err.println("Error");
+		System.exit(-1);
+		}
+}
 
 	@Override
 	public CompleteCollectionAndLog processCollecccion(ArrayList<String> DateEntrada) {
