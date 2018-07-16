@@ -183,7 +183,7 @@ public class CollectionOda2 extends CollectionOda {
 					CompleteDocuments nuevo= new CompleteDocuments(oda2, I.toString(), "");
 					nuevo.getDescription().add(new CompleteTextElement(Number, I.toString()));
 					for (int j = 0; j < voc.size(); j++) {		
-						while (j>ValuesL.size())
+						while (ValuesL.size()<=j)
 						{
 						
 								CompleteTextElementType ValuesNew=new CompleteTextElementType(NameConstantsOda.TERM, Vocabulary);

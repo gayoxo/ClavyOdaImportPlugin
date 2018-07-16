@@ -31,7 +31,7 @@ public class LoadCollectionOda2 extends LoadCollectionOda{
 public static void main(String[] args) {
 	ArrayList<String> DateEntrada=new ArrayList<String>();
 	DateEntrada.add("localhost");
-	DateEntrada.add("odalimpia");
+	DateEntrada.add("didilasimpli");
 	DateEntrada.add("3306");
 	DateEntrada.add("root");
 	DateEntrada.add("");
