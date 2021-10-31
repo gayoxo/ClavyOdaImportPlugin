@@ -16,7 +16,7 @@ public class NameConstantsOda {
 	public static final String IDOVNAME = "IDOV";
 	public static final String VIRTUAL_OBJECTNAME="Virtual Object";
 	public static final String DESCRIPTIONNAME = "Descripción";
-	public static final String RESOURCENAME = "Recursos";
+	public static final String RESOURCENAME = "Recurso";
 	public static final String FILENAME = "File";
 	public static final String IDOV_OWNERNAME = "Idov Owner";
 	public static final String IDNAME = "ID";
@@ -34,6 +34,7 @@ public class NameConstantsOda {
 	public static final String VIRTUAL_OBJECT="Virtual Object";
 //	public static final String DESCRIPTION = "Description";
 	public static final String RESOURCE = "Resource";
+	public static final String RESOURCESNAME = "Resource";
 	public static final String FILE = "File";
 	public static final String IDOV_OWNER = "Idov Owner";
 	
@@ -72,6 +73,7 @@ public class NameConstantsOda {
 		
 		public static final String URLORIGINAL = "URL ORIGINAL";
 		public static final String VIEWDOC = "view/cm_view_virtual_object.php?idov=";
+
 		
 		
 
