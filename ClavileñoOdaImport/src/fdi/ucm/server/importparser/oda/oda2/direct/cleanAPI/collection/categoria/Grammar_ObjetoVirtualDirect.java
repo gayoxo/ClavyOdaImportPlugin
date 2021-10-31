@@ -42,7 +42,7 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 	private List<CompleteOperationalValueType> VistaOVOda;
 	private CompleteOperationalValueType ValorOdaPRIVATE;
 	private LoadCollectionOda LColec;
-	private CompleteTextElementType URLORIGINAL;
+//	private CompleteTextElementType URLORIGINAL;
 	private CompleteElementType Resources;
 
 	
@@ -119,27 +119,27 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 		
 		}
 		
-		{
-			URLORIGINAL=new CompleteTextElementType(NameConstantsOda.URLORIGINAL, AtributoMeta);
-			
-
-
-			CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.URLORIGINAL,NameConstantsOda.META);
-			
-			URLORIGINAL.getShows().add(ValorMeta);
-			
-
-			 CompleteOperationalValueType Valor4=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,NameConstantsOda.METATYPE);
-			 URLORIGINAL.getShows().add(Valor4);
-
-
-			 CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.IGNORED,NameConstantsOda.META);
-			 URLORIGINAL.getShows().add(Valor);
-
-			 
-			
-			AtributoMeta.getSons().add(URLORIGINAL);
-			}
+//		{
+//			URLORIGINAL=new CompleteTextElementType(NameConstantsOda.URLORIGINAL, AtributoMeta);
+//			
+//
+//
+//			CompleteOperationalValueType ValorMeta=new CompleteOperationalValueType(NameConstantsOda.TYPE,NameConstantsOda.URLORIGINAL,NameConstantsOda.META);
+//			
+//			URLORIGINAL.getShows().add(ValorMeta);
+//			
+//
+//			 CompleteOperationalValueType Valor4=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.TEXT,NameConstantsOda.METATYPE);
+//			 URLORIGINAL.getShows().add(Valor4);
+//
+//
+//			 CompleteOperationalValueType Valor=new CompleteOperationalValueType(NameConstantsOda.METATYPETYPE,NameConstantsOda.IGNORED,NameConstantsOda.META);
+//			 URLORIGINAL.getShows().add(Valor);
+//
+//			 
+//			
+//			AtributoMeta.getSons().add(URLORIGINAL);
+//			}
 		
 		
 		{
@@ -158,6 +158,14 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 	public void ProcessInstances() {
 		OwnInstances();
 		
+		
+
+	}
+	
+	
+	public void ProcessInstancesResources()
+	{
+		
 		Resources = new CompleteElementType(NameConstantsOda.RESOURCESNAME,AtributoMeta);
 		AtributoMeta.getSons().add(Resources);
 		
@@ -169,6 +177,7 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 		Recursos.ProcessInstances();
 		
 		
+		
 		Recursos2=new ElementType_ObjetoVirtual_Resource_Direct_FILES_URL(AtributoMeta,LColec);
 		Recursos2.ProcessAttributes();
 		AtributoMeta.getSons().add(Recursos2.getAtributoMeta());
@@ -176,12 +185,8 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 		
 		
 		Recursos2.ProcessInstances();
-		
-		
-		
-		
-
 	}
+	
 	
 	
 	public void Add2Grammar() {
@@ -260,9 +265,9 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 						SB.append(NameConstantsOda.VIEWDOC+id);
 						
 						String Path=SB.toString();
-						
-						CompleteTextElement RR=new CompleteTextElement(URLORIGINAL, Path);
-						sectionValue.getDescription().add(RR);
+//						
+//						CompleteTextElement RR=new CompleteTextElement(URLORIGINAL, Path);
+//						sectionValue.getDescription().add(RR);
 						
 						
 						}

@@ -55,6 +55,7 @@ public class CollectionOda3Direct extends CollectionOda {
 		procesOV();
 		processDatos();
 		processMetadatos();
+		processResources();
 
 	}
 
@@ -63,13 +64,19 @@ public class CollectionOda3Direct extends CollectionOda {
 
 
 
+	private void processResources() {
+		ResourcveData.ProcessInstancesResources();
+		
+	}
+
+
 	/**
 	 * Procesa los OV
 	 */
 	private void procesOV() {
 		ResourcveData=new Grammar_ObjetoVirtualDirect(oda2,LocalPadre);
 		ResourcveData.ProcessAttributes();
-		ResourcveData.ProcessInstances();
+		
 		oda2.getMetamodelGrammar().add(ResourcveData.getAtributoMeta());
 		
 	}

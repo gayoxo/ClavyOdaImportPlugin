@@ -38,7 +38,7 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 	//TODO CANDIDATO A IR AL PADRE
 
 
-	public ElementType_ObjetoVirtual_Resource_Direct_OV(CompleteGrammar I,LoadCollectionOda L) {
+	public ElementType_ObjetoVirtual_Resource_Direct_OV(CompleteGrammar I, LoadCollectionOda L) {
 		super();
 		PadreGrammar=I;
 		AtributoMeta=new CompleteLinkElementType(NameConstantsOda.RESOURCENAME,I);
