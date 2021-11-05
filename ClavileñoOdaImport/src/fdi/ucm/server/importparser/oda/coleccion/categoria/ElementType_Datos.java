@@ -111,7 +111,10 @@ public class ElementType_Datos implements InterfaceOdaparser{
 						}
 						else
 						{
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,GPadre,new HashMap<Long, CompleteElementType>(),new HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>>(),new ArrayList<CompleteElementType>());
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,
+								tipo_valores,vocabulario,AtributoMeta,false,LColec,GPadre,
+								new HashMap<Long, CompleteElementType>(),new HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>>(),
+								new ArrayList<CompleteElementType>(),new HashMap<Long, Integer>());
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
 						

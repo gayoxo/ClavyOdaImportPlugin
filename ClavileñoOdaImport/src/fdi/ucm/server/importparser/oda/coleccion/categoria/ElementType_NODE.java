@@ -29,19 +29,22 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
  */
 public class ElementType_NODE implements InterfaceOdaparser {
 
-	private CompleteElementType AtributoMeta;
-	private String Id;
-	private ArrayList<String> Vocabulary;
-	private LoadCollectionOda LColec;
-	private CompleteGrammar CM;
-	private HashMap<Long, CompleteElementType> CompleteAsociado;
-	private HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> CompleteAsociadoTabla;
-	private ArrayList<CompleteElementType> Hermanos;
+	protected CompleteElementType AtributoMeta;
+	protected String Id;
+	protected ArrayList<String> Vocabulary;
+	protected LoadCollectionOda LColec;
+	protected CompleteGrammar CM;
+	protected HashMap<Long, CompleteElementType> CompleteAsociado;
+	protected HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> CompleteAsociadoTabla;
+	protected ArrayList<CompleteElementType> Hermanos;
+	protected HashMap<Long, Integer> CompleteAsociadoID_IDOV;
 	
 	public ElementType_NODE(String id, String nombre,
 			String navegable, String visible, String tipo_valores,
 			String vocabulario, CompleteElementType tpadre, boolean summary,LoadCollectionOda L, CompleteGrammar Cm,
-			HashMap<Long, CompleteElementType> completeAsociado, HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> completeAsociadoTabla, ArrayList<CompleteElementType> hermanos) {
+			HashMap<Long, CompleteElementType> completeAsociado, HashMap<CompleteElementType, 
+			HashMap<CompleteElementType, CompleteElementType>> completeAsociadoTabla, ArrayList<CompleteElementType> hermanos, 
+			HashMap<Long, Integer> completeAsociadoID_IDOV) {
 		
 		LColec=L;
 		CM=Cm;
@@ -59,6 +62,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 		CompleteAsociado=completeAsociado;
 		CompleteAsociadoTabla=completeAsociadoTabla;
 		Hermanos=hermanos;
+		CompleteAsociadoID_IDOV=completeAsociadoID_IDOV;
 		
 		if (tipo_valores.equals("C"))
 			{
@@ -187,7 +191,8 @@ public class ElementType_NODE implements InterfaceOdaparser {
 						ArrayList<CompleteElementType> Hermanosint=new ArrayList<CompleteElementType>();
 						
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint);
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,
+								false,LColec,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint,CompleteAsociadoID_IDOV);
 						CompleteElementType nodeattr = Nodo.getAtributoMeta();
 						Hermanosint.add(nodeattr);
 						AtributoMeta.getSons().add(nodeattr);
@@ -199,7 +204,8 @@ public class ElementType_NODE implements InterfaceOdaparser {
 						CompleteAsociadoTabla.put(AtributoMeta, noexiste);
 						
 						for (CompleteElementType AtributoMeta2 : parsear) {
-							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint);
+							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,
+									LColec,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint,CompleteAsociadoID_IDOV);
 							CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
 							nodeattr2.setClassOfIterator(nodeattr);
 							AtributoMeta2.getSons().add(nodeattr2);
@@ -314,6 +320,21 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					String IdRecurso=null;
 					if(rs.getObject("idrecurso")!=null)
 						IdRecurso=rs.getObject("idrecurso").toString();
+					
+					
+					//Bypass para los ids vacios de los recursos
+					try {
+						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						{
+							Long IdRecursoL=Long.parseLong(IdRecurso);
+							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
+						}
+					} catch (Exception e) {
+						LColec.getLog().add("Error en idrecurso idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
+
+					}
+					
+					
 					
 					if (idov!=null&&!idov.isEmpty()&&!value.isEmpty())
 						{
@@ -444,6 +465,19 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					if(rs.getObject("idrecurso")!=null)
 						IdRecurso=rs.getObject("idrecurso").toString();
 					
+					//Bypass para los ids vacios de los recursos
+					try {
+						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						{
+							Long IdRecursoL=Long.parseLong(IdRecurso);
+							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
+						}
+					} catch (Exception e) {
+						LColec.getLog().add("Error en idrecurso idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
+
+					}
+					
+					
 					if (idov!=null&&!idov.isEmpty()&&!value.isEmpty())
 						{
 						
@@ -558,6 +592,20 @@ public class ElementType_NODE implements InterfaceOdaparser {
 						IdRecurso=rs.getObject("idrecurso").toString();
 					
 					
+					//Bypass para los ids vacios de los recursos
+					try {
+						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						{
+							Long IdRecursoL=Long.parseLong(IdRecurso);
+							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
+						}
+					} catch (Exception e) {
+						LColec.getLog().add("Error en idrecurso idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
+
+					}
+					
+					
+					
 					if (idov!=null&&!idov.isEmpty()&&!value.isEmpty())
 						{
 		
@@ -664,6 +712,21 @@ Long RecursoIntId = Long.parseLong(IdRecurso);
 					String IdRecurso=null;
 					if(rs.getObject("idrecurso")!=null)
 						IdRecurso=rs.getObject("idrecurso").toString();
+					
+					
+					//Bypass para los ids vacios de los recursos
+					try {
+						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						{
+							Long IdRecursoL=Long.parseLong(IdRecurso);
+							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
+						}
+					} catch (Exception e) {
+						LColec.getLog().add("Error en idrecurso idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
+
+					}
+					
+					
 					
 					if (idov!=null&&!idov.isEmpty()&&!value.isEmpty())
 						{

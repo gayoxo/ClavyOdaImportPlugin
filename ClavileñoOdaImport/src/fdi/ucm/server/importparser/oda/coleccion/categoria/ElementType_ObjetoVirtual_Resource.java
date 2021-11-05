@@ -44,6 +44,7 @@ implements InterfaceOdaparser
 	protected List<CompleteLinkElementType> numTotales;
 	
 	protected HashMap<Long, CompleteElementType> CompleteAsociado;
+	protected HashMap<Long, Integer> CompleteAsociadoID_IDOV;
 	protected HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> CompleteAsociadoTabla;
 	
 	public ElementType_ObjetoVirtual_Resource() {
@@ -51,6 +52,7 @@ implements InterfaceOdaparser
 		
 		numTotales=new ArrayList<CompleteLinkElementType>();
 		numActivos=new HashMap<Integer, List<CompleteLinkElementType>>();
+		CompleteAsociadoID_IDOV=new HashMap<Long, Integer>();
 	}
 	
 	public ElementType_ObjetoVirtual_Resource(CompleteGrammar padre,LoadCollectionOda L) {
@@ -61,6 +63,7 @@ implements InterfaceOdaparser
 		
 		CompleteAsociado=new HashMap<Long, CompleteElementType>();
 		CompleteAsociadoTabla=new HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>>();
+		CompleteAsociadoID_IDOV=new HashMap<Long, Integer>();
 		
 		
 		HashMap<CompleteElementType, CompleteElementType> noexiste = CompleteAsociadoTabla.get(AtributoMeta);
@@ -241,7 +244,7 @@ implements InterfaceOdaparser
 		
 	}
 
-	private void atributes_Recursos() {
+	public void atributes_Recursos() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM section_data where idpadre=3 order by orden;");
 			if (rs!=null) 
@@ -279,7 +282,8 @@ implements InterfaceOdaparser
 						
 						ArrayList<CompleteElementType> Hermanos=new ArrayList<CompleteElementType>();
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,PadreGrammar,
+								CompleteAsociado,CompleteAsociadoTabla,Hermanos,CompleteAsociadoID_IDOV);
 						CompleteElementType nodeattr = Nodo.getAtributoMeta();
 						Hermanos.add(nodeattr);
 						AtributoMeta.getSons().add(nodeattr);
@@ -291,7 +295,8 @@ implements InterfaceOdaparser
 						CompleteAsociadoTabla.put(AtributoMeta, noexiste);
 						
 						for (CompleteLinkElementType AtributoMeta2 : parsear) {
-							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,
+									PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos,CompleteAsociadoID_IDOV);
 							CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
 							nodeattr2.setClassOfIterator(nodeattr);
 							AtributoMeta2.getSons().add(nodeattr2);

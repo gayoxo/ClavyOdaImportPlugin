@@ -79,7 +79,9 @@ public class ElementType_Metadatos implements InterfaceOdaparser{
 						nombre=nombre.trim();
 						nombre = StaticFunctionsOda.CleanStringFromDatabase(nombre,LColec);
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,Padre,new HashMap<Long, CompleteElementType>(),new HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>>(),new ArrayList<CompleteElementType>());
+						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,
+								AtributoMeta,false,LColec,Padre,new HashMap<Long, CompleteElementType>(),
+								new HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>>(),new ArrayList<CompleteElementType>(),new HashMap<Long, Integer>());
 						Nodo.ProcessAttributes();
 						Nodo.ProcessInstances();
 						AtributoMeta.getSons().add(Nodo.getAtributoMeta());

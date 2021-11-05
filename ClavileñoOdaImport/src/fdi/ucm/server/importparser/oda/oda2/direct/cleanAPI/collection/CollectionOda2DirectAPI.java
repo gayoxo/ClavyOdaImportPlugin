@@ -24,7 +24,7 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
  * @author Joaquin Gayoso-Cabada
  *
  */
-public class CollectionOda3Direct extends CollectionOda {
+public class CollectionOda2DirectAPI extends CollectionOda {
 
 	private static final String COLECCION_OBTENIDA_A_PARTIR_DE_ODA = "Coleccion obtenida a partir de ODA en : ";
 	private static final String COLECCION_ODA = "Coleccion ODA";
@@ -37,7 +37,7 @@ public class CollectionOda3Direct extends CollectionOda {
 	private HashSet<CompleteElementType> NoCompartidos;
 	private HashMap<String,CompleteFile> FilesTot;
 	
-	public CollectionOda3Direct(LoadCollectionOda localPadre) {
+	public CollectionOda2DirectAPI(LoadCollectionOda localPadre) {
 		oda2=new CompleteCollection(COLECCION_ODA, COLECCION_OBTENIDA_A_PARTIR_DE_ODA+ new Timestamp(new Date().getTime()));
 		Vocabularios=new HashMap<CompleteElementType, ArrayList<String>>();
 		NoCompartidos=new HashSet<CompleteElementType>();
@@ -55,7 +55,7 @@ public class CollectionOda3Direct extends CollectionOda {
 		procesOV();
 		processDatos();
 		processMetadatos();
-		processResources();
+		
 
 	}
 
@@ -64,11 +64,6 @@ public class CollectionOda3Direct extends CollectionOda {
 
 
 
-	private void processResources() {
-		ResourcveData.ProcessInstancesResources();
-		
-	}
-
 
 	/**
 	 * Procesa los OV
@@ -76,7 +71,7 @@ public class CollectionOda3Direct extends CollectionOda {
 	private void procesOV() {
 		ResourcveData=new Grammar_ObjetoVirtualDirect(oda2,LocalPadre);
 		ResourcveData.ProcessAttributes();
-		
+		ResourcveData.ProcessInstances();
 		oda2.getMetamodelGrammar().add(ResourcveData.getAtributoMeta());
 		
 	}

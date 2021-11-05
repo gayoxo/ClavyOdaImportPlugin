@@ -16,8 +16,8 @@ import fdi.ucm.server.modelComplete.collection.CompleteCollection;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
@@ -32,9 +32,6 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 	private CompleteGrammar AtributoMeta;
 	private CompleteTextElementType IDOV;
 	
-	private ElementType_ObjetoVirtual_Resource_Direct_OV Recursos;
-	
-	private ElementType_ObjetoVirtual_Resource_Direct_FILES_URL Recursos2;
 	
 	
 	private CompleteOperationalValueType ValorOdaPUBLIC;
@@ -42,8 +39,9 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 	private List<CompleteOperationalValueType> VistaOVOda;
 	private CompleteOperationalValueType ValorOdaPRIVATE;
 	private LoadCollectionOda LColec;
-//	private CompleteTextElementType URLORIGINAL;
-	private CompleteElementType Resources;
+
+	private ElementType_ObjetoVirtual_Resource_Direct ResourcesDirect;
+	private ElementType_ObjetoVirtual_Resource_Direct_OV Recursos;
 
 	
 	public Grammar_ObjetoVirtualDirect(CompleteCollection completeCollection, LoadCollectionOda L) {
@@ -158,43 +156,34 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 	public void ProcessInstances() {
 		OwnInstances();
 		
-		
+		ResourcesDirect= new ElementType_ObjetoVirtual_Resource_Direct(AtributoMeta,LColec);
+		ResourcesDirect.ProcessAttributes();
 
-	}
-	
-	
-	public void ProcessInstancesResources()
-	{
+		ResourcesDirect.ProcessInstances();
 		
-		Resources = new CompleteElementType(NameConstantsOda.RESOURCESNAME,AtributoMeta);
-		AtributoMeta.getSons().add(Resources);
-		
+		for (CompleteResourceElementType completeOperationalValueType : ResourcesDirect.getAtributoMetaList()) {
+			AtributoMeta.getSons().add(completeOperationalValueType);
+		}
 		
 		Recursos=new ElementType_ObjetoVirtual_Resource_Direct_OV(AtributoMeta,LColec);
 		Recursos.ProcessAttributes();
-		AtributoMeta.getSons().add(Recursos.getAtributoMeta());
+		
+		
+//		AtributoMeta.getSons().add(Recursos.getAtributoMeta());
 
 		Recursos.ProcessInstances();
 		
-		
-		
-		Recursos2=new ElementType_ObjetoVirtual_Resource_Direct_FILES_URL(AtributoMeta,LColec);
-		Recursos2.ProcessAttributes();
-		AtributoMeta.getSons().add(Recursos2.getAtributoMeta());
-		
-		
-		
-		Recursos2.ProcessInstances();
+		for (CompleteLinkElementType completeOperationalValueType : Recursos.getAtributoMetaList()) {
+			AtributoMeta.getSons().add(completeOperationalValueType);
+		}
+
 	}
 	
 	
+
 	
-	public void Add2Grammar() {
-		
-		
-		AtributoMeta.getSons().add(Recursos.getAtributoMeta());
-		AtributoMeta.getSons().add(Recursos2.getAtributoMeta());
-	}
+	
+
 	
 
 	/**
@@ -251,20 +240,20 @@ public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 						ObjetoVirtual.put(Idov, sectionValue);
 						
 						
-						StringBuffer SB=new StringBuffer();
-						
-						if (LColec.getBaseURLOdaSimple().isEmpty()||
-								(!LColec.getBaseURLOdaSimple().startsWith("http://")
-										&&!LColec.getBaseURLOdaSimple().startsWith("https://")
-										&&!LColec.getBaseURLOdaSimple().startsWith("ftp://")))
-							SB.append("http://");
-						
-						SB.append(LColec.getBaseURLOdaSimple());
-						if (!LColec.getBaseURLOdaSimple().isEmpty()&&!LColec.getBaseURLOdaSimple().endsWith("//"))
-							SB.append("/");
-						SB.append(NameConstantsOda.VIEWDOC+id);
-						
-						String Path=SB.toString();
+//						StringBuffer SB=new StringBuffer();
+//						
+//						if (LColec.getBaseURLOdaSimple().isEmpty()||
+//								(!LColec.getBaseURLOdaSimple().startsWith("http://")
+//										&&!LColec.getBaseURLOdaSimple().startsWith("https://")
+//										&&!LColec.getBaseURLOdaSimple().startsWith("ftp://")))
+//							SB.append("http://");
+//						
+//						SB.append(LColec.getBaseURLOdaSimple());
+//						if (!LColec.getBaseURLOdaSimple().isEmpty()&&!LColec.getBaseURLOdaSimple().endsWith("//"))
+//							SB.append("/");
+//						SB.append(NameConstantsOda.VIEWDOC+id);
+//						
+//						String Path=SB.toString();
 //						
 //						CompleteTextElement RR=new CompleteTextElement(URLORIGINAL, Path);
 //						sectionValue.getDescription().add(RR);

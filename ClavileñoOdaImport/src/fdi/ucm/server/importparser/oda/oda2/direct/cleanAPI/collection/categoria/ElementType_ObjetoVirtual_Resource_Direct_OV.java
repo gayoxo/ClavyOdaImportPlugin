@@ -16,11 +16,13 @@ import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_ObjetoVir
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
+import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementURL;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
@@ -120,10 +122,9 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 		
 	}
 	
-	
-
-
-	private void atributes_Recursos() {
+	//SOLO PARA LOS OV
+	@Override
+	public void atributes_Recursos() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM section_data where idpadre=3 order by orden;");
 			if (rs!=null) 
@@ -161,7 +162,11 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 						
 						ArrayList<CompleteElementType> Hermanos=new ArrayList<CompleteElementType>();
 						
-						ElementType_NODE Nodo=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,idsOV,PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+						ElementType_NODE_RESOURCEFIL Nodo=new ElementType_NODE_RESOURCEFIL(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta,false,LColec,PadreGrammar,
+								CompleteAsociado,CompleteAsociadoTabla,Hermanos,CompleteAsociadoID_IDOV);
+						
+						Nodo.setResources(CompleteAsociadoID_IDOV.keySet());
+						
 						CompleteElementType nodeattr = Nodo.getAtributoMeta();
 						Hermanos.add(nodeattr);
 						AtributoMeta.getSons().add(nodeattr);
@@ -173,7 +178,10 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 						CompleteAsociadoTabla.put(AtributoMeta, noexiste);
 						
 						for (CompleteLinkElementType AtributoMeta2 : parsear) {
-							ElementType_NODE Nodo2=new ElementType_NODE(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,idsOV,PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos);
+							ElementType_NODE_RESOURCEFIL Nodo2=new ElementType_NODE_RESOURCEFIL(id,nombre,navegable,visible,tipo_valores,vocabulario,AtributoMeta2,false,LColec,
+									PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos,CompleteAsociadoID_IDOV);
+							Nodo.setResources(CompleteAsociadoID_IDOV.keySet());
+							
 							CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
 							nodeattr2.setClassOfIterator(nodeattr);
 							AtributoMeta2.getSons().add(nodeattr2);
@@ -213,6 +221,9 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 //		}
 		
 	}
+	
+
+
 
 	private void OVInstances() {
 		try {
@@ -375,6 +386,10 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 	 */
 	public void setAtributoMeta(CompleteLinkElementType atributoMeta) {
 		AtributoMeta = atributoMeta;
+	}
+
+	public List<CompleteLinkElementType> getAtributoMetaList() {
+		return numTotales;
 	}
 	
 

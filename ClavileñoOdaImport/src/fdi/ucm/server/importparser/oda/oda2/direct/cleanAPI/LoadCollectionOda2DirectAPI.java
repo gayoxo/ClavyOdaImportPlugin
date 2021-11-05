@@ -3,12 +3,15 @@
  */
 package fdi.ucm.server.importparser.oda.oda2.direct.cleanAPI;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import fdi.ucm.server.importparser.oda.MySQLConnectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.CollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
-import fdi.ucm.server.importparser.oda.oda2.direct.cleanAPI.collection.CollectionOda3Direct;
+import fdi.ucm.server.importparser.oda.oda2.direct.cleanAPI.collection.CollectionOda2DirectAPI;
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
 import fdi.ucm.server.modelComplete.collection.CompleteCollectionAndLog;
 
@@ -17,7 +20,7 @@ import fdi.ucm.server.modelComplete.collection.CompleteCollectionAndLog;
  * @author Joaquin Gayoso-Cabada
  *
  */
-public class LoadCollectionOda3Direct extends LoadCollectionOda{
+public class LoadCollectionOda2DirectAPI extends LoadCollectionOda{
 
 	private boolean convert;
 	private String BaseURLOda;
@@ -50,7 +53,7 @@ public static void main(String[] args) {
 	DateEntrada.add(args[6]);
 	DateEntrada.add(args[7]);
 
-	LoadCollectionOda LC=new LoadCollectionOda3Direct();
+	LoadCollectionOda LC=new LoadCollectionOda2DirectAPI();
 	CompleteCollectionAndLog Salida=LC.processCollecccion(DateEntrada);
 	if (Salida!=null)
 		{
@@ -60,6 +63,19 @@ public static void main(String[] args) {
 		for (String warning : Salida.getLogLines())
 			System.err.println(warning);
 
+		 try {
+				String FileIO = System.getProperty("user.home")+File.separator+System.currentTimeMillis()+".clavy";
+				
+				System.out.println(FileIO);
+				
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FileIO));
+
+				oos.writeObject(Salida.getCollection());
+
+				oos.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		
 		System.exit(0);
 		
@@ -76,7 +92,7 @@ public static void main(String[] args) {
 	@Override
 	public CompleteCollectionAndLog processCollecccion(ArrayList<String> DateEntrada) {
 		Log=new ArrayList<String>();
-		 Odacollection=new CollectionOda3Direct(this);
+		 Odacollection=new CollectionOda2DirectAPI(this);
 		
 		if (DateEntrada!=null)
 			
