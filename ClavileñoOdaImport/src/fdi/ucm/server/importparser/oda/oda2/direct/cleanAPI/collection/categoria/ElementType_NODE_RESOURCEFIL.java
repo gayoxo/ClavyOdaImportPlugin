@@ -227,7 +227,7 @@ public class ElementType_NODE_RESOURCEFIL extends ElementType_NODE {
 					
 					//Bypass para los ids vacios de los recursos
 					try {
-						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						if ((idov==null||idov.isEmpty())&&IdRecurso!=null)
 						{
 							Long IdRecursoL=Long.parseLong(IdRecurso);
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
@@ -378,7 +378,7 @@ public class ElementType_NODE_RESOURCEFIL extends ElementType_NODE {
 					
 					//Bypass para los ids vacios de los recursos
 					try {
-						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						if ((idov==null||idov.isEmpty())&&IdRecurso!=null)
 						{
 							Long IdRecursoL=Long.parseLong(IdRecurso);
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
@@ -510,7 +510,7 @@ public class ElementType_NODE_RESOURCEFIL extends ElementType_NODE {
 					
 					//Bypass para los ids vacios de los recursos
 					try {
-						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						if ((idov==null||idov.isEmpty())&&IdRecurso!=null)
 						{
 							Long IdRecursoL=Long.parseLong(IdRecurso);
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
@@ -636,7 +636,7 @@ Long RecursoIntId = Long.parseLong(IdRecurso);
 					
 					//Bypass para los ids vacios de los recursos
 					try {
-						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						if ((idov==null||idov.isEmpty())&&IdRecurso!=null)
 						{
 							Long IdRecursoL=Long.parseLong(IdRecurso);
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));

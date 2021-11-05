@@ -324,7 +324,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					
 					//Bypass para los ids vacios de los recursos
 					try {
-						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						if ((idov==null||idov.isEmpty())&&IdRecurso!=null)
 						{
 							Long IdRecursoL=Long.parseLong(IdRecurso);
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
@@ -455,7 +455,8 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					if(rs.getObject("idov")!=null)
 						idov=rs.getObject("idov").toString();
 					
-					
+					if (id1.equals("37417"))
+						System.out.println("aqui");
 					
 					String value="";
 					if(rs.getObject("value")!=null)
@@ -467,7 +468,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					
 					//Bypass para los ids vacios de los recursos
 					try {
-						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						if ((idov==null||idov.isEmpty())&&IdRecurso!=null)
 						{
 							Long IdRecursoL=Long.parseLong(IdRecurso);
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
@@ -594,7 +595,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 					
 					//Bypass para los ids vacios de los recursos
 					try {
-						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						if ((idov==null||idov.isEmpty())&&IdRecurso!=null)
 						{
 							Long IdRecursoL=Long.parseLong(IdRecurso);
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
@@ -716,7 +717,7 @@ Long RecursoIntId = Long.parseLong(IdRecurso);
 					
 					//Bypass para los ids vacios de los recursos
 					try {
-						if (idov!=null&&!idov.isEmpty()&&IdRecurso!=null)
+						if ((idov==null||idov.isEmpty())&&IdRecurso!=null)
 						{
 							Long IdRecursoL=Long.parseLong(IdRecurso);
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));

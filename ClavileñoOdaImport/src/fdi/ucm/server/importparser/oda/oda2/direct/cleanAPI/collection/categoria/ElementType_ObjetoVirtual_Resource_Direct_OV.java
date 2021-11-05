@@ -123,7 +123,6 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 	}
 	
 	//SOLO PARA LOS OV
-	@Override
 	public void atributes_Recursos() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM section_data where idpadre=3 order by orden;");

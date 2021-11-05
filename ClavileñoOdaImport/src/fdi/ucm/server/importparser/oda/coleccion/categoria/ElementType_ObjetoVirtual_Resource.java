@@ -244,7 +244,7 @@ implements InterfaceOdaparser
 		
 	}
 
-	public void atributes_Recursos() {
+	private void atributes_Recursos() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM section_data where idpadre=3 order by orden;");
 			if (rs!=null) 
