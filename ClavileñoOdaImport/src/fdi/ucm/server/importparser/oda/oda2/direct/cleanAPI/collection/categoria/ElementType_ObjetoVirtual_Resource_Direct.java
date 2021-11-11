@@ -18,7 +18,6 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementU
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
@@ -304,7 +303,7 @@ public class ElementType_ObjetoVirtual_Resource_Direct extends ElementType_Objet
 							
 							String valorURL="";
 							
-							if (type=="U")
+							if (type.equals("U"))
 							{
 																
 								valorURL=name;
@@ -312,35 +311,52 @@ public class ElementType_ObjetoVirtual_Resource_Direct extends ElementType_Objet
 								
 							}
 							
-							if ((type=="F")||(type=="P"))  
+							if (type.equals("P"))  
 							{
-								if (!idovreferedFile.isEmpty()||!idreferedFile.isEmpty())
-								{
-									
-									
-									SB.append("bo/download/");
+
+//									SB.append("bo/download/");
 									SB.append(idov+"/"+name);
 									
 									valorURL=SB.toString();
-									
-									
-									if (type=="P")
-									{
-										if (iconoOV.equals("S"))
-											OVirtual.setIcon(valorURL);
+
+									if (iconoOV.equals("S"))
+										OVirtual.setIcon(valorURL);
+
+
+								
+							}
+							
+							
+							if (type.equals("F"))  
+							{
+								if (!idreferedFile.isEmpty())
+								{
+									try {
+										ResultSet rsF=LColec.getSQL().RunQuerrySELECT("SELECT * FROM resources where idresource_refered = "+idreferedFile+" order by idov,id;");
+										
+//										String idF=rsF.getObject("id").toString();
+										String idovF=rsF.getObject("idov").toString();
+										
+										String nameF="";
+										if(rsF.getObject("name")!=null)
+											nameF=rsF.getObject("name").toString();
+										
+//										SB.append("bo/download/");
+										SB.append(idovF+"/"+nameF);
+										
+										valorURL=SB.toString();
+										
+									} catch (Exception e) {
+										LColec.getLog().add("Warning: Error recuperando referencia a recurso externo (F) vacio, Idrecurso: '"+id+"' f:'"+idreferedFile+"' (ignorado)");
 									}
 									
-									
+	
 								}else
-								{
-									if (!idovreferedFile.isEmpty())
-										LColec.getLog().add("Warning: Nombre objeto virtual referencia vacio, Idrecurso: '"+id+"' (ignorado)");
-									if (!idreferedFile.isEmpty())
 										LColec.getLog().add("Warning: Nombre fichero en objeto virtual referencia vacio, Idrecurso: '"+id+"' (ignorado)");
-								}
+								
 							} 
 							
-							if (type=="OV")
+							if (type.equals("OV"))
 							{
 								
 								//http://repositorios.fdi.ucm.es/DiccionarioDidacticoLatin/view/cm_view_virtual_object.php?idov=514&seleccion=1
@@ -350,6 +366,17 @@ public class ElementType_ObjetoVirtual_Resource_Direct extends ElementType_Objet
 									CompleteDocuments OVirtualRef=LColec.getCollection().getObjetoVirtual().get(idovrefered2);
 									
 									if (OVirtualRef!=null) {
+										
+										SB= new StringBuffer();
+										if (LColec.getBaseURLOdaSimple().isEmpty()||
+												(!LColec.getBaseURLOdaSimple().startsWith("http://")
+														&&!LColec.getBaseURLOdaSimple().startsWith("https://")
+														&&!LColec.getBaseURLOdaSimple().startsWith("ftp://")))
+											SB.append("http://");
+										
+										SB.append(LColec.getBaseURLOdaSimple());
+										if (!LColec.getBaseURLOdaSimple().isEmpty()&&!LColec.getBaseURLOdaSimple().endsWith("//"))
+											SB.append("/");
 										
 										SB.append(NameConstantsOda.VIEWDOC);
 										SB.append(idovrefered2);
