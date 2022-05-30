@@ -3,6 +3,9 @@
  */
 package fdi.ucm.server.importparser.oda.oda2.direct;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import fdi.ucm.server.importparser.oda.MySQLConnectionOda;
@@ -38,15 +41,16 @@ public static void main(String[] args) {
 //	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Oda base url for files (if need it, ej: http://<Server Name>/Oda)",true));
 //	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Clone local files to Clavy",true));
 	
+	// localhost text 3306 odauser contras3na true " " true
 	ArrayList<String> DateEntrada=new ArrayList<String>();
-	DateEntrada.add("localhost");
-	DateEntrada.add("odalimpia");
-	DateEntrada.add("3306");
-	DateEntrada.add("root");
-	DateEntrada.add("");
-	DateEntrada.add("false");
-	DateEntrada.add("");
-	DateEntrada.add("false");
+	DateEntrada.add(args[0]);
+	DateEntrada.add(args[1]);
+	DateEntrada.add(args[2]);
+	DateEntrada.add(args[3]);
+	DateEntrada.add(args[4]);
+	DateEntrada.add(args[5]);
+	DateEntrada.add(args[6]);
+	DateEntrada.add(args[7]);
 
 	LoadCollectionOda LC=new LoadCollectionOda2Direct();
 	CompleteCollectionAndLog Salida=LC.processCollecccion(DateEntrada);
@@ -58,6 +62,21 @@ public static void main(String[] args) {
 		for (String warning : Salida.getLogLines())
 			System.err.println(warning);
 
+		
+		 try {
+				String FileIO = System.getProperty("user.home")+File.separator+System.currentTimeMillis()+".clavy";
+				
+				System.out.println(FileIO);
+				
+				ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FileIO));
+
+				oos.writeObject(Salida.getCollection());
+
+				oos.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		
 		
 		System.exit(0);
 		
