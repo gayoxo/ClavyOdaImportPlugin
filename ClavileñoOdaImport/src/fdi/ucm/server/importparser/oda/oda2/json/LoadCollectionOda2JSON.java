@@ -11,8 +11,9 @@ import java.util.ArrayList;
 import fdi.ucm.server.importparser.oda.MySQLConnectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.CollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
-import fdi.ucm.server.importparser.oda.oda2.direct.cleanAPI.collection.CollectionOda2DirectAPI;
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
+import fdi.ucm.server.modelComplete.ImportExportDataEnum;
+import fdi.ucm.server.modelComplete.ImportExportPair;
 import fdi.ucm.server.modelComplete.collection.CompleteCollectionAndLog;
 
 /**
@@ -22,21 +23,20 @@ import fdi.ucm.server.modelComplete.collection.CompleteCollectionAndLog;
  */
 public class LoadCollectionOda2JSON extends LoadCollectionOda{
 
-	private boolean convert;
 	private String BaseURLOda;
 	private boolean CloneFiles = false;
-	private MySQLConnectionOda SQL;
 	private ArrayList<String> Log;
 	private CollectionOda Odacollection;
 	private String BaseURLOdaSimple;
+	private String FilePath;
+	private boolean convert;
+
 
 
 public static void main(String[] args) {
-//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Server"));
-//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Database"));
-//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Number, "Port"));
-//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "User"));
-//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.EncriptedText, "Password"));
+
+
+//	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.File, "JsonFile"));
 //	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Convert to UTF-8"));
 //	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Oda base url for files (if need it, ej: http://<Server Name>/Oda)",true));
 //	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Clone local files to Clavy",true));
@@ -48,10 +48,6 @@ public static void main(String[] args) {
 	DateEntrada.add(args[1]);
 	DateEntrada.add(args[2]);
 	DateEntrada.add(args[3]);
-	DateEntrada.add(args[4]);
-	DateEntrada.add(args[5]);
-	DateEntrada.add(args[6]);
-	DateEntrada.add(args[7]);
 
 	LoadCollectionOda LC=new LoadCollectionOda2JSON();
 	CompleteCollectionAndLog Salida=LC.processCollecccion(DateEntrada);
@@ -92,15 +88,16 @@ public static void main(String[] args) {
 	@Override
 	public CompleteCollectionAndLog processCollecccion(ArrayList<String> DateEntrada) {
 		Log=new ArrayList<String>();
-		 Odacollection=new CollectionOda2DirectAPI(this);
-		
+//		 Odacollection=new CollectionOda2DirectAPI(this);
+
+		 Odacollection=new CollectionOda2DirectAPIJSON(this);
+
 		if (DateEntrada!=null)
-			
+	
 		{
-			String Database = RemoveSpecialCharacters(DateEntrada.get(1));
-			SQL = new MySQLConnectionOda(DateEntrada.get(0),Database,Integer.parseInt(DateEntrada.get(2)),DateEntrada.get(3),DateEntrada.get(4));
-			convert=Boolean.parseBoolean(DateEntrada.get(5));
-			BaseURLOda=DateEntrada.get(6);
+			FilePath = DateEntrada.get(0);
+			convert=Boolean.parseBoolean(DateEntrada.get(1));
+			BaseURLOda=DateEntrada.get(2);
 			
 			if (!testURL(BaseURLOda))
 			{
@@ -114,7 +111,9 @@ public static void main(String[] args) {
 		
 		BaseURLOda=BaseURLOda+"bo/download/";
 			
-			CloneFiles=Boolean.parseBoolean(DateEntrada.get(7));
+		((CollectionOda2DirectAPIJSON)Odacollection).setFileProcess(FilePath);
+		
+			CloneFiles=Boolean.parseBoolean(DateEntrada.get(3));
 			Odacollection.ProcessAttributes();
 			Odacollection.ProcessInstances();
 		}
@@ -174,7 +173,7 @@ public static void main(String[] args) {
 
 	@Override
 	public MySQLConnectionOda getSQL() {
-		return SQL;
+		return null;
 	}
 
 	@Override
@@ -187,4 +186,18 @@ public static void main(String[] args) {
 		return Odacollection;
 	}
 	
+	@Override
+	public ArrayList<ImportExportPair> getConfiguracion() {
+		if (Parametros==null)
+		{
+			ArrayList<ImportExportPair> ListaCampos=new ArrayList<ImportExportPair>();
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.File, "JsonFile"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Convert to UTF-8"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Oda base url for files (if need it, ej: http://<Server Name>/Oda)",true));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Clone local files to Clavy",true));
+			Parametros=ListaCampos;
+			return ListaCampos;
+		}
+		else return Parametros;
+	}
 }

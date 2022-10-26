@@ -19,7 +19,7 @@ import fdi.ucm.server.modelComplete.LoadCollection;
 public abstract class LoadCollectionOda extends LoadCollection {
 
 	private static final Pattern regexAmbito = Pattern.compile("^http://(([a-zA-Z][a-zA-Z0-9._%-]*)||([0-9]+.[0-9]+.[0-9]+.[0-9]+))(:[0-9]+)?/[a-zA-Z0-9][a-zA-Z0-9._%-]+/*$");
-	private static ArrayList<ImportExportPair> Parametros;
+	protected static ArrayList<ImportExportPair> Parametros;
 	
 	public abstract boolean isConvert();
 
