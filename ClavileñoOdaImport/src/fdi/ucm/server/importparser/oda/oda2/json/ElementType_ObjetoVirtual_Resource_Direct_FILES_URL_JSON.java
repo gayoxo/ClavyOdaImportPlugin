@@ -1,7 +1,5 @@
 package fdi.ucm.server.importparser.oda.oda2.json;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -533,10 +531,14 @@ JSONArray section_data = (JSONArray) JSONGeneral.get("section_data");
 			JSONObject section_dataInst = 
 					(JSONObject) section_data.get(i);
 
-		String idpadre = section_dataInst.
+			String idpadre=null;
+			if(section_dataInst.get("idpadre")!=null)
+				idpadre = section_dataInst.
 				 get("idpadre").toString();
 		
-		if (idpadre=="3")
+		
+		
+		if (idpadre!=null&&idpadre=="3")
 			{
 			LinkedList<JSONObject> listaAct = listaXPadre.get(idpadre);
 			if (listaAct==null)
@@ -549,7 +551,7 @@ JSONArray section_data = (JSONArray) JSONGeneral.get("section_data");
 		}
 		
 		for (Entry<String, LinkedList<JSONObject>> id_lista : listaXPadre.entrySet()) {
-			String idpadreE = id_lista.getKey();
+//			String idpadreE = id_lista.getKey();
 			LinkedList<JSONObject> listaE = id_lista.getValue();
 			
 			Collections.sort(listaE,new Comparator<JSONObject>() {
@@ -571,10 +573,10 @@ JSONArray section_data = (JSONArray) JSONGeneral.get("section_data");
 			
 			
 			for (JSONObject section_dataInst : listaE) {
-				String codigo="";
-				if (section_dataInst.get("codigo")!=null)
-					codigo = section_dataInst.
-						 get("codigo").toString();
+//				String codigo="";
+//				if (section_dataInst.get("codigo")!=null)
+//					codigo = section_dataInst.
+//						 get("codigo").toString();
 				 
 				String tipo_valores=null;
 				if (section_dataInst.get("tipo_valores")!=null)
@@ -586,15 +588,15 @@ JSONArray section_data = (JSONArray) JSONGeneral.get("section_data");
 						visible = section_dataInst.
 						 get("visible").toString();
 				 
-					String tooltip="";
-					if (section_dataInst.get("tooltip")!=null)
-						tooltip = section_dataInst.
-						 get("tooltip").toString();
-				 
-					String decimales="";
-					if (section_dataInst.get("decimales")!=null)
-						decimales = section_dataInst.
-						 get("decimales").toString();
+//					String tooltip="";
+//					if (section_dataInst.get("tooltip")!=null)
+//						tooltip = section_dataInst.
+//						 get("tooltip").toString();
+//				 
+//					String decimales="";
+//					if (section_dataInst.get("decimales")!=null)
+//						decimales = section_dataInst.
+//						 get("decimales").toString();
 				 
 
 				 String id = section_dataInst.
@@ -609,15 +611,78 @@ JSONArray section_data = (JSONArray) JSONGeneral.get("section_data");
 							 get("nombre").toString();
 					
 					
-					String extensible="N";
-					if (section_dataInst.get("extensible")!=null)
-						extensible = section_dataInst.
-						 get("extensible").toString();
+//					String extensible="N";
+//					if (section_dataInst.get("extensible")!=null)
+//						extensible = section_dataInst.
+//						 get("extensible").toString();
 					
 					String vocabulario=null;
 					if (section_dataInst.get("vocabulario")!=null)
 						vocabulario = section_dataInst.
 						 get("vocabulario").toString();
+					
+					
+					if (nombre!=null&&!nombre.isEmpty()&&tipo_valores!=null&&
+							!tipo_valores.isEmpty()&&((tipo_valores.equals("C")&&
+									vocabulario!=null)||(!(tipo_valores.equals("C")))))
+					{
+					
+					nombre=nombre.trim();
+					nombre = StaticFunctionsOda.CleanStringFromDatabase(nombre,LColec);
+					
+					ArrayList<CompleteResourceElementType> parsear = new ArrayList<CompleteResourceElementType>(numTotales);
+					parsear.remove(AtributoMeta);
+					
+					
+					ArrayList<CompleteElementType> Hermanos=new ArrayList<CompleteElementType>();
+					
+					ElementType_NODE Nodo=new ElementType_NODE_JSON(id,nombre,browseable,visible,
+							tipo_valores,vocabulario,AtributoMeta,false,LColec,PadreGrammar,
+							CompleteAsociado,CompleteAsociadoTabla,
+							Hermanos,CompleteAsociadoID_IDOV,JSONGeneral);
+					CompleteElementType nodeattr = Nodo.getAtributoMeta();
+					Hermanos.add(nodeattr);
+					AtributoMeta.getSons().add(nodeattr);
+					
+					HashMap<CompleteElementType, CompleteElementType> noexiste = CompleteAsociadoTabla.get(AtributoMeta);
+					if (noexiste==null)
+						noexiste=new HashMap<CompleteElementType, CompleteElementType>();
+					noexiste.put(nodeattr, nodeattr);
+					CompleteAsociadoTabla.put(AtributoMeta, noexiste);
+					
+					for (CompleteResourceElementType AtributoMeta2 : parsear) {
+						ElementType_NODE Nodo2=new ElementType_NODE_JSON(id,nombre,browseable,visible,
+								tipo_valores,vocabulario,AtributoMeta2,false,LColec,
+								PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,
+								Hermanos,CompleteAsociadoID_IDOV,JSONGeneral);
+						CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
+						nodeattr2.setClassOfIterator(nodeattr);
+						AtributoMeta2.getSons().add(nodeattr2);
+						Hermanos.add(nodeattr2);
+						
+						HashMap<CompleteElementType, CompleteElementType> noexiste2 = CompleteAsociadoTabla.get(AtributoMeta2);
+						if (noexiste2==null)
+							noexiste2=new HashMap<CompleteElementType, CompleteElementType>();
+						noexiste2.put(nodeattr, nodeattr2);
+						CompleteAsociadoTabla.put(AtributoMeta2, noexiste2);
+					}
+					
+					
+					Nodo.ProcessAttributes();
+					Nodo.ProcessInstances();
+					
+					}
+				else
+					{
+					if (tipo_valores==null||tipo_valores.isEmpty())
+						LColec.getLog().add("Warning: Tipo de valores vacio o nulo, id estructura: '"+id+"', estuctura padre : '3' (ignorado)");
+					if (nombre==null||nombre.isEmpty())
+						LColec.getLog().add("Warning: Nombre de la estructura del recurso vacia, id estructura: '"+id+"', padre : '3' (ignorado)");
+					if ((tipo_valores.equals("C")&&vocabulario==null))
+						LColec.getLog().add("Warning: Tipo de estructura controlado pero valor de vocabulario vacio, id estructura: '"+id+"', padre : '3' (ignorado)");
+						
+					}
+
 			}
 		}
 		
