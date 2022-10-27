@@ -37,7 +37,7 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
  */
 public class ElementType_ObjetoVirtual_Resource_Direct_FILES_URL extends ElementType_ObjetoVirtual_Resource {
 
-	private ArrayList<Long> idsOV=new ArrayList<Long>();
+	protected ArrayList<Long> idsOV=new ArrayList<Long>();
 	protected HashMap<Integer, List<CompleteResourceElementType>> numActivos;
 	protected List<CompleteResourceElementType> numTotales;
 	

@@ -36,10 +36,10 @@ public class CollectionOda2DirectAPIJSON extends CollectionOda2Direct {
 	@Override
 	protected void procesOV() {
 		
-		 JSONArray virtual_object = (JSONArray) OdaJSONCollection.get("virtual_object");
+		 
 		
 		ResourcveData=new Grammar_ObjetoVirtualDirectJSON(oda2,
-				LocalPadre,virtual_object);
+				LocalPadre,OdaJSONCollection);
 		((Grammar_ObjetoVirtualDirectJSON)ResourcveData).ProcessAttributes();
 		((Grammar_ObjetoVirtualDirectJSON)ResourcveData).ProcessInstances();
 		oda2.getMetamodelGrammar().add(ResourcveData.getAtributoMeta());

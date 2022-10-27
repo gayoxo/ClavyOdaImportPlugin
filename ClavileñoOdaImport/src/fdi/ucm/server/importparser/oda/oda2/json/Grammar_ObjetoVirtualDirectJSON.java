@@ -17,13 +17,13 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 
 public class Grammar_ObjetoVirtualDirectJSON extends Grammar_ObjetoVirtualDirect {
 
-	private JSONArray VirtualObject;
+	private JSONObject JSONGeneral;
 
 
 	public Grammar_ObjetoVirtualDirectJSON(CompleteCollection completeCollection,
-			LoadCollectionOda L, JSONArray virtualObject) {
+			LoadCollectionOda L, JSONObject jSONGeneral) {
 		super(completeCollection, L);
-		VirtualObject=virtualObject;
+		JSONGeneral=jSONGeneral;
 	}
 	
 	@Override
@@ -36,24 +36,26 @@ public class Grammar_ObjetoVirtualDirectJSON extends Grammar_ObjetoVirtualDirect
 	public void ProcessInstances() {
 		OwnInstances();
 		
-		Recursos=new ElementType_ObjetoVirtual_Resource_Direct_OV(AtributoMeta,LColec);
+		Recursos=new ElementType_ObjetoVirtual_Resource_Direct_OV_JSON(AtributoMeta,LColec,JSONGeneral);
 		Recursos.ProcessAttributes();
 		AtributoMeta.getSons().add(Recursos.getAtributoMeta());
 
-		//Recursos.ProcessInstances();
+		Recursos.ProcessInstances();
 		
 		
-		Recursos2=new ElementType_ObjetoVirtual_Resource_Direct_FILES_URL(AtributoMeta,LColec);
+		Recursos2=new ElementType_ObjetoVirtual_Resource_Direct_FILES_URL_JSON(AtributoMeta,LColec,JSONGeneral);
 		Recursos2.ProcessAttributes();
 		AtributoMeta.getSons().add(Recursos2.getAtributoMeta());
 		
 		
 		
-		//Recursos2.ProcessInstances();
+		Recursos2.ProcessInstances();
 
 	}
 	
 	private void OwnInstances() {
+		
+		JSONArray VirtualObject = (JSONArray) JSONGeneral.get("virtual_object");
 		
 		 HashMap<Integer, CompleteDocuments> ObjetoVirtual= new HashMap<Integer, CompleteDocuments>();
 		
@@ -89,17 +91,13 @@ public class Grammar_ObjetoVirtualDirectJSON extends Grammar_ObjetoVirtualDirect
 				
 				CompleteOperationalValue ValorOdaPUBLIInstance=new CompleteOperationalValue(ValorOdaPUBLIC,Boolean.toString(publico));
 
-		//		Element MetaValueAsociado = new Element(AtributoMeta);
 				sectionValue.getViewsValues().add(ValorOdaPUBLIInstance);
-//				MetaValueAsociado.getShows().add(ValorOdaPUBLIInstance);
+
 				
 				CompleteOperationalValue ValorOdaPRIVInstance=new CompleteOperationalValue(ValorOdaPRIVATE,Boolean.toString(privado));
 
-				//		Element MetaValueAsociado = new Element(AtributoMeta);
-						sectionValue.getViewsValues().add(ValorOdaPRIVInstance);
+				sectionValue.getViewsValues().add(ValorOdaPRIVInstance);
 				
-				
-//				ObjetoVirtualMetaValueAsociado.put(Idov, MetaValueAsociado);
 				ObjetoVirtual.put(Idov, sectionValue);
 				
 				
@@ -137,92 +135,6 @@ public class Grammar_ObjetoVirtualDirectJSON extends Grammar_ObjetoVirtualDirect
 	}
 	
 	
-//	/**
-//	 * Procesa las instancias propias
-//	 */
-//	private void OwnInstancesOld() {
-////		 ObjetoVirtualMetaValueAsociado=new HashMap<Integer, Element>();
-//		 HashMap<Integer, CompleteDocuments> ObjetoVirtual= new HashMap<Integer, CompleteDocuments>();
-//		try {
-//			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM virtual_object;");
-//			if (rs!=null) 
-//			{
-//				while (rs.next()) {
-//					
-//					String id=rs.getObject("id").toString();
-//					
-//					String publicoT="";
-//					if(rs.getObject("ispublic")!=null)
-//						publicoT=rs.getObject("ispublic").toString();
-//
-//					String privateT="S";
-//					if(rs.getObject("isprivate")!=null&&!rs.getObject("isprivate").toString().isEmpty())
-//						privateT=rs.getObject("isprivate").toString();
-//					
-//					
-//					if (publicoT!=null&&!publicoT.isEmpty())
-//						{
-//						int Idov=Integer.parseInt(id);
-//						boolean publico=true;
-//						if (publicoT.equals("N"))
-//							publico=false;
-//						boolean privado=true;
-//						if (privateT.equals("N"))
-//							privado=false;
-//						CompleteCollection C=LColec.getCollection().getCollection();
-//						CompleteDocuments sectionValue = new CompleteDocuments(C,"","");
-//						C.getEstructuras().add(sectionValue);
-//						CompleteTextElement E=new CompleteTextElement(IDOV, id);
-//						sectionValue.getDescription().add(E);
-//						
-//						CompleteOperationalValue ValorOdaPUBLIInstance=new CompleteOperationalValue(ValorOdaPUBLIC,Boolean.toString(publico));
-//
-//				//		Element MetaValueAsociado = new Element(AtributoMeta);
-//						sectionValue.getViewsValues().add(ValorOdaPUBLIInstance);
-////						MetaValueAsociado.getShows().add(ValorOdaPUBLIInstance);
-//						
-//						CompleteOperationalValue ValorOdaPRIVInstance=new CompleteOperationalValue(ValorOdaPRIVATE,Boolean.toString(privado));
-//
-//						//		Element MetaValueAsociado = new Element(AtributoMeta);
-//								sectionValue.getViewsValues().add(ValorOdaPRIVInstance);
-//						
-//						
-////						ObjetoVirtualMetaValueAsociado.put(Idov, MetaValueAsociado);
-//						ObjetoVirtual.put(Idov, sectionValue);
-//						
-//						
-//						StringBuffer SB=new StringBuffer();
-//						
-//						if (LColec.getBaseURLOdaSimple().isEmpty()||
-//								(!LColec.getBaseURLOdaSimple().startsWith("http://")
-//										&&!LColec.getBaseURLOdaSimple().startsWith("https://")
-//										&&!LColec.getBaseURLOdaSimple().startsWith("ftp://")))
-//							SB.append("http://");
-//						
-//						SB.append(LColec.getBaseURLOdaSimple());
-//						if (!LColec.getBaseURLOdaSimple().isEmpty()&&!LColec.getBaseURLOdaSimple().endsWith("//"))
-//							SB.append("/");
-//						SB.append(NameConstantsOda.VIEWDOC+id);
-//						
-//						String Path=SB.toString();
-//						
-//						CompleteTextElement RR=new CompleteTextElement(URLORIGINAL, Path);
-//						sectionValue.getDescription().add(RR);
-//						
-//						
-//						}
-//					else {
-//						if (publicoT==null||publicoT.isEmpty())
-//							LColec.getLog().add("Warning: Estado de privacidad ambiguo en, Identificador Objeto virtual: '"+id+"' (ignorado)");
-//					}
-//				}
-//				LColec.getCollection().setObjetoVirtual(ObjetoVirtual);
-//			rs.close();
-//			}
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		
-//	}
+
 
 }
