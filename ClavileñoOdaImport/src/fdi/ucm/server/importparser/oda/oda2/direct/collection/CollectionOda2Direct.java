@@ -28,10 +28,10 @@ public class CollectionOda2Direct extends CollectionOda {
 
 	private static final String COLECCION_OBTENIDA_A_PARTIR_DE_ODA = "Coleccion obtenida a partir de ODA en : ";
 	private static final String COLECCION_ODA = "Coleccion ODA";
-	private  CompleteCollection oda2;
+	protected  CompleteCollection oda2;
 	private HashMap<Integer, CompleteDocuments> ObjetoVirtual;
-	private Grammar_ObjetoVirtualDirect ResourcveData;
-	private LoadCollectionOda LocalPadre;
+	protected Grammar_ObjetoVirtualDirect ResourcveData;
+	protected LoadCollectionOda LocalPadre;
 	private HashMap<CompleteElementType, ArrayList<String>> Vocabularios;
 	private HashMap<Integer, ArrayList<String>> Vocabularies;
 	private HashSet<CompleteElementType> NoCompartidos;
@@ -66,7 +66,7 @@ public class CollectionOda2Direct extends CollectionOda {
 	/**
 	 * Procesa los OV
 	 */
-	private void procesOV() {
+	protected void procesOV() {
 		ResourcveData=new Grammar_ObjetoVirtualDirect(oda2,LocalPadre);
 		ResourcveData.ProcessAttributes();
 		ResourcveData.ProcessInstances();
@@ -80,7 +80,7 @@ public class CollectionOda2Direct extends CollectionOda {
 	/**
 	 * Procesa los MetaDatos de Oda1
 	 */
-	private void processMetadatos() {
+	protected void processMetadatos() {
 		ElementType_Metadatos ResourcveData2=new ElementType_Metadatos(ResourcveData.getAtributoMeta(),LocalPadre);
 		ResourcveData2.ProcessAttributes();
 		ResourcveData2.ProcessInstances();
@@ -91,7 +91,7 @@ public class CollectionOda2Direct extends CollectionOda {
 	/**
 	 * Procesa los datos de Oda1
 	 */
-	private void processDatos() {
+	protected void processDatos() {
 		ElementType_Datos ResourcveData2=new ElementType_Datos(ResourcveData.getAtributoMeta(),LocalPadre);
 		ResourcveData2.ProcessAttributes();
 		ResourcveData2.ProcessInstances();

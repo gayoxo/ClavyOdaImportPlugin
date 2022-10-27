@@ -27,20 +27,20 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
  */
 public class Grammar_ObjetoVirtualDirect implements InterfaceOdaparser {
 
-	private CompleteGrammar AtributoMeta;
-	private CompleteTextElementType IDOV;
+	protected CompleteGrammar AtributoMeta;
+	protected CompleteTextElementType IDOV;
 	
-	private ElementType_ObjetoVirtual_Resource_Direct_OV Recursos;
+	protected ElementType_ObjetoVirtual_Resource_Direct_OV Recursos;
 	
-	private ElementType_ObjetoVirtual_Resource_Direct_FILES_URL Recursos2;
+	protected ElementType_ObjetoVirtual_Resource_Direct_FILES_URL Recursos2;
 	
 	
-	private CompleteOperationalValueType ValorOdaPUBLIC;
+	protected CompleteOperationalValueType ValorOdaPUBLIC;
 	private List<CompleteOperationalValueType> VistaOV;
 	private List<CompleteOperationalValueType> VistaOVOda;
-	private CompleteOperationalValueType ValorOdaPRIVATE;
-	private LoadCollectionOda LColec;
-	private CompleteTextElementType URLORIGINAL;
+	protected CompleteOperationalValueType ValorOdaPRIVATE;
+	protected LoadCollectionOda LColec;
+	protected CompleteTextElementType URLORIGINAL;
 
 	
 	public Grammar_ObjetoVirtualDirect(CompleteCollection completeCollection, LoadCollectionOda L) {

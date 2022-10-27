@@ -1,102 +1,82 @@
 package fdi.ucm.server.importparser.oda.oda2.json;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import fdi.ucm.server.importparser.oda.coleccion.CollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
+import fdi.ucm.server.importparser.oda.oda2.direct.collection.CollectionOda2Direct;
+import fdi.ucm.server.importparser.oda.oda2.direct.collection.categoria.Grammar_ObjetoVirtualDirect;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteFile;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 
-public class CollectionOda2DirectAPIJSON extends CollectionOda {
+public class CollectionOda2DirectAPIJSON extends CollectionOda2Direct {
 	
-	private static final String COLECCION_OBTENIDA_A_PARTIR_DE_ODA = "Coleccion obtenida a partir de ODA en : ";
-	private static final String COLECCION_ODA = "Coleccion ODA";
-	private  CompleteCollection oda2;
-	private HashMap<Integer, CompleteDocuments> ObjetoVirtual;
-	private String FilePath;
+	
+	private JSONObject OdaJSONCollection;
 
 
 	public CollectionOda2DirectAPIJSON(LoadCollectionOda loadCollectionOda2JSON) {
-		oda2=new CompleteCollection(COLECCION_ODA, COLECCION_OBTENIDA_A_PARTIR_DE_ODA+ new Timestamp(new Date().getTime()));
-		ObjetoVirtual=new HashMap<Integer, CompleteDocuments>();
+		super(loadCollectionOda2JSON);
 	}
 
 	@Override
-	public void ProcessAttributes() {
+	protected void procesOV() {
+		
+		 JSONArray virtual_object = (JSONArray) OdaJSONCollection.get("virtual_object");
+		
+		ResourcveData=new Grammar_ObjetoVirtualDirectJSON(oda2,
+				LocalPadre,virtual_object);
+		((Grammar_ObjetoVirtualDirectJSON)ResourcveData).ProcessAttributes();
+		((Grammar_ObjetoVirtualDirectJSON)ResourcveData).ProcessInstances();
+		oda2.getMetamodelGrammar().add(ResourcveData.getAtributoMeta());
+	}
+	
+	@Override
+	protected void processDatos() {
 		// TODO Auto-generated method stub
-	}
 
+	}
+	
 	@Override
-	public void ProcessInstances() {
+	protected void processMetadatos() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public CompleteCollection getCollection() {
-		return oda2;
-	}
+	public void setFileProcess(String filePath) {	
+		
+		 JSONParser jsonParser = new JSONParser();
+		 
+		 try (FileReader reader = new FileReader(filePath))
+	        {
+	            //Read JSON file
+	            Object obj = jsonParser.parse(reader);
+	 
+	             OdaJSONCollection = (JSONObject) obj;
 
-	@Override
-	public HashMap<Integer, CompleteDocuments> getObjetoVirtual() {
-		return ObjetoVirtual;
-	}
-
-	@Override
-	public HashMap<Integer, ArrayList<String>> getVocabularies() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HashMap<CompleteElementType, ArrayList<String>> getVocabularios() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HashSet<CompleteElementType> getNOCompartidos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HashMap<String, CompleteDocuments> getFilesId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HashMap<String, CompleteDocuments> getFilesC() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HashMap<String, CompleteDocuments> getURLC() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HashMap<String, CompleteFile> getFiles() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setObjetoVirtual(HashMap<Integer, CompleteDocuments> objetoVirtual) {
-		ObjetoVirtual = objetoVirtual;
-	}
-
-	public void setFileProcess(String filePath) {
-		FilePath=filePath;		
+	 
+	        } catch (FileNotFoundException e) {
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } catch (ParseException e) {
+	            e.printStackTrace();
+	        }
+		
 	}
 
 }
