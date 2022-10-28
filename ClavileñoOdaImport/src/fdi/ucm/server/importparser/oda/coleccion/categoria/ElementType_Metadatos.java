@@ -24,9 +24,9 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueT
 public class ElementType_Metadatos implements InterfaceOdaparser{
 
 	
-	private CompleteElementType AtributoMeta;
-	private LoadCollectionOda LColec;
-	private CompleteGrammar Padre;
+	protected CompleteElementType AtributoMeta;
+	protected LoadCollectionOda LColec;
+	protected CompleteGrammar Padre;
 
 
 	public ElementType_Metadatos(CompleteGrammar Padre,LoadCollectionOda L) {

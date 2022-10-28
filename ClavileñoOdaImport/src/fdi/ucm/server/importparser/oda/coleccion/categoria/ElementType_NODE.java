@@ -302,7 +302,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 
 	
 
-	private void ProcessInstancesFecha() {
+	protected void ProcessInstancesFecha() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM date_data where idseccion="+Id+";");
 			if (rs!=null) 
@@ -441,7 +441,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 		
 	}
 
-	private void ProcessInstancesControladas() {
+	protected void ProcessInstancesControladas() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM controlled_data where idseccion="+Id+";");
 			if (rs!=null) 
@@ -573,7 +573,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 
 	
 
-	private void ProcessInstancesNumericas() {
+	protected void ProcessInstancesNumericas() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM numeric_data where idseccion="+Id+";");
 			if (rs!=null) 
@@ -695,7 +695,7 @@ Long RecursoIntId = Long.parseLong(IdRecurso);
 		
 	}
 
-	private void ProcessInstancesTexto() {
+	protected void ProcessInstancesTexto() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT id,idov, value, idrecurso FROM text_data where idseccion="+Id+";");
 			if (rs!=null) 

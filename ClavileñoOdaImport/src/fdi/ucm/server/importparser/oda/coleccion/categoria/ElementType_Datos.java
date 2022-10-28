@@ -26,9 +26,9 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueT
 public class ElementType_Datos implements InterfaceOdaparser{
 
 	
-	private CompleteElementType AtributoMeta;
-	private LoadCollectionOda LColec;
-	private CompleteGrammar GPadre;
+	protected CompleteElementType AtributoMeta;
+	protected LoadCollectionOda LColec;
+	protected CompleteGrammar GPadre;
 
 
 	public ElementType_Datos(CompleteGrammar Padre,LoadCollectionOda L) {
@@ -155,7 +155,7 @@ public class ElementType_Datos implements InterfaceOdaparser{
 	 * Metodo que procesa las descripciones permitiendo unirlas a los Documentos
 	 * @param id
 	 */
-	private void ProcessDescripcion(String id) {
+	protected void ProcessDescripcion(String id) {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM text_data where idseccion="+id+";");
 			if (rs!=null) 

@@ -16,6 +16,8 @@ import org.json.simple.parser.ParseException;
 
 import fdi.ucm.server.importparser.oda.coleccion.CollectionOda;
 import fdi.ucm.server.importparser.oda.coleccion.LoadCollectionOda;
+import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Datos;
+import fdi.ucm.server.importparser.oda.coleccion.categoria.ElementType_Metadatos;
 import fdi.ucm.server.importparser.oda.oda2.direct.collection.CollectionOda2Direct;
 import fdi.ucm.server.importparser.oda.oda2.direct.collection.categoria.Grammar_ObjetoVirtualDirect;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
@@ -47,14 +49,21 @@ public class CollectionOda2DirectAPIJSON extends CollectionOda2Direct {
 	
 	@Override
 	protected void processDatos() {
-		// TODO Auto-generated method stub
+		ElementType_Datos ResourcveData2=new ElementType_Datos_JSON(ResourcveData.getAtributoMeta(),
+				LocalPadre,OdaJSONCollection);
+		ResourcveData2.ProcessAttributes();
+		ResourcveData2.ProcessInstances();
+		ResourcveData.getAtributoMeta().getSons().add(ResourcveData2.getAtributoMeta());
 
 	}
 	
 	@Override
 	protected void processMetadatos() {
-		// TODO Auto-generated method stub
-
+		ElementType_Metadatos ResourcveData2=new ElementType_Metadatos_JSON(ResourcveData.getAtributoMeta(),
+				LocalPadre,OdaJSONCollection);
+		ResourcveData2.ProcessAttributes();
+		ResourcveData2.ProcessInstances();
+		ResourcveData.getAtributoMeta().getSons().add(ResourcveData2.getAtributoMeta());
 	}
 
 	public void setFileProcess(String filePath) {	

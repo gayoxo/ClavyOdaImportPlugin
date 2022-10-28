@@ -34,7 +34,7 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 
 
 	
-	private ArrayList<Long> idsOV;
+	protected ArrayList<Long> idsOV;
 	
 	//TODO CANDIDATO A IR AL PADRE
 
@@ -121,7 +121,7 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 		
 	}
 	
-	private void atributes_Recursos() {
+	protected void atributes_Recursos() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM section_data where idpadre=3 order by orden;");
 			if (rs!=null) 
@@ -217,7 +217,7 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV extends ElementType_Ob
 
 
 
-	private void OVInstances() {
+	protected void OVInstances() {
 		try {
 			ResultSet rs=LColec.getSQL().RunQuerrySELECT("SELECT * FROM resources where type='OV' order by idov;");
 			if (rs!=null) 
