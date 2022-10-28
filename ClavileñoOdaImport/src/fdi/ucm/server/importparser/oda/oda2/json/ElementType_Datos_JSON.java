@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -223,11 +224,47 @@ public class ElementType_Datos_JSON extends ElementType_Datos {
 				{
 				
 				
+				
 				value=value.trim();
+				
 				String valueclean = StaticFunctionsOda.CleanStringFromDatabase(value,LColec);
 				
 				
+//				
+//				Set<Integer> todos=LColec.getCollection().getObjetoVirtual().keySet();
+//				
+//			
+//				
+//				LinkedList<Integer> todosOrdenados=new LinkedList<Integer>(todos);
+//				
+//				Collections.sort(todosOrdenados);
+//				
+//				for (int j = 0; j < 2; j++) {
+//					todosOrdenados.removeFirst();
+//				}
+//				
+//				
+//		//		String valuecleanA = StaticFunctionsOda.CleanStringFromDatabaseUTF8(valueclean,LColec);
+//				
 				int Idov=Integer.parseInt(idov);
+				
+//				if (!todosOrdenados.contains(Idov))
+//				{
+//					
+//	
+//					System.out.println(Idov);
+//			//		System.out.println("!**!"+value);
+//					System.out.println("!--!"+valueclean);
+//			//		System.out.println("!++!"+valuecleanA);
+//					System.out.println();
+//
+//					
+//					
+//					
+//				}else
+//
+//				valueclean="";
+				
 				
 				try {
 					CompleteDocuments C=LColec.getCollection().getObjetoVirtual().get(Idov);

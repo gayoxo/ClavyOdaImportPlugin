@@ -33,6 +33,7 @@ public class ElementType_NODE_JSON extends ElementType_NODE {
 			ArrayList<CompleteElementType> hermanos, HashMap<Long, Integer> completeAsociadoID_IDOV, JSONObject jSONGeneral) {
 		super(id, nombre, navegable, visible, tipo_valores, vocabulario, tpadre, summary, L, Cm, completeAsociado,
 				completeAsociadoTabla, hermanos, completeAsociadoID_IDOV);
+		AtributoMeta.setName(StaticFunctionsOda.CleanStringFromDatabase(nombre,L));
 		JSONGeneral=jSONGeneral;
 	}
 	
@@ -125,6 +126,7 @@ public class ElementType_NODE_JSON extends ElementType_NODE {
 				
 				String nombre= section_dataInst.
 						 get("nombre").toString();
+				
 				
 				
 //				String extensible="N";

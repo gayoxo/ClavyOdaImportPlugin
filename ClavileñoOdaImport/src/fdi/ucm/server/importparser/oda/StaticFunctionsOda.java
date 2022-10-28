@@ -3,6 +3,9 @@
  */
 package fdi.ucm.server.importparser.oda;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 //import java.nio.ByteBuffer;
 //import java.nio.CharBuffer;
 //import java.nio.charset.Charset;
@@ -89,8 +92,66 @@ public class StaticFunctionsOda {
 		}
 		else return value;
 	}
+	
+	/**
+	 * Limpia el String de la base de datos si procede, sino se devuelve
+	 * @param value
+	 * @return string limpio o si mismo depenede del flag de conversion
+	 */
+	public static String CleanStringFromDatabaseUTF8(String value,LoadCollectionOda L) {
+		if (L.isConvert())
+		{
+			
+			
+			Charset utf8charset = Charset.forName("UTF-8");
+		    Charset iso88591charset = Charset.forName("ISO-8859-1");
+
+		    ByteBuffer inputBuffer = ByteBuffer.wrap(value.getBytes());
+		    CharBuffer data = utf8charset.decode(inputBuffer);
+
+		    ByteBuffer outputBuffer = iso88591charset.encode(data);
+		    byte[] outputData = outputBuffer.array();
+
+		    return new String(outputData);
+			
+
+		}
+		else return value;
+	}
+	
 
 	private static String parseUTF(String valor1) {
+		
+		
+//		valor1 = valor1.replace("Ä“", "ē");
+//		valor1 = valor1.replace("Å�", "ō");
+//		valor1 = valor1.replace("Ä­", "ĭ");
+//		valor1 = valor1.replace("Ä�", "ā");
+//		valor1 = valor1.replace("Ä•","ĕ");
+//		valor1 = valor1.replace("Ä«","ī");
+//		valor1 = valor1.replace("Å«","ū");
+//		valor1 = valor1.replace("Ä‚","Ă");
+//		valor1 = valor1.replace("Äƒ","ă");
+//		valor1 = valor1.replace("Å­","ŭ");
+//		valor1 = valor1.replace("í­","í");
+//		valor1 = valor1.replace("Ã¼","ü");
+		
+		
+		valor1 = valor1.replace("Ä“", "ee");
+		valor1 = valor1.replace("Å�", "oo");
+		valor1 = valor1.replace("Ä­", "ii");
+		valor1 = valor1.replace("Ä�", "aa");
+		valor1 = valor1.replace("Ä•","ee");
+		valor1 = valor1.replace("Ä«","ii");
+		valor1 = valor1.replace("Å«","uu");
+		valor1 = valor1.replace("Ä‚","AA");
+		valor1 = valor1.replace("Äƒ","aaa");
+		valor1 = valor1.replace("Å­","uuu");
+		valor1 = valor1.replace("í­","í");
+		valor1 = valor1.replace("Ã¼","ü");
+		
+
+		
 		valor1 = valor1.replace("Ã¡", "á");
 		valor1 = valor1.replace("Ã©", "é");
 		valor1 = valor1.replace("Ã*", "í");
@@ -104,11 +165,15 @@ public class StaticFunctionsOda {
 		valor1 = valor1.replace("Ã±", "ñ");
 		valor1 = valor1.replace("Ã‘", "Ñ");
 		valor1 = valor1.replace("Ã¶", "Ó");
-		valor1 = valor1.replace("Ã¼", "Ó");
-			
-		valor1 = valor1.replace("Â", "");
+		valor1 = valor1.replace("Ã¼", "Ó");			
+		valor1 = valor1.replace("Â", "");		
+		valor1 = valor1.replace("Ã", "í");	
+		valor1 = valor1.replace("í�", "Í");
+		valor1 = valor1.replace("â€œ", "“");
+		valor1 = valor1.replace("â€�", "”");
+
 		
-		valor1 = valor1.replace("Ã", "í");
+		
 		return valor1;
 	}
 	

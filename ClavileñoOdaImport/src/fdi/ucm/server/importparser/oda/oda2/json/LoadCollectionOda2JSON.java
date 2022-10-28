@@ -42,7 +42,7 @@ public static void main(String[] args) {
 //	ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Clone local files to Clavy",true));
 	
 	
-	// localhost text 3306 odauser contras3na true " " true
+	// response.json true "http://repositorios.fdi.ucm.es/DiccionarioDidacticoLatin" true
 	ArrayList<String> DateEntrada=new ArrayList<String>();
 	DateEntrada.add(args[0]);
 	DateEntrada.add(args[1]);
