@@ -137,16 +137,16 @@ public class StaticFunctionsOda {
 //		valor1 = valor1.replace("Ã¼","ü");
 		
 		
-		valor1 = valor1.replace("Ä“", "ee");
-		valor1 = valor1.replace("Å�", "oo");
-		valor1 = valor1.replace("Ä­", "ii");
-		valor1 = valor1.replace("Ä�", "aa");
-		valor1 = valor1.replace("Ä•","ee");
-		valor1 = valor1.replace("Ä«","ii");
-		valor1 = valor1.replace("Å«","uu");
-		valor1 = valor1.replace("Ä‚","AA");
-		valor1 = valor1.replace("Äƒ","aaa");
-		valor1 = valor1.replace("Å­","uuu");
+		valor1 = valor1.replace("Ä“","&#275;");	//ē
+		valor1 = valor1.replace("Å�","&#333;");	//ō
+		valor1 = valor1.replace("Ä­","&#301;");	//ĭ
+		valor1 = valor1.replace("Ä�","&#257;");	//ā
+		valor1 = valor1.replace("Ä•","&#277;");	//ĕ
+		valor1 = valor1.replace("Ä«","&#299;");	//ī
+		valor1 = valor1.replace("Å«","&#363;");	//ū
+		valor1 = valor1.replace("Ä‚","&#258;");	//Ă
+		valor1 = valor1.replace("Äƒ","&#259;");	//ă
+		valor1 = valor1.replace("Å­","&#365;"); //ŭ
 		valor1 = valor1.replace("í­","í");
 		valor1 = valor1.replace("Ã¼","ü");
 		
