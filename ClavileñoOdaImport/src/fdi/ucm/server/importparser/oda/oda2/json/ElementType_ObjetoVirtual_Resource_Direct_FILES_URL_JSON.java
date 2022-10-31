@@ -639,7 +639,7 @@ StringBuffer SB=new StringBuffer();
 					ElementType_NODE_JSON Nodo=new ElementType_NODE_JSON(id,nombre,browseable,visible,
 							tipo_valores,vocabulario,AtributoMeta,false,LColec,PadreGrammar,
 							CompleteAsociado,CompleteAsociadoTabla,
-							Hermanos,CompleteAsociadoID_IDOV,JSONGeneral);
+							Hermanos,CompleteAsociadoID_IDOV,JSONGeneral," (Can be a OV)");
 					CompleteElementType nodeattr = Nodo.getAtributoMeta();
 					Hermanos.add(nodeattr);
 					AtributoMeta.getSons().add(nodeattr);
@@ -654,7 +654,7 @@ StringBuffer SB=new StringBuffer();
 						ElementType_NODE Nodo2=new ElementType_NODE_JSON(id,nombre,browseable,visible,
 								tipo_valores,vocabulario,AtributoMeta2,false,LColec,
 								PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,
-								Hermanos,CompleteAsociadoID_IDOV,JSONGeneral);
+								Hermanos,CompleteAsociadoID_IDOV,JSONGeneral," (Can be a OV)");
 						CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
 						nodeattr2.setClassOfIterator(nodeattr);
 						AtributoMeta2.getSons().add(nodeattr2);

@@ -293,7 +293,7 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV_JSON extends ElementTy
 					
 					ElementType_NODE Nodo=new ElementType_NODE_JSON(id,nombre,browseable,visible,tipo_valores,
 							vocabulario,AtributoMeta,false,LColec,PadreGrammar,
-							CompleteAsociado,CompleteAsociadoTabla,Hermanos,CompleteAsociadoID_IDOV,JSONGeneral);
+							CompleteAsociado,CompleteAsociadoTabla,Hermanos,CompleteAsociadoID_IDOV,JSONGeneral," (Can be a FileResource)");
 					CompleteElementType nodeattr = Nodo.getAtributoMeta();
 					Hermanos.add(nodeattr);
 					AtributoMeta.getSons().add(nodeattr);
@@ -307,7 +307,7 @@ public class ElementType_ObjetoVirtual_Resource_Direct_OV_JSON extends ElementTy
 					for (CompleteLinkElementType AtributoMeta2 : parsear) {
 						ElementType_NODE Nodo2=new ElementType_NODE_JSON(id,nombre,browseable,visible,
 								tipo_valores,vocabulario,AtributoMeta2,false,LColec,
-								PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos,CompleteAsociadoID_IDOV,JSONGeneral);
+								PadreGrammar,CompleteAsociado,CompleteAsociadoTabla,Hermanos,CompleteAsociadoID_IDOV,JSONGeneral," (Can be a FileResource)");
 						CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
 						nodeattr2.setClassOfIterator(nodeattr);
 						AtributoMeta2.getSons().add(nodeattr2);

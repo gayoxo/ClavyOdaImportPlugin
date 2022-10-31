@@ -330,7 +330,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
 						}
 					} catch (Exception e) {
-						LColec.getLog().add("Error en idrecurso idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
+						LColec.getLog().add("Error en date_data idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
 
 					}
 					
@@ -474,7 +474,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
 						}
 					} catch (Exception e) {
-						LColec.getLog().add("Error en idrecurso idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
+						LColec.getLog().add("Error en controled_data idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
 
 					}
 					
@@ -601,7 +601,7 @@ public class ElementType_NODE implements InterfaceOdaparser {
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
 						}
 					} catch (Exception e) {
-						LColec.getLog().add("Error en idrecurso idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
+						LColec.getLog().add("Error en numeric_data idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
 
 					}
 					
@@ -723,7 +723,7 @@ Long RecursoIntId = Long.parseLong(IdRecurso);
 							idov=Integer.toString(CompleteAsociadoID_IDOV.get(IdRecursoL));
 						}
 					} catch (Exception e) {
-						LColec.getLog().add("Error en idrecurso idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
+						LColec.getLog().add("Error en text_data idrecurso no vacio ="+IdRecurso+" pero no asociado a ningun recurso , revisa que la base de datos es correcta");
 
 					}
 					

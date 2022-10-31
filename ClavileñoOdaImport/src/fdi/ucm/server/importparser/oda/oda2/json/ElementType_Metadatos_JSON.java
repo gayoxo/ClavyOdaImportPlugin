@@ -139,7 +139,7 @@ public class ElementType_Metadatos_JSON extends ElementType_Metadatos {
 					ElementType_NODE Nodo=new ElementType_NODE_JSON(id,nombre,browseable,visible,tipo_valores,vocabulario,
 							AtributoMeta,false,LColec,Padre,new HashMap<Long, CompleteElementType>(),
 							new HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>>(),
-							new ArrayList<CompleteElementType>(),new HashMap<Long, Integer>(),JSONGeneral);
+							new ArrayList<CompleteElementType>(),new HashMap<Long, Integer>(),JSONGeneral,null);
 					Nodo.ProcessAttributes();
 					Nodo.ProcessInstances();
 					AtributoMeta.getSons().add(Nodo.getAtributoMeta());

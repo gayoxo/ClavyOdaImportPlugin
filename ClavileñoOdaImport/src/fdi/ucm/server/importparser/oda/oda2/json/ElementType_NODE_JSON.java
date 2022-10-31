@@ -25,16 +25,19 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 public class ElementType_NODE_JSON extends ElementType_NODE {
 
 	private JSONObject JSONGeneral;
+	private String PrefixResources;
 
 	public ElementType_NODE_JSON(String id, String nombre, String navegable, String visible, String tipo_valores,
 			String vocabulario, CompleteElementType tpadre, boolean summary, LoadCollectionOda L, CompleteGrammar Cm,
 			HashMap<Long, CompleteElementType> completeAsociado,
 			HashMap<CompleteElementType, HashMap<CompleteElementType, CompleteElementType>> completeAsociadoTabla,
-			ArrayList<CompleteElementType> hermanos, HashMap<Long, Integer> completeAsociadoID_IDOV, JSONObject jSONGeneral) {
+			ArrayList<CompleteElementType> hermanos, HashMap<Long, Integer> completeAsociadoID_IDOV, JSONObject jSONGeneral,
+			String prefixResources) {
 		super(id, nombre, navegable, visible, tipo_valores, vocabulario, tpadre, summary, L, Cm, completeAsociado,
 				completeAsociadoTabla, hermanos, completeAsociadoID_IDOV);
 		AtributoMeta.setName(StaticFunctionsOda.CleanStringFromDatabase(nombre,L));
 		JSONGeneral=jSONGeneral;
+		PrefixResources=prefixResources;
 	}
 	
 	@Override
@@ -151,7 +154,7 @@ public class ElementType_NODE_JSON extends ElementType_NODE {
 				
 				
 				ElementType_NODE_JSON Nodo=new ElementType_NODE_JSON(id,nombre,browseable,visible,tipo_valores,vocabulario,AtributoMeta,
-						false,LColec,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint,CompleteAsociadoID_IDOV,JSONGeneral);
+						false,LColec,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint,CompleteAsociadoID_IDOV,JSONGeneral,PrefixResources);
 				CompleteElementType nodeattr = Nodo.getAtributoMeta();
 				Hermanosint.add(nodeattr);
 				AtributoMeta.getSons().add(nodeattr);
@@ -164,7 +167,7 @@ public class ElementType_NODE_JSON extends ElementType_NODE {
 				
 				for (CompleteElementType AtributoMeta2 : parsear) {
 					ElementType_NODE_JSON Nodo2=new ElementType_NODE_JSON(id,nombre,browseable,visible,tipo_valores,vocabulario,AtributoMeta2,false,
-							LColec,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint,CompleteAsociadoID_IDOV,JSONGeneral);
+							LColec,CM,CompleteAsociado,CompleteAsociadoTabla,Hermanosint,CompleteAsociadoID_IDOV,JSONGeneral,PrefixResources);
 					CompleteElementType nodeattr2 = Nodo2.getAtributoMeta();
 					nodeattr2.setClassOfIterator(nodeattr);
 					AtributoMeta2.getSons().add(nodeattr2);
@@ -283,7 +286,13 @@ Long RecursoIntId = Long.parseLong(IdRecurso);
 								LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NT)");
 						}
 					else 
-						LColec.getLog().add("Error en numeric_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");
+						{
+
+						System.out.print("Error en numeric_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");
+						if (PrefixResources!=null&&!PrefixResources.isEmpty())
+							System.out.print(PrefixResources);
+						System.out.println();
+						}
 						
 						
 						
@@ -408,7 +417,12 @@ Long RecursoIntId = Long.parseLong(IdRecurso);
 															LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NT)");
 													}
 												else 
-													LColec.getLog().add("Error en controlled_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");
+													{
+													System.out.print("Error en controlled_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");
+													if (PrefixResources!=null&&!PrefixResources.isEmpty())
+														System.out.print(PrefixResources);
+													System.out.println();
+													}
 													
 						
 						}else
@@ -536,7 +550,12 @@ Long RecursoIntId = Long.parseLong(IdRecurso);
 									LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NT)");
 							}
 						else 
-							LColec.getLog().add("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");								
+							{
+							System.out.print("Error en date_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");								
+							if (PrefixResources!=null&&!PrefixResources.isEmpty())
+								System.out.print(PrefixResources);
+							System.out.println();
+							}
 							
 
 						}else
@@ -663,8 +682,12 @@ Long RecursoIntId = Long.parseLong(IdRecurso);
 									LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado(Code:NT)");
 							}
 						else 
-							LColec.getLog().add("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");
-				
+							{
+							System.out.print("Error en text_data id='"+id1+"' en idov='"+idov+"' con Recurso '"+IdRecurso+"' no se encuentra el recurso asociado (Code:NR)");
+							if (PrefixResources!=null&&!PrefixResources.isEmpty())
+								System.out.print(PrefixResources);
+							System.out.println();
+							}
 						
 					}
 					else
